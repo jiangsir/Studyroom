@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import tw.jiangsir.Utils.Annotations.ServletRole;
+import tw.jiangsir.Utils.Annotations.RoleSetting;
 import tw.jiangsir.Utils.Exceptions.RoleException;
 import tw.jiangsir.Utils.Objects.User;
 import tw.jiangsir.Utils.Services.UserService;
@@ -16,7 +16,7 @@ import tw.jiangsir.Utils.Services.UserService;
  * Servlet implementation class InsertUserServlet
  */
 @WebServlet(urlPatterns = { "/UpdateUser.do" })
-@ServletRole(allowHigherThen = User.ROLE.USER)
+@RoleSetting(allowHigherThen = User.ROLE.USER)
 public class UpdateUserServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

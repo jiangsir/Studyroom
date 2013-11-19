@@ -15,49 +15,49 @@ import tw.jiangsir.Utils.Objects.Upfile;
  */
 @WebServlet(urlPatterns = { "/DownloadUpfile" })
 public class DownloadUpfileServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		int id = Integer.parseInt(request.getParameter("id"));
-		Upfile upfile = new UpfileDAO().getUpfileById(id);
-		ServletOutputStream out = null;
-		try {
-			out = response.getOutputStream();
-			String filename = new String(
-					upfile.getFilename().getBytes("UTF-8"), "ISO8859_1");
-			response.setHeader("Content-Type", upfile.getFiletype());
-			response.setContentType(upfile.getFiletype());
-			// response.setHeader("Content-Disposition",
-			// "attachment; filename=\""
-			// + filename + "\"");
-			response.setHeader("Content-Disposition", "filename=\"" + filename
-					+ "\"");
-			out.write(upfile.getBytes());
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				out.flush();
-				out.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-
+    /**
+     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+     *      response)
+     */
+    protected void doGet(HttpServletRequest request,
+	    HttpServletResponse response) throws ServletException, IOException {
+	int id = Integer.parseInt(request.getParameter("id"));
+	Upfile upfile = new UpfileDAO().getUpfileById(id);
+	ServletOutputStream out = null;
+	try {
+	    out = response.getOutputStream();
+	    String filename = new String(
+		    upfile.getFilename().getBytes("UTF-8"), "ISO8859_1");
+	    response.setHeader("Content-Type", upfile.getFiletype());
+	    response.setContentType(upfile.getFiletype());
+	    // response.setHeader("Content-Disposition",
+	    // "attachment; filename=\""
+	    // + filename + "\"");
+	    response.setHeader("Content-Disposition", "filename=\"" + filename
+		    + "\"");
+	    out.write(upfile.getBytes());
+	} catch (IOException e) {
+	    e.printStackTrace();
+	} finally {
+	    try {
+		out.flush();
+		out.close();
+	    } catch (IOException e) {
+		e.printStackTrace();
+	    }
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-	}
+    }
+
+    /**
+     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+     *      response)
+     */
+    protected void doPost(HttpServletRequest request,
+	    HttpServletResponse response) throws ServletException, IOException {
+	// TODO Auto-generated method stub
+    }
 
 }

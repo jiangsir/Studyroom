@@ -9,7 +9,7 @@ import tw.jiangsir.Utils.Objects.User;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ServletRole {
+public @interface RoleSetting {
 	/**
 	 * 指定高於(含)某角色者允許存取。
 	 * 

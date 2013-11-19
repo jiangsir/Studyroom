@@ -9,6 +9,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import tw.jiangsir.Utils.Wrappers.EncodingWrapper;
 
@@ -37,12 +38,19 @@ public class EncodingFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest req = (HttpServletRequest) request;
+		HttpServletResponse resp = (HttpServletResponse) response;
+
 		if ("GET".equals(req.getMethod())) {
 			req = new EncodingWrapper(req, ENCODING);
 		} else {
 			req.setCharacterEncoding(ENCODING);
 		}
-		chain.doFilter(req, response);
+		req.setCharacterEncoding(ENCODING);
+
+		// resp 也要設定好 ENCODING 否則直接 response.writer 輸出會亂碼。
+		resp.setContentType("text/html;charset=" + ENCODING);
+
+		chain.doFilter(req, resp);
 	}
 
 	/**

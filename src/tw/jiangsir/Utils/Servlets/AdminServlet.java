@@ -14,7 +14,7 @@ import tw.jiangsir.Utils.Annotations.*;
  * Servlet implementation class AdminServlet
  */
 @WebServlet(urlPatterns = { "/Admin.do" }, name = "Admin")
-@ServletRole(allows = { User.ROLE.ADMIN }, denys = {})
+@RoleSetting(allows = { User.ROLE.ADMIN }, denys = {})
 public class AdminServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
-import tw.jiangsir.Utils.Annotations.ServletRole;
+import tw.jiangsir.Utils.Annotations.RoleSetting;
 import tw.jiangsir.Utils.DAOs.UpfileDAO;
 import tw.jiangsir.Utils.Exceptions.DataException;
 import tw.jiangsir.Utils.Objects.Upfile;
@@ -22,7 +22,7 @@ import tw.jiangsir.Utils.Objects.User;
  */
 @MultipartConfig
 @WebServlet(urlPatterns = { "/DeleteUpfile.do" })
-@ServletRole(allowHigherThen = User.ROLE.ADMIN)
+@RoleSetting(allowHigherThen = User.ROLE.ADMIN)
 public class DeleteUpfileServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

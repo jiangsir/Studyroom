@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@taglib prefix="zero" uri="http://jiangsir.tw/jstl/zero"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -12,9 +13,12 @@
 <body>
 	<jsp:include page="Header.jsp" />
 
-	<p>Filter</p>
+	<p>
+		<zero:toUpperCase>Filter</zero:toUpperCase>
+		${sessionScope.user.account}
+	</p>
 	<ul>
-		<li>LoginFilter: 處理所有要求要登入的頁面，以及登入後的身份是否能夠瀏覽該頁面。如：<a
+		<li>RoleFilter: 處理所有要求要登入的頁面，以及登入後的身份是否能夠瀏覽該頁面。如：<a
 			href="${pageContext.request.contextPath}/Booking.do">劃位</a>。
 		</li>
 		<li>EncodingFilter: 對所有的 request parameter 進行編碼，可處理中文參數。</li>
@@ -72,7 +76,13 @@
 	<ul>
 		<li><a href="${pageContext.request.contextPath}/AsyncNum.html">非同步即時資料</a></li>
 	</ul>
-
+	<p>自定 JSTL：可以自定 tag 或 function 備用。</p>
+	<ul>
+		<c:if test="${zero:isUrlVisible(sessionScope.user)}">
+			<li>這一行文字只有在 ADMIN 登入時才會看到。</li>
+		</c:if>
+		<li>一般使用者只會看到這一行。登入 ADMIN 可以看到另一行！</li>
+	</ul>
 	<p>前端技術：jquery</p>
 	<ul>
 		<li>用 jquery 來控制 select options.<a

@@ -7,7 +7,8 @@
 <div id="header">
 	<div id="logo"
 		style="font-size: xx-large; text-align: center; margin-bottom: 1em;">
-		<a href="${pageContext.request.contextPath}">Studyroom</a>
+		<a href="${pageContext.request.contextPath}"><img
+			src="${pageContext.request.contextPath}/images/_TITLE_HSIC.png"></a>
 	</div>
 	<div style="float: right;">
 		<c:if test="${sessionScope.user==null}">
@@ -20,4 +21,3 @@
 	</div>
 	<div style="clear: both;"></div>
 </div>
-

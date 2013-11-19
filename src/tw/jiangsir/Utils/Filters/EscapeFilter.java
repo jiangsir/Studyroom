@@ -9,6 +9,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import tw.jiangsir.Utils.Wrappers.EscapeWrapper;
 
@@ -37,9 +38,15 @@ public class EscapeFilter implements Filter {
 	 */
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
-		HttpServletRequest requestWrapper = new EscapeWrapper(
-				(HttpServletRequest) request);
-		chain.doFilter(requestWrapper, response);
+		HttpServletRequest req = (HttpServletRequest) request;
+		HttpServletResponse resp = (HttpServletResponse) response;
+
+		/**
+		 * 會導致寫入資料庫的中文變成亂碼。但顯示正常！
+		 */
+		HttpServletRequest requestWrapper = new EscapeWrapper(req);
+		chain.doFilter(requestWrapper, resp);
+
 	}
 
 	/**

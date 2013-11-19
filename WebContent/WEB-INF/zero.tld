@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<taglib version="2.0" xmlns="http://java.sun.com/xml/ns/j2ee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee web-jsptablibrary_2_0.xsd">
+	<tlib-version>1.0</tlib-version>
+	<short-name>zero</short-name>
+	<uri>http://jiangsir.tw/jstl/zero</uri>
+	<tag>
+		<name>toUpperCase</name>
+		<tag-class>tw.jiangsir.Utils.JSTL.ToUpperCaseTag</tag-class>
+		<body-content>scriptless</body-content>
+	</tag>
+	<function>
+		<name>isUrlVisible</name>
+		<function-class>tw.jiangsir.Utils.JSTL.IsAccessible</function-class>
+		<function-signature>boolean isUrlVisible(tw.jiangsir.Utils.Objects.User)</function-signature>
+	</function>
+</taglib>

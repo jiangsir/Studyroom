@@ -6,7 +6,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>${applicationScope.title}</title>
-<script type="text/javascript" src="./jscripts/jquery-2.0.3.min.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/jscripts/jquery-2.0.3.min.js"></script>
 
 <script language="javascript">
 	jQuery(document).ready(function() {

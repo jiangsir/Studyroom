@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import tw.jiangsir.Utils.Objects.User;
 import tw.jiangsir.Utils.Services.UserService;
 
 /**
@@ -28,8 +29,12 @@ public class HistoryServlet extends HttpServlet {
 				|| !userService.isExitedAccount(pathinfo.substring(1))) {
 			throw new ServletException("該用戶並不存在！");
 		}
-		request.setAttribute("user", userService.getUser(pathinfo.substring(1)));
-		request.getRequestDispatcher("/History.jsp").forward(request, response);
+		User user = userService.getUser(pathinfo.substring(1));
+		request.setAttribute("user", user);
+		// request.getRequestDispatcher("/History.jsp").forward(request,
+		// response);
+		response.getWriter().write(
+				"用戶歷史：" + user.getAccount() + ":" + user.getName());
 	}
 
 	/**
