@@ -10,8 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import tw.jiangsir.Utils.Config.RequestScope;
+import tw.jiangsir.Utils.Config.SessionScope;
 import tw.jiangsir.Utils.Objects.User;
 import tw.jiangsir.Utils.Services.UserService;
 
@@ -54,12 +53,12 @@ public class LoginServlet extends HttpServlet {
 	if (user != null) {
 	    session.setAttribute("user", user);
 	    response.sendRedirect(request.getContextPath()
-		    + new RequestScope(request).getReturnPages().get(0));
+		    + new SessionScope(session).getHistories().get(0));
 	    return;
 	} else {
 	    // request.setAttribute("returnPage",
 	    // request.getParameter("returnPage"));
-	    new RequestScope(request).setReturnPage();
+	    // new RequestScope(request).setReturnPage();
 	    request.getRequestDispatcher(VIEW).forward(request, response);
 	    return;
 	}

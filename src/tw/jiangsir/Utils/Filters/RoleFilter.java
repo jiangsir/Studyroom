@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import tw.jiangsir.Utils.Annotations.RoleSetting;
 import tw.jiangsir.Utils.Config.ApplicationScope;
-import tw.jiangsir.Utils.Config.RequestScope;
 import tw.jiangsir.Utils.Exceptions.RoleException;
 import tw.jiangsir.Utils.Objects.User;
 import tw.jiangsir.Utils.Services.UserService;
@@ -50,7 +49,17 @@ public class RoleFilter implements Filter {
 	HttpServletResponse response = (HttpServletResponse) resp;
 	String servletPath = request.getServletPath();
 	System.out.println("RoleFilter: " + servletPath);
-	new RequestScope(request).setReturnPage();
+	// if (!servletPath.equals(LoginServlet.urlPatterns[0])) {
+	// System.out.println("servletPath=" + request.getServletPath());
+	// String returnPage = servletPath
+	// + (request.getQueryString() == null ? "" : "?"
+	// + request.getQueryString());
+	// request.setAttribute("returnPage", returnPage);
+	// } else {
+	// request.setAttribute("returnPage",
+	// request.getAttribute("returnPage"));
+	// }
+
 	HttpServlet httpServlet = ApplicationScope.getUrlpatterns().get(
 		servletPath);
 	if (httpServlet == null
@@ -62,14 +71,6 @@ public class RoleFilter implements Filter {
 	HttpSession session = request.getSession(false);
 
 	UserService userService = new UserService();
-	if (!servletPath.equals(LoginServlet.urlPatterns[0])) {
-	    System.out.println("servletPath=" + request.getServletPath());
-	    // request.setAttribute("returnPage",
-	    // servletPath
-	    // + (request.getQueryString() == null ? "" : "?"
-	    // + request.getQueryString()));
-	    // new RequestScope(request).setReturnPage();
-	}
 	if (!userService.isOnlineUser(session)) {
 	    request.getRequestDispatcher("/Login.jsp").forward(request,
 		    response);

@@ -89,6 +89,10 @@
 			href="${pageContext.request.contextPath}/UpdateUser.do?userid=${sessionScope.user.id}">修改使用者時自動選好原始的
 				ROLE</a></li>
 	</ul>
+	<p>防止重複 submit</p>
+	<ul>
+		<li>表單</li>
+	</ul>
 	<jsp:include page="Footer.jsp" />
 </body>
 </html>

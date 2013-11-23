@@ -8,22 +8,24 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-import tw.jiangsir.Utils.Wrappers.EncodingWrapper;
+import tw.jiangsir.Utils.Config.ApplicationScope;
+import tw.jiangsir.Utils.Config.SessionScope;
 
 /**
  * Servlet Filter implementation class EncodingFilter
  */
-@WebFilter(filterName = "EncodingFilter", urlPatterns = { "/*" }, asyncSupported = true)
-public class EncodingFilter implements Filter {
-    private String ENCODING = "UTF-8";
+@WebFilter(filterName = "HistoryFilter", urlPatterns = { "/*" }, asyncSupported = true)
+public class HistoryFilter implements Filter {
 
     /**
      * Default constructor.
      */
-    public EncodingFilter() {
+    public HistoryFilter() {
     }
 
     /**
@@ -35,22 +37,21 @@ public class EncodingFilter implements Filter {
     /**
      * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
      */
-    public void doFilter(ServletRequest request, ServletResponse response,
+    public void doFilter(ServletRequest req, ServletResponse resp,
 	    FilterChain chain) throws IOException, ServletException {
-	HttpServletRequest req = (HttpServletRequest) request;
-	HttpServletResponse resp = (HttpServletResponse) response;
+	HttpServletRequest request = (HttpServletRequest) req;
+	HttpServletResponse response = (HttpServletResponse) resp;
 
-	if ("GET".equals(req.getMethod())) {
-	    req = new EncodingWrapper(req, ENCODING);
-	} else {
-	    req.setCharacterEncoding(ENCODING);
+	HttpSession session = request.getSession(false);
+	String servletPath = request.getServletPath();
+
+	HttpServlet httpServlet = ApplicationScope.getUrlpatterns().get(
+		servletPath);
+	if (httpServlet != null) {
+	    new SessionScope(session).addHistory(servletPath,
+		    request.getQueryString());
 	}
-	req.setCharacterEncoding(ENCODING);
-
-	// resp 也要設定好 ENCODING 否則直接 response.writer 輸出會亂碼。
-	resp.setContentType("text/html;charset=" + ENCODING);
-
-	chain.doFilter(req, resp);
+	chain.doFilter(request, response);
     }
 
     /**

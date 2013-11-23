@@ -19,40 +19,40 @@ import tw.jiangsir.Utils.Wrappers.EscapeWrapper;
 @WebFilter(filterName = "EscapeFilter", urlPatterns = { "/*" }, asyncSupported = true)
 public class EscapeFilter implements Filter {
 
-	/**
-	 * Default constructor.
-	 */
-	public EscapeFilter() {
-		// TODO Auto-generated constructor stub
-	}
+    /**
+     * Default constructor.
+     */
+    public EscapeFilter() {
+	// TODO Auto-generated constructor stub
+    }
+
+    /**
+     * @see Filter#destroy()
+     */
+    public void destroy() {
+	// TODO Auto-generated method stub
+    }
+
+    /**
+     * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
+     */
+    public void doFilter(ServletRequest request, ServletResponse response,
+	    FilterChain chain) throws IOException, ServletException {
+	HttpServletRequest req = (HttpServletRequest) request;
+	HttpServletResponse resp = (HttpServletResponse) response;
 
 	/**
-	 * @see Filter#destroy()
+	 * 會導致寫入資料庫的中文變成亂碼。但顯示正常！
 	 */
-	public void destroy() {
-		// TODO Auto-generated method stub
-	}
+	HttpServletRequest requestWrapper = new EscapeWrapper(req);
+	chain.doFilter(requestWrapper, resp);
 
-	/**
-	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
-	 */
-	public void doFilter(ServletRequest request, ServletResponse response,
-			FilterChain chain) throws IOException, ServletException {
-		HttpServletRequest req = (HttpServletRequest) request;
-		HttpServletResponse resp = (HttpServletResponse) response;
+    }
 
-		/**
-		 * 會導致寫入資料庫的中文變成亂碼。但顯示正常！
-		 */
-		HttpServletRequest requestWrapper = new EscapeWrapper(req);
-		chain.doFilter(requestWrapper, resp);
-
-	}
-
-	/**
-	 * @see Filter#init(FilterConfig)
-	 */
-	public void init(FilterConfig fConfig) throws ServletException {
-	}
+    /**
+     * @see Filter#init(FilterConfig)
+     */
+    public void init(FilterConfig fConfig) throws ServletException {
+    }
 
 }
