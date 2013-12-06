@@ -8,12 +8,12 @@ import javax.servlet.jsp.tagext.SimpleTagSupport;
 
 public class ToUpperCaseTag extends SimpleTagSupport {
 
-	@Override
-	public void doTag() throws JspException, IOException {
-		StringWriter writer = new StringWriter();
-		this.getJspBody().invoke(writer);
-		String upper = writer.toString().toUpperCase();
-		this.getJspContext().getOut().print(upper);
-	}
+    @Override
+    public void doTag() throws JspException, IOException {
+	StringWriter writer = new StringWriter();
+	this.getJspBody().invoke(writer);
+	String upper = writer.toString().toUpperCase();
+	this.getJspContext().getOut().print(upper);
+    }
 
 }
