@@ -39,6 +39,9 @@ public class SessionScope implements Serializable {
 
     @SuppressWarnings("unchecked")
     public SessionScope(HttpSession session) {
+	if (session == null) { // 避免第一次剛進來, session 尚未建立，會產生 NullException
+	    return;
+	}
 	this.session = session;
 	this.setSessionid(session.getId());
 	this.setSession_ip((String) session.getAttribute("session_ip"));
@@ -150,7 +153,7 @@ public class SessionScope implements Serializable {
 
     @SuppressWarnings("unchecked")
     public ArrayList<String> getHistories() {
-	if (session.getAttribute("histories") != null) {
+	if (session != null && session.getAttribute("histories") != null) {
 	    this.histories = (ArrayList<String>) session
 		    .getAttribute("histories");
 	}
@@ -158,7 +161,7 @@ public class SessionScope implements Serializable {
     }
 
     public void setHistories(ArrayList<String> histories) {
-	if (histories == null) {
+	if (histories == null || session == null) {
 	    return;
 	}
 	this.histories = histories;

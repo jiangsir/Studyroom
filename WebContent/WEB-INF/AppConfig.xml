@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<comment>應用程式參數</comment>
+	<entry key="AllowedIP">*</entry>
+	<entry key="Title">高師大附中－晚自習教室訂位系統</entry>
+	<entry key="TitleImage">images/BANNER_IMAGE.png</entry>
+	<entry key="Header">高師大附中－晚自習教室訂位系統</entry>
+	<entry key="Author">Qixun Jiang</entry>
+	<entry key="PageSize">20</entry>
+</properties>

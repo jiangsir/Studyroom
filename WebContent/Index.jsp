@@ -8,7 +8,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>${applicationScope.title}</title>
+<title>${applicationScope.appConfig.title}</title>
 </head>
 <body>
 	<jsp:include page="Header.jsp" />
@@ -69,7 +69,7 @@
 	<p>上傳檔案，並存入資料庫</p>
 	<ul>
 		<li><a href="${pageContext.request.contextPath}/ShowUpfiles">檔案列表</a></li>
-		<li><a href="${pageContext.request.contextPath}/FileUpload.do">上傳檔案</a></li>
+		<li><a href="${pageContext.request.contextPath}/InsertUpfile.do">上傳檔案</a></li>
 	</ul>
 
 	<p>非同步資料處理：實作伺服器推播</p>

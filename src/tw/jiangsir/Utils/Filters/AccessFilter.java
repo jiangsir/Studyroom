@@ -47,7 +47,10 @@ public class AccessFilter implements Filter {
 
 	HttpServlet httpServlet = ApplicationScope.getUrlpatterns().get(
 		request.getServletPath());
-
+	if (httpServlet == null) { // null 代表可能是 .png 圖片及其它檔案。
+	    chain.doFilter(request, response);
+	    return;
+	}
 	/**
 	 * 最後一關，確定該使用者已經具備存取這個頁面之後，才進行判斷。<br>
 	 * 由 servlet 獲得的參數來決定是否可以存取。固定寫在 servlet.isAccessible(request);
