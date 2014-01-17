@@ -23,11 +23,11 @@ abstract public class SuperDAO<T> {
 	private static Connection conn = null;
 	private static DataSource source = null;
 
-	abstract public int insert(T t) throws SQLException;
+	abstract protected int insert(T t) throws SQLException;
 
-	abstract public int update(T t) throws SQLException;
+	abstract protected int update(T t) throws SQLException;
 
-	abstract public boolean delete(int i) throws SQLException;
+	abstract protected boolean delete(int i) throws SQLException;
 
 	Logger logger = Logger.getLogger(this.getClass().getName());
 	HashMap<String, Field> fields = new HashMap<String, Field>();

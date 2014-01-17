@@ -11,9 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import tw.jiangsir.Utils.Config.SessionScope;
-import tw.jiangsir.Utils.Objects.CurrentUser;
+import tw.jiangsir.Utils.DAOs.UserService;
 import tw.jiangsir.Utils.Objects.User;
-import tw.jiangsir.Utils.Services.UserService;
 
 /**
  * Servlet implementation class LoginServlet
@@ -50,10 +49,8 @@ public class LoginServlet extends HttpServlet {
 		HttpSession session = request.getSession(false);
 		String account = request.getParameter("account");
 		String passwd = request.getParameter("passwd");
-		User user = new UserService().getUser(account, passwd);
+		User user = new UserService().getUserByAccountPasswd(account, passwd);
 		if (user != null) {
-			// session.setAttribute("user", user);
-			// session.setAttribute("currentUser", currentUser);
 			SessionScope sessionScope = new SessionScope(session);
 			sessionScope.setCurrentUser(new UserService().getCurrentUser(
 					user.getId(), session));
@@ -61,9 +58,6 @@ public class LoginServlet extends HttpServlet {
 					+ sessionScope.getHistories().get(0));
 			return;
 		} else {
-			// request.setAttribute("returnPage",
-			// request.getParameter("returnPage"));
-			// new RequestScope(request).setReturnPage();
 			request.getRequestDispatcher(VIEW).forward(request, response);
 			return;
 		}

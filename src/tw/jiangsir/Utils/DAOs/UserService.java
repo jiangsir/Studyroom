@@ -1,12 +1,10 @@
-package tw.jiangsir.Utils.Services;
+package tw.jiangsir.Utils.DAOs;
 
 import java.sql.SQLException;
 
 import javax.servlet.http.HttpSession;
 
 import tw.jiangsir.Utils.Config.SessionScope;
-import tw.jiangsir.Utils.DAOs.CurrentUserDAO;
-import tw.jiangsir.Utils.DAOs.UserDAO;
 import tw.jiangsir.Utils.Exceptions.DataException;
 import tw.jiangsir.Utils.Objects.CurrentUser;
 import tw.jiangsir.Utils.Objects.User;
@@ -38,17 +36,6 @@ public class UserService {
 				: true;
 	}
 
-	// /**
-	// * 取得目前該 session 中登入的 user, 未登入的話回傳 null
-	// *
-	// * @param session
-	// * @return
-	// */
-	// public CurrentUser getCurrentUser(HttpSession session) {
-	// // return (User) session.getAttribute("user");
-	// return (CurrentUser) session.getAttribute("currentUser");
-	// }
-
 	public User getUser(String account) {
 		return new UserDAO().getUserByAccount(account);
 	}
@@ -57,7 +44,7 @@ public class UserService {
 		return new UserDAO().getUserById(userid);
 	}
 
-	public User getUser(String account, String passwd) {
+	public User getUserByAccountPasswd(String account, String passwd) {
 		return new UserDAO().getUserByAccountPasswd(account, passwd);
 	}
 

@@ -7,8 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import tw.jiangsir.Utils.DAOs.UserService;
 import tw.jiangsir.Utils.Objects.User;
-import tw.jiangsir.Utils.Services.UserService;
 
 /**
  * Servlet implementation class History

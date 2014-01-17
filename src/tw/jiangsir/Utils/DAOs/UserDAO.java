@@ -20,7 +20,7 @@ import tw.jiangsir.Utils.Objects.User;
 public class UserDAO extends SuperDAO<User> {
 
 	@Override
-	public synchronized int insert(User user) throws SQLException {
+	protected synchronized int insert(User user) throws SQLException {
 		String sql = "INSERT INTO users (account, passwd, name, role) VALUES (?,MD5(?),?, ?);";
 		PreparedStatement pstmt = this.getConnection().prepareStatement(sql,
 				Statement.RETURN_GENERATED_KEYS);
@@ -48,7 +48,7 @@ public class UserDAO extends SuperDAO<User> {
 		return null;
 	}
 
-	public synchronized int update(User user) throws SQLException {
+	protected synchronized int update(User user) throws SQLException {
 		String sql = "UPDATE users SET account=?, passwd=MD5(?), name=?, role=? WHERE id=?";
 		int result = -1;
 		PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
@@ -60,10 +60,9 @@ public class UserDAO extends SuperDAO<User> {
 		result = this.executeUpdate(pstmt);
 		pstmt.close();
 		return result;
-
 	}
 
-	public User getUserById(long userid) {
+	protected User getUserById(long userid) {
 		String sql = "SELECT * FROM users WHERE id=?";
 		try {
 			PreparedStatement pstmt = this.getConnection()
@@ -78,7 +77,7 @@ public class UserDAO extends SuperDAO<User> {
 		return null;
 	}
 
-	public User getUserByAccount(String account) {
+	protected User getUserByAccount(String account) {
 		String sql = "SELECT * FROM users WHERE account=?";
 		PreparedStatement pstmt;
 		try {
@@ -100,7 +99,7 @@ public class UserDAO extends SuperDAO<User> {
 	 * @param passwd
 	 * @return
 	 */
-	public User getUserByAccountPasswd(String account, String passwd)
+	protected User getUserByAccountPasswd(String account, String passwd)
 			throws DataException {
 		String sql = "SELECT * FROM users WHERE account=? AND passwd=MD5(?)";
 		PreparedStatement pstmt;
@@ -119,7 +118,7 @@ public class UserDAO extends SuperDAO<User> {
 	}
 
 	@Override
-	public boolean delete(int id) throws SQLException {
+	protected boolean delete(int id) throws SQLException {
 		String sql = "DELETE FROM users WHERE id=?";
 		PreparedStatement pstmt;
 		pstmt = this.getConnection().prepareStatement(sql);
