@@ -15,10 +15,8 @@ public class AppConfig {
 
     @Property(key = "ManagerIP")
     private String ManagerIP = "*";
-
     @Property(key = "Title")
     private String Title = "A Title for Your Site";
-
     @Property(key = "Author")
     private String Author = "Qixun Jiang";
     @Property(key = "AuthorEmail")

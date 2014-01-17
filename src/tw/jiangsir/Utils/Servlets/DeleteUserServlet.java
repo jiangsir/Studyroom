@@ -8,7 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import tw.jiangsir.Utils.Annotations.RoleSetting;
+import tw.jiangsir.Utils.Config.SessionScope;
 import tw.jiangsir.Utils.Exceptions.RoleException;
+import tw.jiangsir.Utils.Objects.CurrentUser;
 import tw.jiangsir.Utils.Objects.User;
 import tw.jiangsir.Utils.Services.UserService;
 
@@ -28,7 +30,7 @@ public class DeleteUserServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
 		int userid = Integer.parseInt(request.getParameter("userid"));
-		User currentUser = new UserService().getCurrentUser(session);
+		CurrentUser currentUser = new SessionScope(session).getCurrentUser();
 		if (currentUser.getRole() != User.ROLE.ADMIN
 				&& currentUser.getId().intValue() != userid) {
 			throw new RoleException("您沒有這個權限！！");

@@ -14,7 +14,7 @@
 <body>
 	<jsp:include page="Header.jsp" />
 
-	<h1>${alert.type}: ${alert.title }</h1>
+	<h1>ALERT.jsp ${alert.type}: ${alert.title }</h1>
 	<h2>${alert.subtitle }</h2>
 	<div>${alert.content }</div>
 	<c:forEach var="contentmap" items="${alert.contentmap}">${contentmap.key }=${contentmap.value}

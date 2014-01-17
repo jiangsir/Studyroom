@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.HashMap;
 
 import tw.jiangsir.Utils.Annotations.Persistent;
+import tw.jiangsir.Utils.Exceptions.Cause;
 
 public class Alert {
 
@@ -37,6 +38,13 @@ public class Alert {
 		this.setTitle(throwable.getLocalizedMessage());
 		this.setSubtitle(throwable.getClass().getName());
 		this.setStacktrace(throwable.getStackTrace());
+	}
+
+	public Alert(Cause cause) {
+		this.setType(TYPE.EXCEPTION);
+		this.setTitle(cause.getTitle());
+		this.setSubtitle(cause.getSubtitle());
+		this.setStacktrace(cause.getStackTrace());
 	}
 
 	public TYPE getType() {

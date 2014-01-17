@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import tw.jiangsir.Utils.Annotations.RoleSetting;
+import tw.jiangsir.Utils.Config.SessionScope;
 import tw.jiangsir.Utils.Objects.Alert;
 import tw.jiangsir.Utils.Objects.User;
 import tw.jiangsir.Utils.Services.UserService;
@@ -29,7 +30,7 @@ public class BookingServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
 		Alert alert = new Alert();
-		alert.setTitle(new UserService().getCurrentUser(session).getName()
+		alert.setTitle(new SessionScope(session).getCurrentUser().getName()
 				+ " 進行預約!!!");
 		request.setAttribute("alert", alert);
 		request.getRequestDispatcher("/Alert.jsp").forward(request, response);

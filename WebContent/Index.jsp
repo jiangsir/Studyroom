@@ -15,7 +15,6 @@
 
 	<p>
 		<zero:toUpperCase>Filter</zero:toUpperCase>
-		${sessionScope.user.account}
 	</p>
 	<ul>
 		<li>RoleFilter: 處理所有要求要登入的頁面，以及登入後的身份是否能夠瀏覽該頁面。如：<a
@@ -78,7 +77,7 @@
 	</ul>
 	<p>自定 JSTL：可以自定 tag 或 function 備用。</p>
 	<ul>
-		<c:if test="${zero:isUrlVisible(sessionScope.user)}">
+		<c:if test="${zero:isUrlVisible(sessionScope.currentUser)}">
 			<li>這一行文字只有在 ADMIN 登入時才會看到。</li>
 		</c:if>
 		<li>一般使用者只會看到這一行。登入 ADMIN 可以看到另一行！</li>

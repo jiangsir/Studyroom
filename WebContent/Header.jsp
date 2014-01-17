@@ -11,11 +11,11 @@
 			src="${pageContext.request.contextPath}/images/BANNER_IMAGE.jpg"></a>
 	</div>
 	<div style="float: right;">
-		<c:if test="${sessionScope.user==null}">
+		<c:if test="${sessionScope.currentUser==null}">
 			<a href="${pageContext.request.contextPath}/Login">登入</a>
 		</c:if>
-		<c:if test="${sessionScope.user!=null}">${sessionScope.user.name} | <a
-				href="${pageContext.request.contextPath}/UpdateUser.do?userid=${sessionScope.user.id}">修改</a> | <a
+		<c:if test="${sessionScope.currentUser!=null}">${sessionScope.currentUser.name} | <a
+				href="${pageContext.request.contextPath}/UpdateUser.do?userid=${sessionScope.currentUser.id}">修改</a> | <a
 				href="${pageContext.request.contextPath}/Logout">登出</a>
 		</c:if>
 	</div>

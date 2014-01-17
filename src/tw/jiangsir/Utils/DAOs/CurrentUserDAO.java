@@ -1,0 +1,53 @@
+/**
+ * idv.jiangsir.DAOs - UserDAO.java
+ * 2008/4/29 下午 05:46:51
+ * jiangsir
+ */
+package tw.jiangsir.Utils.DAOs;
+
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import tw.jiangsir.Utils.Objects.CurrentUser;
+
+/**
+ * @author jiangsir
+ * 
+ */
+public class CurrentUserDAO extends SuperDAO<CurrentUser> {
+
+	public CurrentUser getCurrentUserById(long userid) {
+		String sql = "SELECT * FROM users WHERE id=?";
+		try {
+			PreparedStatement pstmt = this.getConnection()
+					.prepareStatement(sql);
+			pstmt.setLong(1, userid);
+			for (CurrentUser currentUser : this.executeQuery(pstmt,
+					CurrentUser.class)) {
+				return currentUser;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+
+	}
+
+	@Override
+	public int insert(CurrentUser t) throws SQLException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int update(CurrentUser t) throws SQLException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public boolean delete(int i) throws SQLException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+}

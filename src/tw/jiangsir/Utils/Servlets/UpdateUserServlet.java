@@ -8,7 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import tw.jiangsir.Utils.Annotations.RoleSetting;
+import tw.jiangsir.Utils.Config.SessionScope;
 import tw.jiangsir.Utils.Exceptions.RoleException;
+import tw.jiangsir.Utils.Objects.CurrentUser;
 import tw.jiangsir.Utils.Objects.User;
 import tw.jiangsir.Utils.Services.UserService;
 
@@ -21,9 +23,9 @@ public class UpdateUserServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	public boolean isAccessible(HttpServletRequest request) {
-		int userid = Integer.parseInt(request.getParameter("userid"));
-		User currentUser = new UserService().getCurrentUser(request
-				.getSession(false));
+		long userid = Long.parseLong(request.getParameter("userid"));
+		CurrentUser currentUser = new SessionScope(request.getSession(false))
+				.getCurrentUser();
 		if (currentUser.getRole() != User.ROLE.ADMIN
 				&& currentUser.getId() != userid) {
 			throw new RoleException("不可以修改別人的資料！");

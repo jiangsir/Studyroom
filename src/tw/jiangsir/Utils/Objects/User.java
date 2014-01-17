@@ -1,15 +1,10 @@
 package tw.jiangsir.Utils.Objects;
 
 import java.io.Serializable;
-
-import javax.servlet.http.HttpSessionBindingEvent;
-import javax.servlet.http.HttpSessionBindingListener;
-
 import tw.jiangsir.Utils.Annotations.Persistent;
-import tw.jiangsir.Utils.Config.ApplicationScope;
 import tw.jiangsir.Utils.Exceptions.DataException;
 
-public class User implements HttpSessionBindingListener, Serializable {
+public class User implements Serializable {
 	/**
 	 * 
 	 */
@@ -32,16 +27,6 @@ public class User implements HttpSessionBindingListener, Serializable {
 	private String name = "";
 	@Persistent(name = "role")
 	private ROLE role = ROLE.GUEST;
-
-	@Override
-	public void valueBound(HttpSessionBindingEvent event) {
-		ApplicationScope.getOnlineUsers().put(event.getSession().getId(), this);
-	}
-
-	@Override
-	public void valueUnbound(HttpSessionBindingEvent event) {
-		ApplicationScope.getOnlineUsers().remove(event.getSession().getId());
-	}
 
 	public Long getId() {
 		return id;
