@@ -55,8 +55,8 @@ public class LoginServlet extends HttpServlet {
 			// session.setAttribute("user", user);
 			// session.setAttribute("currentUser", currentUser);
 			SessionScope sessionScope = new SessionScope(session);
-			sessionScope.setCurrentUser(new UserService().getCurrentUser(user
-					.getId()));
+			sessionScope.setCurrentUser(new UserService().getCurrentUser(
+					user.getId(), session));
 			response.sendRedirect(request.getContextPath()
 					+ sessionScope.getHistories().get(0));
 			return;

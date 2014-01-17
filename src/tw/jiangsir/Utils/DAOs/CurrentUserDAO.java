@@ -7,6 +7,9 @@ package tw.jiangsir.Utils.DAOs;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+
+import javax.servlet.http.HttpSession;
+
 import tw.jiangsir.Utils.Objects.CurrentUser;
 
 /**
@@ -15,7 +18,7 @@ import tw.jiangsir.Utils.Objects.CurrentUser;
  */
 public class CurrentUserDAO extends SuperDAO<CurrentUser> {
 
-	public CurrentUser getCurrentUserById(long userid) {
+	public CurrentUser getCurrentUserById(long userid, HttpSession session) {
 		String sql = "SELECT * FROM users WHERE id=?";
 		try {
 			PreparedStatement pstmt = this.getConnection()
@@ -23,6 +26,7 @@ public class CurrentUserDAO extends SuperDAO<CurrentUser> {
 			pstmt.setLong(1, userid);
 			for (CurrentUser currentUser : this.executeQuery(pstmt,
 					CurrentUser.class)) {
+				currentUser.setSession(session);
 				return currentUser;
 			}
 		} catch (SQLException e) {

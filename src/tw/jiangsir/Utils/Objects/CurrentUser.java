@@ -2,6 +2,7 @@ package tw.jiangsir.Utils.Objects;
 
 import java.io.Serializable;
 
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionBindingListener;
 
@@ -14,6 +15,7 @@ public class CurrentUser extends User implements HttpSessionBindingListener,
 	 * 
 	 */
 	private static final long serialVersionUID = -8830679620579860915L;
+	private HttpSession session = null;
 
 	@Override
 	public void valueBound(HttpSessionBindingEvent event) {
@@ -23,6 +25,18 @@ public class CurrentUser extends User implements HttpSessionBindingListener,
 	@Override
 	public void valueUnbound(HttpSessionBindingEvent event) {
 		ApplicationScope.getOnlineUsers().remove(event.getSession().getId());
+	}
+
+	public HttpSession getSession() {
+		return session;
+	}
+
+	public void setSession(HttpSession session) {
+		this.session = session;
+	}
+
+	public void doLogout() {
+		session.invalidate();
 	}
 
 }

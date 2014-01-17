@@ -61,8 +61,8 @@ public class UserService {
 		return new UserDAO().getUserByAccountPasswd(account, passwd);
 	}
 
-	public CurrentUser getCurrentUser(long userid) {
-		return new CurrentUserDAO().getCurrentUserById(userid);
+	public CurrentUser getCurrentUser(long userid, HttpSession session) {
+		return new CurrentUserDAO().getCurrentUserById(userid, session);
 	}
 
 	public void insert(User user) throws DataException {

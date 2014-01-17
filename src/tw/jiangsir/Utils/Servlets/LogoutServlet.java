@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import tw.jiangsir.Utils.Config.SessionScope;
+
 /**
  * Servlet implementation class LoginServlet
  */
@@ -24,7 +26,7 @@ public class LogoutServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
-		session.invalidate();
+		new SessionScope(session).getCurrentUser().doLogout();
 		response.sendRedirect(request.getContextPath());
 	}
 
