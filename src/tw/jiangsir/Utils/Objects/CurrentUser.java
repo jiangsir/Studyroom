@@ -36,7 +36,9 @@ public class CurrentUser extends User implements HttpSessionBindingListener,
 	}
 
 	public void doLogout() {
-		session.invalidate();
+		if (session != null) {
+			session.invalidate();
+		}
 	}
 
 }
