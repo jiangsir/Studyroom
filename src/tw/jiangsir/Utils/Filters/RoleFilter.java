@@ -20,7 +20,6 @@ import tw.jiangsir.Utils.DAOs.UserService;
 import tw.jiangsir.Utils.Exceptions.RoleException;
 import tw.jiangsir.Utils.Objects.CurrentUser;
 import tw.jiangsir.Utils.Objects.User;
-import tw.jiangsir.Utils.Servlets.LoginServlet;
 
 /**
  * Servlet Filter implementation class RoleFilter
