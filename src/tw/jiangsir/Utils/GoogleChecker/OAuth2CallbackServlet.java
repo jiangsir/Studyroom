@@ -38,8 +38,8 @@ public class OAuth2CallbackServlet extends HttpServlet {
 		HttpSession session = request.getSession(false);
 		String code = request.getParameter("code");
 		Verifier verifier = new Verifier(code);
-		String apiKey = "156955164629-h5udq5tslak1t4q3681rucgsam3cnu2h.apps.googleusercontent.com"; // 你的ClientID
-		String apiSecret = "l7bMWWLwjR8yUkzzlqpZEjK3";// 你的Client secret
+		String apiKey = "953896450978-u82dc8hgj246t9fva61f0bl21v0ek97n.apps.googleusercontent.com"; // 你的ClientID
+		String apiSecret = "g_NdXLE9SvStnaYdpiQXcn8g";// 你的Client secret
 		String redirect_uri = "http://127.0.0.1:8080/Studyroom/oauth2callback";// 你的轉址網址
 
 		OAuthService service = new ServiceBuilder()
@@ -73,8 +73,9 @@ public class OAuth2CallbackServlet extends HttpServlet {
 		currentUser.setRole(User.ROLE.USER);
 		currentUser.setSession(session);
 		new SessionScope(session).setCurrentUser(currentUser);
-		response.sendRedirect("."
-				+ new SessionScope(session).getHistories().get(0));
+		// response.sendRedirect("."
+		// + new SessionScope(session).getHistories().get(0));
+		response.sendRedirect("./");
 	}
 
 	/**
