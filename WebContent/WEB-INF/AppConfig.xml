@@ -8,6 +8,7 @@
 	<entry key="Header">高師大附中－晚自習教室訂位系統</entry>
 	<entry key="Author">Qixun Jiang</entry>
 	<entry key="PageSize">20</entry>
+	<entry key="DefaultLogin">Login</entry>
 	<entry key="AuthDomains">["stu.nknush.kh.edu.tw","tea.nknush.kh.edu.tw"]</entry>
 	<entry key="client_id">953896450978-u82dc8hgj246t9fva61f0bl21v0ek97n.apps.googleusercontent.com</entry>
 	<entry key="client_secret">g_NdXLE9SvStnaYdpiQXcn8g</entry>

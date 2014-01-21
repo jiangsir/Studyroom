@@ -73,7 +73,9 @@ public class RoleFilter implements Filter {
 		HttpSession session = request.getSession(false);
 
 		UserService userService = new UserService();
-		if (!userService.isOnlineUser(session)) {
+		if (!userService.isUserOnline(session)) {
+			request.setAttribute("defaultLogin", ApplicationScope
+					.getAppConfig().getDefaultLogin());
 			request.getRequestDispatcher("/Login.jsp").forward(request,
 					response);
 			return;

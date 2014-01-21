@@ -32,7 +32,7 @@ public class UserService {
 	 * @param session
 	 * @return
 	 */
-	public boolean isOnlineUser(HttpSession session) {
+	public boolean isUserOnline(HttpSession session) {
 		return new SessionScope(session).getCurrentUser() == null ? false
 				: true;
 	}

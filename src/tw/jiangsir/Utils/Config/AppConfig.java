@@ -28,6 +28,8 @@ public class AppConfig {
 	private String AllowedIP = "*";
 	@Property(key = "PageSize")
 	private int PageSize = 20;
+	@Property(key = "DefaultLogin")
+	private String DefaultLogin = "Login";
 	@Property(key = "AuthDomains")
 	private TreeSet<String> AuthDomains = new TreeSet<String>();
 	@Property(key = "client_id")
@@ -87,6 +89,14 @@ public class AppConfig {
 
 	public void setPageSize(String pageSize) {
 		this.setPageSize(Integer.parseInt(pageSize));
+	}
+
+	public String getDefaultLogin() {
+		return DefaultLogin;
+	}
+
+	public void setDefaultLogin(String defaultLogin) {
+		DefaultLogin = defaultLogin;
 	}
 
 	public TreeSet<String> getAuthDomains() {

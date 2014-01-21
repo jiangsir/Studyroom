@@ -83,7 +83,7 @@ public class GooglePopLoginServlet extends HttpServlet {
 
 			sessionScope.setCurrentUser(currentUser);
 			response.sendRedirect(request.getContextPath()
-					+ sessionScope.getHistories().get(0));
+					+ sessionScope.getHistories().get(1));
 			return;
 		} else {
 			request.getRequestDispatcher(VIEW).forward(request, response);
