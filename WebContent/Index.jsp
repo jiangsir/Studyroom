@@ -96,7 +96,7 @@
 		<li><a href="${pageContext.request.contextPath}/GooglePopLogin">用
 				pop3</a></li>
 		<li><a href="${pageContext.request.contextPath}/GoogleLogin">用
-				OAuth</a></li>
+				OAuth2</a></li>
 	</ul>
 	<p>防止重複 submit</p>
 	<ul>

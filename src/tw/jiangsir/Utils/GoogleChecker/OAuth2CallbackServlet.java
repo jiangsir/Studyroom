@@ -17,7 +17,10 @@ import org.scribe.model.Verb;
 import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
 
+import tw.jiangsir.Utils.Config.AppConfig;
+import tw.jiangsir.Utils.Config.ApplicationScope;
 import tw.jiangsir.Utils.Config.SessionScope;
+import tw.jiangsir.Utils.Exceptions.DataException;
 import tw.jiangsir.Utils.Objects.CurrentUser;
 import tw.jiangsir.Utils.Objects.User;
 
@@ -38,9 +41,10 @@ public class OAuth2CallbackServlet extends HttpServlet {
 		HttpSession session = request.getSession(false);
 		String code = request.getParameter("code");
 		Verifier verifier = new Verifier(code);
-		String apiKey = "953896450978-u82dc8hgj246t9fva61f0bl21v0ek97n.apps.googleusercontent.com"; // 你的ClientID
-		String apiSecret = "g_NdXLE9SvStnaYdpiQXcn8g";// 你的Client secret
-		String redirect_uri = "http://127.0.0.1:8080/Studyroom/oauth2callback";// 你的轉址網址
+		AppConfig appConfig = ApplicationScope.getAppConfig();
+		String apiKey = appConfig.getClient_id(); // 你的ClientID
+		String apiSecret = appConfig.getClient_secret();// 你的Client secret
+		String redirect_uri = appConfig.getRedirect_uri();// 你的轉址網址
 
 		OAuthService service = new ServiceBuilder()
 				.provider(Google2Api.class)
@@ -67,6 +71,11 @@ public class OAuth2CallbackServlet extends HttpServlet {
 		// response.getWriter().println("Body=" + _sBody);
 		System.out.println(_sBody);
 		GoogleUser googleUser = mapper.readValue(_sBody, GoogleUser.class);
+		String domain = googleUser.getEmail().split("@")[1];
+		if (!ApplicationScope.getAppConfig().getAuthDomains().contains(domain)) {
+			throw new DataException("您所登入的 domain(" + googleUser.getEmail()
+					+ ") 並沒有在允許的範圍內。");
+		}
 		CurrentUser currentUser = new CurrentUser();
 		currentUser.setAccount(googleUser.getEmail());
 		currentUser.setName(googleUser.getName());
