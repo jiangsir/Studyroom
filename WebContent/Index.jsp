@@ -87,10 +87,24 @@
 		<li>用 jquery 來控制 select options.<a
 			href="${pageContext.request.contextPath}/UpdateUser.do?userid=${sessionScope.user.id}">修改使用者時自動選好原始的
 				ROLE</a></li>
+		<li>用 jQuery 處理行動版網頁。</li>
+		<li>用 jQuery 處理 grid 表格 使用 jqGrid <a
+			href="${pageContext.request.contextPath}/EditUsers">管理使用者</a></li>
+	</ul>
+	<p>進行 google apps 郵件認證！</p>
+	<ul>
+		<li><a href="${pageContext.request.contextPath}/GooglePopLogin">用
+				pop3</a></li>
+		<li><a href="${pageContext.request.contextPath}/GoogleLogin">用
+				OAuth</a></li>
 	</ul>
 	<p>防止重複 submit</p>
 	<ul>
 		<li>表單</li>
+	</ul>
+	<p>Anti Forgery Form</p>
+	<ul>
+		<li>防止偽造。</li>
 	</ul>
 	<jsp:include page="Footer.jsp" />
 </body>

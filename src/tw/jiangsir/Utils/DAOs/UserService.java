@@ -1,6 +1,7 @@
 package tw.jiangsir.Utils.DAOs;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.servlet.http.HttpSession;
 
@@ -40,6 +41,10 @@ public class UserService {
 		return new UserDAO().getUserByAccount(account);
 	}
 
+	public ArrayList<User> getUsers() {
+		return new UserDAO().getUsers();
+	}
+
 	public User getUser(int userid) {
 		return new UserDAO().getUserById(userid);
 	}
@@ -52,11 +57,13 @@ public class UserService {
 		return new CurrentUserDAO().getCurrentUserById(userid, session);
 	}
 
-	public void insert(User user) throws DataException {
+	public int insert(User user) throws DataException {
 		try {
-			if (new UserDAO().insert(user) == 0) {
+			int userid = new UserDAO().insert(user);
+			if (userid == 0) {
 				throw new DataException("沒有新增！");
 			}
+			return userid;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new DataException(e);

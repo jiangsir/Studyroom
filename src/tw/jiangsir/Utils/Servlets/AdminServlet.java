@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import tw.jiangsir.Utils.DAOs.UserDAO;
+import tw.jiangsir.Utils.DAOs.UserService;
 import tw.jiangsir.Utils.Objects.User;
 import tw.jiangsir.Utils.Annotations.*;
 
@@ -24,7 +25,7 @@ public class AdminServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		request.setAttribute("users", new UserDAO().getUsers());
+		request.setAttribute("users", new UserService().getUsers());
 		request.getRequestDispatcher("/Admin.jsp").forward(request, response);
 	}
 

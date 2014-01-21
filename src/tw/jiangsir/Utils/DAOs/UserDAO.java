@@ -36,7 +36,7 @@ public class UserDAO extends SuperDAO<User> {
 	 * 
 	 * @return
 	 */
-	public ArrayList<User> getUsers() {
+	protected ArrayList<User> getUsers() {
 		String sql = "SELECT * FROM users";
 		try {
 			PreparedStatement pstmt = this.getConnection()

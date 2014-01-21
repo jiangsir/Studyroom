@@ -18,7 +18,7 @@
 <body>
 	<jsp:include page="Header.jsp" />
 
-	<form method="post" action="Login">
+	<form method="post" action="">
 		帳號：<input name="account" /><br /> 密碼：<input name="passwd" /><br />
 		<input type="hidden" name="returnPage" value="${returnPage}" /> <input
 			type="submit" value="送出" />
