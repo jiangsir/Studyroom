@@ -16,6 +16,6 @@
 	</div>
 	<div>
 		Designed &amp; <a href="${pageContext.request.contextPath}/Admin.do">管理</a>
-		by <a href="mailto:aming@tea.nknush.kh.edu.tw">jiangsir@高師大附中</a>.
+		by <a href="mailto:jiangsir@tea.nknush.kh.edu.tw">jiangsir@高師大附中</a>.
 	</div>
 </div>
