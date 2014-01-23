@@ -7,12 +7,65 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>${applicationScope.appConfig.title}</title>
+<jsp:include page="CommonHead.jsp" />
+
+<script>
+	$(function() {
+		$("#dialog-confirm").dialog({
+			autoOpen : false,
+			height : 300,
+			width : 350,
+			modal : true,
+			buttons : {
+				"+加入" : function() {
+					$(this).dialog("close");
+				},
+				Cancel : function() {
+					$(this).dialog("close");
+				}
+			}
+		});
+		$("#opendialog").click(function() {
+			$("#dialog-confirm").dialog("open");
+		});
+		$("button[id='icon01']").button({
+			icons : {
+				primary : "ui-icon-closethick"
+			},
+			text : false
+		});
+		$("button[id='icon02']").button({
+			icons : {
+				primary : "ui-icon-check"
+			},
+			text : false
+		});
+
+	});
+</script>
 </head>
 <body>
 	<jsp:include page="Header.jsp" />
-
+	<table style="border: 0px;">
+		<tr>
+			<td>1<a
+				href="${pageContext.request.contextPath}/BookUp?seatid=1">訂位</a></td>
+			<td>2<a
+				href="${pageContext.request.contextPath}/BookUp?seatid=2">訂位</a></td>
+		</tr>
+		<tr>
+			<td>3<a
+				href="${pageContext.request.contextPath}/BookUp?seatid=3">訂位</a></td>
+			<td>4<a
+				href="${pageContext.request.contextPath}/BookUp?seatid=4">訂位</a></td>
+		</tr>
+		<tr>
+			<td>5<a
+				href="${pageContext.request.contextPath}/BookUp?seatid=5">訂位</a></td>
+			<td>6<a
+				href="${pageContext.request.contextPath}/BookUp?seatid=6">訂位</a></td>
+		</tr>
+	</table>
 	<p>
 		<zero:toUpperCase>Filter</zero:toUpperCase>
 	</p>
@@ -22,6 +75,8 @@
 		</li>
 		<li>EncodingFilter: 對所有的 request parameter 進行編碼，可處理中文參數。</li>
 		<li>EscapeFilter: 對所有的 request parameter 過濾特殊符號，可避免 XSS 攻擊。</li>
+		<li>ExceptionHandlerFilter: 捕捉所有 Servlet 拋出的 DataException,
+			並且包裝後轉發專門處理的頁面。</li>
 	</ul>
 	<p>Listener</p>
 	<ul>
@@ -83,7 +138,23 @@
 		<li>一般使用者只會看到這一行。登入 ADMIN 可以看到另一行！</li>
 	</ul>
 	<p>前端技術：jquery</p>
+	<div id="dialog-confirm" title="Empty the recycle bin?">
+		<p>
+			<span class="ui-icon ui-icon-alert"
+				style="float: left; margin: 0 7px 20px 0;"></span>These items will
+			be permanently deleted and cannot be recovered. Are you sure?
+		</p>
+	</div>
 	<ul>
+		<li>用 jQuery UI 來美化<a href="" type="button">超連結</a>，
+			<button style="font-size: 0.8em;">較小按鈕</button>，<input type="submit" />一律控管為
+			button。對話框等效果。
+		</li>
+		<li>用 jQuery dialog 來處理各種提示
+			<button id="opendialog">確認框</button>，小圖示
+			<button id="icon01" style="font-size: 0.9em;">刪除</button>
+			<button id="icon02">勾選</button>以及表單。
+		</li>
 		<li>用 jquery 來控制 select options.<a
 			href="${pageContext.request.contextPath}/UpdateUser.do?userid=${sessionScope.user.id}">修改使用者時自動選好原始的
 				ROLE</a></li>

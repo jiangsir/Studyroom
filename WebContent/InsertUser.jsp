@@ -4,14 +4,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>${applicationScope.title}</title>
-<script type="text/javascript"
-	src="${pageContext.request.contextPath}/jscripts/jquery-2.0.3.min.js"></script>
+<jsp:include page="CommonHead.jsp" />
 
 <script language="javascript">
 	jQuery(document).ready(function() {
-		jQuery("input:first").focus();
 		$("select#role").children().each(function() {
 			if ($(this).parent().attr("role") == $(this).val()) {
 				$(this).attr("selected", "true");

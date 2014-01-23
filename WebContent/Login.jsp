@@ -4,16 +4,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>${applicationScope.title}</title>
-<script type="text/javascript" src="./jscripts/jquery-2.0.3.min.js"></script>
-
-<script language="javascript">
-	jQuery(document).ready(function() {
-		jQuery("input:first").focus();
-
-	});
-</script>
+<jsp:include page="CommonHead.jsp" />
 </head>
 <body>
 	<jsp:include page="Header.jsp" />
