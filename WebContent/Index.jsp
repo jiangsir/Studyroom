@@ -28,6 +28,51 @@
 		$("#opendialog").click(function() {
 			$("#dialog-confirm").dialog("open");
 		});
+
+		$(".insertBooking").each(
+				function() {
+					$(this).click(
+							function() {
+								$("div#bookingDialog span#seatid").html(
+										$(this).attr("seatid"));
+								$("#bookingDialog").dialog("open");
+							});
+				});
+		$("#bookingDialog").dialog(
+				{
+					autoOpen : false,
+					height : 400,
+					width : 350,
+					modal : true,
+					buttons : {
+						"訂位" : function() {
+							var studentid = $(this).find(
+									"input[name='studentid']").val();
+							var passwd = $(this).find("input[name='passwd']")
+									.val();
+							var seatid = $(this).find("span[id='seatid']")
+									.text();
+
+							jQuery.ajax({
+								type : "POST",
+								url : "BookUp",
+								data : "studentid=" + studentid + "&passwd="
+										+ passwd + "&seatid=" + seatid,
+								async : false,
+								timeout : 5000,
+								success : function(result) {
+									//location.reload();
+								}
+							});
+
+							$(this).dialog("close");
+						},
+						"取消" : function() {
+							$(this).dialog("close");
+						}
+					}
+				});
+
 		$("button[id='icon01']").button({
 			icons : {
 				primary : "ui-icon-closethick"
@@ -46,24 +91,42 @@
 </head>
 <body>
 	<jsp:include page="Header.jsp" />
+	<div id="bookingDialog" title="請輸入帳號密碼！">
+		<fieldset style="padding: 5px;">
+			<legend>
+				確定要訂 <span id="seatid"></span>號的位置？
+			</legend>
+			<br /> <label>請輸入學號</label><br /> <input type="text"
+				name="studentid" value="" style="width: 90%;"></input><br /> <label>請輸入學生信箱密碼
+				(stu.nknush.kh.edu.tw)</label><br /> <input type="text" name="passwd"
+				value="" style="width: 90%;"></input> <br />
+		</fieldset>
+	</div>
+
 	<table style="border: 0px;">
 		<tr>
-			<td>1<a
-				href="${pageContext.request.contextPath}/BookUp?seatid=1">訂位</a></td>
-			<td>2<a
-				href="${pageContext.request.contextPath}/BookUp?seatid=2">訂位</a></td>
+			<td>1
+				<button class="insertBooking" style="font-size: 0.8em;" seatid=1>訂位</button>
+			</td>
+			<td>2
+				<button class="insertBooking" style="font-size: 0.8em;" seatid=2>訂位</button>
+			</td>
 		</tr>
 		<tr>
-			<td>3<a
-				href="${pageContext.request.contextPath}/BookUp?seatid=3">訂位</a></td>
-			<td>4<a
-				href="${pageContext.request.contextPath}/BookUp?seatid=4">訂位</a></td>
+			<td>3
+				<button class="insertBooking" style="font-size: 0.8em;" seatid=3>訂位</button>
+			</td>
+			<td>4
+				<button class="insertBooking" style="font-size: 0.8em;" seatid=4>訂位</button>
+			</td>
 		</tr>
 		<tr>
-			<td>5<a
-				href="${pageContext.request.contextPath}/BookUp?seatid=5">訂位</a></td>
-			<td>6<a
-				href="${pageContext.request.contextPath}/BookUp?seatid=6">訂位</a></td>
+			<td>5
+				<button class="insertBooking" style="font-size: 0.8em;" seatid=5>訂位</button>
+			</td>
+			<td>6
+				<button class="insertBooking" style="font-size: 0.8em;" seatid=6>訂位</button>
+			</td>
 		</tr>
 	</table>
 	<p>
