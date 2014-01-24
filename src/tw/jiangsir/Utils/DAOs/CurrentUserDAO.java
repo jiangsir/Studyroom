@@ -49,7 +49,7 @@ public class CurrentUserDAO extends SuperDAO<CurrentUser> {
 	}
 
 	@Override
-	public boolean delete(int i) throws SQLException {
+	public boolean delete(long i) throws SQLException {
 		// TODO Auto-generated method stub
 		return false;
 	}

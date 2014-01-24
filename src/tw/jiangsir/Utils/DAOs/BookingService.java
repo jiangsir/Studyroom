@@ -2,7 +2,8 @@ package tw.jiangsir.Utils.DAOs;
 
 import java.sql.Date;
 import java.sql.SQLException;
-import java.util.Calendar;
+import java.util.ArrayList;
+import java.util.HashSet;
 
 import tw.jiangsir.Utils.Exceptions.DataException;
 import tw.jiangsir.Utils.Objects.Booking;
@@ -48,9 +49,39 @@ public class BookingService {
 		}
 	}
 
-	public void delete(int bookingid) throws DataException {
+	public void delete(long bookingid) throws DataException {
 		try {
-			new UserDAO().delete(bookingid);
+			new BookingDAO().delete(bookingid);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DataException(e);
+		}
+	}
+
+	public ArrayList<Booking> getBookingsToday() {
+		try {
+			return new BookingDAO().getBookingsByDate(new Date(
+					new java.util.Date().getTime()));
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DataException(e);
+		}
+	}
+
+	public HashSet<Integer> getSeatidToday() {
+		try {
+			return new BookingDAO().getSeatidsByDate(new Date(
+					new java.util.Date().getTime()));
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DataException(e);
+		}
+	}
+
+	public Booking getBookingByStudentidToday(String studentid) {
+		try {
+			return new BookingDAO().getBookingByStudentidDate(studentid,
+					new Date(new java.util.Date().getTime()));
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new DataException(e);

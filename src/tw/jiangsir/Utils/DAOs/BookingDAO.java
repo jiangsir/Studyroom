@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import tw.jiangsir.Utils.Objects.Booking;
 
@@ -58,7 +59,7 @@ public class BookingDAO extends SuperDAO<Booking> {
 
 	protected Booking getBookingByStudentidDate(String studentid, Date date)
 			throws SQLException {
-		String sql = "SELECT * FROM bookings WHERE studentid=? AND date=?";
+		String sql = "SELECT * FROM bookings WHERE studentid=? AND `date`=?";
 		PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
 		pstmt.setString(1, studentid);
 		pstmt.setDate(2, date);
@@ -84,12 +85,23 @@ public class BookingDAO extends SuperDAO<Booking> {
 		return this.executeQuery(pstmt, Booking.class);
 	}
 
+	protected HashSet<Integer> getSeatidsByDate(Date date) throws SQLException {
+		HashSet<Integer> seatids = new HashSet<Integer>();
+		String sql = "SELECT seatid FROM bookings WHERE date=?";
+		PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
+		pstmt.setDate(1, date);
+		for (Booking booking : this.executeQuery(pstmt, Booking.class)) {
+			seatids.add(booking.getSeatid());
+		}
+		return seatids;
+	}
+
 	@Override
-	protected boolean delete(int id) throws SQLException {
+	protected boolean delete(long id) throws SQLException {
 		String sql = "DELETE FROM bookings WHERE id=?";
 		PreparedStatement pstmt;
 		pstmt = this.getConnection().prepareStatement(sql);
-		pstmt.setInt(1, id);
+		pstmt.setLong(1, id);
 		return this.executeDelete(pstmt);
 	}
 

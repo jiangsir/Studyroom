@@ -73,6 +73,50 @@
 					}
 				});
 
+		$(".deleteBooking").each(
+				function() {
+					$(this).click(
+							function() {
+								$("div#bookingDialog span#seatid").html(
+										$(this).attr("seatid"));
+								$("#bookingDialog").dialog("open");
+							});
+				});
+		$("#bookingDialog").dialog(
+				{
+					autoOpen : false,
+					height : 400,
+					width : 350,
+					modal : true,
+					buttons : {
+						"取消訂位" : function() {
+							var studentid = $(this).find(
+									"input[name='studentid']").val();
+							var passwd = $(this).find("input[name='passwd']")
+									.val();
+							var seatid = $(this).find("span[id='seatid']")
+									.text();
+
+							jQuery.ajax({
+								type : "POST",
+								url : "Cancel",
+								data : "studentid=" + studentid + "&passwd="
+										+ passwd + "&seatid=" + seatid,
+								async : false,
+								timeout : 5000,
+								success : function(result) {
+									//location.reload();
+								}
+							});
+
+							$(this).dialog("close");
+						},
+						"取消" : function() {
+							$(this).dialog("close");
+						}
+					}
+				});
+
 		$("button[id='icon01']").button({
 			icons : {
 				primary : "ui-icon-closethick"
@@ -102,11 +146,13 @@
 				value="" style="width: 90%;"></input> <br />
 		</fieldset>
 	</div>
-
+	<div>已被訂位: ${seatidsToday }</div>
 	<table style="border: 0px;">
 		<tr>
-			<td>1
-				<button class="insertBooking" style="font-size: 0.8em;" seatid=1>訂位</button>
+			<td>1 <c:if test="${fn:contains(seatidsToday, 1)}">取消！</c:if> <c:if
+					test="${!fn:contains(seatidsToday, 1)}">
+					<button class="insertBooking" style="font-size: 0.8em;" seatid=1>訂位</button>
+				</c:if>
 			</td>
 			<td>2
 				<button class="insertBooking" style="font-size: 0.8em;" seatid=2>訂位</button>
@@ -124,8 +170,11 @@
 			<td>5
 				<button class="insertBooking" style="font-size: 0.8em;" seatid=5>訂位</button>
 			</td>
-			<td>6
-				<button class="insertBooking" style="font-size: 0.8em;" seatid=6>訂位</button>
+			<td>6 <c:if test="${fn:contains(seatidsToday, 6)}">
+					<button class="deleteBooking" style="font-size: 0.6em;" seatid=6>取消</button>
+				</c:if> <c:if test="${!fn:contains(seatidsToday, 6)}">
+					<button class="insertBooking" style="font-size: 0.8em;" seatid=6>訂位</button>
+				</c:if>
 			</td>
 		</tr>
 	</table>

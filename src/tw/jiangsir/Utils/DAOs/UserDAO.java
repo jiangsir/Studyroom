@@ -118,11 +118,11 @@ public class UserDAO extends SuperDAO<User> {
 	}
 
 	@Override
-	protected boolean delete(int id) throws SQLException {
+	protected boolean delete(long id) throws SQLException {
 		String sql = "DELETE FROM users WHERE id=?";
 		PreparedStatement pstmt;
 		pstmt = this.getConnection().prepareStatement(sql);
-		pstmt.setInt(1, id);
+		pstmt.setLong(1, id);
 		return this.executeDelete(pstmt);
 	}
 

@@ -27,7 +27,7 @@ abstract public class SuperDAO<T> {
 
 	abstract protected int update(T t) throws SQLException;
 
-	abstract protected boolean delete(int i) throws SQLException;
+	abstract protected boolean delete(long i) throws SQLException;
 
 	Logger logger = Logger.getLogger(this.getClass().getName());
 	HashMap<String, Field> fields = new HashMap<String, Field>();

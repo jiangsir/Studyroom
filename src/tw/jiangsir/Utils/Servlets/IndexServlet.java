@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import tw.jiangsir.Utils.DAOs.BookingService;
+
 /**
  * Servlet implementation class Index
  */
@@ -31,6 +33,8 @@ public class IndexServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+		request.setAttribute("seatidsToday",
+				new BookingService().getSeatidToday());
 		request.getRequestDispatcher("/Index.jsp").forward(request, response);
 	}
 
