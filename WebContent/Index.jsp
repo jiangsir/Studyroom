@@ -33,12 +33,12 @@
 				function() {
 					$(this).click(
 							function() {
-								$("div#bookingDialog span#seatid").html(
+								$("div#insertBookingDialog span#seatid").html(
 										$(this).attr("seatid"));
-								$("#bookingDialog").dialog("open");
+								$("#insertBookingDialog").dialog("open");
 							});
 				});
-		$("#bookingDialog").dialog(
+		$("#insertBookingDialog").dialog(
 				{
 					autoOpen : false,
 					height : 400,
@@ -61,7 +61,7 @@
 								async : false,
 								timeout : 5000,
 								success : function(result) {
-									//location.reload();
+									location.reload();
 								}
 							});
 
@@ -77,12 +77,12 @@
 				function() {
 					$(this).click(
 							function() {
-								$("div#bookingDialog span#seatid").html(
+								$("div#deleteBookingDialog span#seatid").html(
 										$(this).attr("seatid"));
-								$("#bookingDialog").dialog("open");
+								$("#deleteBookingDialog").dialog("open");
 							});
 				});
-		$("#bookingDialog").dialog(
+		$("#deleteBookingDialog").dialog(
 				{
 					autoOpen : false,
 					height : 400,
@@ -105,7 +105,7 @@
 								async : false,
 								timeout : 5000,
 								success : function(result) {
-									//location.reload();
+									location.reload();
 								}
 							});
 
@@ -135,10 +135,21 @@
 </head>
 <body>
 	<jsp:include page="Header.jsp" />
-	<div id="bookingDialog" title="請輸入帳號密碼！">
+	<div id="insertBookingDialog" title="請輸入帳號密碼！">
 		<fieldset style="padding: 5px;">
 			<legend>
-				確定要訂 <span id="seatid"></span>號的位置？
+				確定要訂位 <span id="seatid"></span> 號的位置？
+			</legend>
+			<br /> <label>請輸入學號</label><br /> <input type="text"
+				name="studentid" value="" style="width: 90%;"></input><br /> <label>請輸入學生信箱密碼
+				(stu.nknush.kh.edu.tw)</label><br /> <input type="text" name="passwd"
+				value="" style="width: 90%;"></input> <br />
+		</fieldset>
+	</div>
+	<div id="deleteBookingDialog" title="請輸入帳號密碼！">
+		<fieldset style="padding: 5px;">
+			<legend>
+				確定要取消訂位 <span id="seatid"></span> 號的位置？
 			</legend>
 			<br /> <label>請輸入學號</label><br /> <input type="text"
 				name="studentid" value="" style="width: 90%;"></input><br /> <label>請輸入學生信箱密碼
@@ -149,13 +160,17 @@
 	<div>已被訂位: ${seatidsToday }</div>
 	<table style="border: 0px;">
 		<tr>
-			<td>1 <c:if test="${fn:contains(seatidsToday, 1)}">取消！</c:if> <c:if
-					test="${!fn:contains(seatidsToday, 1)}">
+			<td>1 <c:if test="${fn:contains(seatidsToday, 1)}">
+					<button class="deleteBooking" style="font-size: 0.6em;" seatid=1>取消</button>
+				</c:if> <c:if test="${!fn:contains(seatidsToday, 1)}">
 					<button class="insertBooking" style="font-size: 0.8em;" seatid=1>訂位</button>
 				</c:if>
 			</td>
-			<td>2
-				<button class="insertBooking" style="font-size: 0.8em;" seatid=2>訂位</button>
+			<td>2<c:if test="${fn:contains(seatidsToday, 2)}">
+					<button class="deleteBooking" style="font-size: 0.6em;" seatid=2>取消</button>
+				</c:if> <c:if test="${!fn:contains(seatidsToday, 2)}">
+					<button class="insertBooking" style="font-size: 0.8em;" seatid=2>訂位</button>
+				</c:if>
 			</td>
 		</tr>
 		<tr>
