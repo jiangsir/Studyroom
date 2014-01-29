@@ -33,8 +33,8 @@ public class IndexServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		request.setAttribute("seatidsToday",
-				new BookingService().getSeatidToday());
+		request.setAttribute("bookupMapToday",
+				new BookingService().getBookupMapToday());
 		request.getRequestDispatcher("/Index.jsp").forward(request, response);
 	}
 

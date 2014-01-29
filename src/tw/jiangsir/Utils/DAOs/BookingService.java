@@ -3,8 +3,7 @@ package tw.jiangsir.Utils.DAOs;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashSet;
-
+import java.util.HashMap;
 import tw.jiangsir.Utils.Exceptions.DataException;
 import tw.jiangsir.Utils.Objects.Booking;
 import tw.jiangsir.Utils.Tools.DateTool;
@@ -68,9 +67,9 @@ public class BookingService {
 		}
 	}
 
-	public HashSet<Integer> getSeatidToday() {
+	public HashMap<Integer, String> getBookupMapToday() {
 		try {
-			return new BookingDAO().getSeatidsByDate(new Date(
+			return new BookingDAO().getBookupMapByDate(new Date(
 					new java.util.Date().getTime()));
 		} catch (SQLException e) {
 			e.printStackTrace();

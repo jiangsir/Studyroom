@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 
 import tw.jiangsir.Utils.Objects.Booking;
@@ -85,15 +86,16 @@ public class BookingDAO extends SuperDAO<Booking> {
 		return this.executeQuery(pstmt, Booking.class);
 	}
 
-	protected HashSet<Integer> getSeatidsByDate(Date date) throws SQLException {
-		HashSet<Integer> seatids = new HashSet<Integer>();
-		String sql = "SELECT seatid FROM bookings WHERE date=?";
+	protected HashMap<Integer, String> getBookupMapByDate(Date date)
+			throws SQLException {
+		HashMap<Integer, String> bookupmap = new HashMap<Integer, String>();
+		String sql = "SELECT seatid, studentid FROM bookings WHERE date=?";
 		PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
 		pstmt.setDate(1, date);
 		for (Booking booking : this.executeQuery(pstmt, Booking.class)) {
-			seatids.add(booking.getSeatid());
+			bookupmap.put(booking.getSeatid(), booking.getStudentid());
 		}
-		return seatids;
+		return bookupmap;
 	}
 
 	@Override

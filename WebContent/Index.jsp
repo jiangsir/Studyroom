@@ -3,7 +3,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@taglib prefix="booking" uri="/WEB-INF/booking.tld"%>
+<%@taglib prefix="seat" uri="/WEB-INF/seat.tld"%>
 <%@taglib prefix="zero" uri="http://jiangsir.tw/jstl/zero"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -159,7 +159,14 @@
 				value="" style="width: 90%;"></input> <br />
 		</fieldset>
 	</div>
-	<div>已被訂位: ${seatidsToday }</div>
+	<jsp:useBean id="now" class="java.util.Date"></jsp:useBean>
+	<h1 style="text-align: center;">
+		今日訂位狀況(
+		<fmt:formatDate value="${now}" pattern="yyyy-MM-dd" />
+		)
+	</h1>
+	<span class="ui-icon ui-icon-arrowthick-1-n"></span>
+	<div>已被訂位: ${bookupMapToday }</div>
 	<table style="border: 0px;">
 		<c:set var="col1" value="26" />
 		<c:set var="col2" value="24" />
@@ -168,10 +175,10 @@
 			<tr>
 				<c:forEach var="col" begin="1" end="${col1}" step="1">
 					<c:set var="seatid" value="${(row-1)*col1+col}" />
-					<td><c:if test="${booking:isOccupied(seatidsToday, seatid)}">
+					<td><c:if test="${seat:isOccupied(bookupMapToday, seatid)}">
 							<button class="deleteBooking" style="font-size: 0.6em;"
-								seatid=${seatid}>取消</button>
-						</c:if> <c:if test="${!booking:isOccupied(seatidsToday, seatid)}">
+								seatid=${seatid}>${seat:studentid(bookupMapToday, seatid) }</button>
+						</c:if> <c:if test="${!seat:isOccupied(bookupMapToday, seatid)}">
 							<button class="insertBooking" style="font-size: 0.8em;"
 								seatid=${seatid}>
 								搶
@@ -187,10 +194,9 @@
 			<tr>
 				<c:forEach var="col" begin="1" end="${col2 }" step="1">
 					<c:set var="seatid" value="${(row-1)*col2+col+(col1*2)}" />
-					<td><c:if test="${booking:isOccupied(seatidsToday, seatid)}">
-							<button class="deleteBooking" style="font-size: 0.6em;"
-								seatid=${seatid}>取消</button>
-						</c:if> <c:if test="${!booking:isOccupied(seatidsToday, seatid)}">
+					<td><c:if test="${seat:isOccupied(bookupMapToday, seatid)}">
+							<button class="deleteBooking" seatid=${seatid} style="padding: 0px; width: 26px; height: 26px;">${seat:studentid(bookupMapToday, seatid)}</button>
+						</c:if> <c:if test="${!seat:isOccupied(bookupMapToday, seatid)}">
 							<button class="insertBooking" style="font-size: 0.8em;"
 								seatid=${seatid}>
 								搶
@@ -206,10 +212,10 @@
 			<tr>
 				<c:forEach var="col" begin="1" end="${col3}" step="1">
 					<c:set var="seatid" value="${(row-1)*col3+col+(col1+col2)*2}" />
-					<td><c:if test="${booking:isOccupied(seatidsToday, seatid)}">
-							<button class="deleteBooking" style="font-size: 0.6em;"
-								seatid=${seatid}>取消</button>
-						</c:if> <c:if test="${!booking:isOccupied(seatidsToday, seatid)}">
+					<td><c:if test="${seat:isOccupied(bookupMapToday, seatid)}"><span class="deleteBooking">${seat:studentid(bookupMapToday, seatid)}</span>
+<%-- 							<button class="deleteBooking"
+								seatid=${seatid} style="text-align: center; height: 26px; width: 26px;">${seat:studentid(bookupMapToday, seatid)}</button>
+ --%>						</c:if> <c:if test="${!seat:isOccupied(bookupMapToday, seatid)}">
 							<button class="insertBooking" style="font-size: 0.8em;"
 								seatid=${seatid}>
 								搶
@@ -306,9 +312,15 @@
 		</li>
 		<li>用 jQuery dialog 來處理各種提示
 			<button id="opendialog">確認框</button>，小圖示
-			<button id="icon01" style="font-size: 0.9em;">刪除</button>
-			<button id="icon02">勾選</button>以及表單。
+			<button id="icon01"
+				style="margin: 10px; padding: 1px; width: 24px; height: 26px;">刪除</button>
+			<button id="icon02">勾選</button>以及表單。 <span
+			class="ui-icon ui-icon-closethick"></span> <span
+			style="margin: 10px; position: relative; padding: 2px; cursor: pointer; float: left; list-style: none;"
+			class="ui-state-default ui-corner-all" title=".ui-icon-closethick"><span
+				class="ui-icon ui-icon-closethick"></span></span>
 		</li>
+
 		<li>用 jquery 來控制 select options.<a
 			href="${pageContext.request.contextPath}/UpdateUser.do?userid=${sessionScope.user.id}">修改使用者時自動選好原始的
 				ROLE</a></li>
