@@ -15,11 +15,26 @@
 		<li><c:if test="${sessionScope.currentUser==null}">
 				<a href="${pageContext.request.contextPath}/Login">登入</a>
 			</c:if> <c:if test="${sessionScope.currentUser!=null}">
+				<li><a href="#">管理</a>
+					<ul>
+						<li><a href="#">管理每日訂位</a></li>
+                        <li><a href="#">進行長期訂位</a></li>
+                        <li><a href="#">統計違規紀錄</a></li>
+                        <li><a href="#">編輯系統參數（訂位截至時間，不開放日期）</a></li>
+					</ul></li>
+               <li><a href="#">工讀生</a>
+                    <ul>
+                        <li><a href="#">簽到</a></li>
+                        <li><a href="#">簽退</a></li>
+                        <li><a href="#"></a></li>
+                        <li><a href="#"></a></li>
+                    </ul></li>
 				<li><a href="#">${sessionScope.currentUser.name}</a>
 					<ul>
 						<li><a
 							href="${pageContext.request.contextPath}/UpdateUser.do?userid=${sessionScope.currentUser.id}">修改</a></li>
 						<li><a href="${pageContext.request.contextPath}/Logout">登出</a></li>
+
 					</ul></li>
 
 			</c:if></li>

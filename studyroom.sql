@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主機: localhost
--- 建立日期: Oct 01, 2013, 11:47 PM
+-- 建立日期: Jan 29, 2014, 03:53 AM
 -- 伺服器版本: 5.1.44
 -- PHP 版本: 5.3.1
 
@@ -12,8 +12,28 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 --
 -- 資料庫: `studyroom`
 --
-CREATE DATABASE `studyroom` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `studyroom`;
+
+-- --------------------------------------------------------
+
+--
+-- 資料表格式： `bookings`
+--
+
+CREATE TABLE IF NOT EXISTS `bookings` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `userid` bigint(20) NOT NULL,
+  `studentid` varchar(100) NOT NULL,
+  `seatid` int(11) NOT NULL,
+  `date` date NOT NULL,
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `studentid` (`studentid`,`date`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+--
+-- 列出以下資料庫的數據： `bookings`
+--
+
 
 -- --------------------------------------------------------
 
@@ -28,7 +48,7 @@ CREATE TABLE IF NOT EXISTS `upfiles` (
   `bytes` longblob NOT NULL,
   `timestamp` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- 列出以下資料庫的數據： `upfiles`
@@ -55,9 +75,4 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- 列出以下資料庫的數據： `users`
 --
 
-INSERT INTO `users` (`account`, `passwd`, `name`, `role`) VALUES('admin', MD5('nimda'), '管理員', 'ADMIN');
-
-CREATE USER 'studyroom'@'localhost' IDENTIFIED BY  '***';
-GRANT USAGE ON * . * TO  'studyroom'@'localhost' IDENTIFIED BY  '***' WITH MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0 ;
-GRANT ALL PRIVILEGES ON  `studyroom` . * TO  'studyroom'@'localhost' WITH GRANT OPTION ;
-SET PASSWORD FOR  'studyroom'@'localhost' = PASSWORD( 'ashsashs' );
+INSERT INTO `users` VALUES(1, 'admin', 'ee10c315eba2c75b403ea99136f5b48d', '管理員', 'ADMIN');

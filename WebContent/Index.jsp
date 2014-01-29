@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@taglib prefix="zero" uri="http://jiangsir.tw/jstl/zero"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -159,39 +160,64 @@
 	</div>
 	<div>已被訂位: ${seatidsToday }</div>
 	<table style="border: 0px;">
-		<tr>
-			<td>1 <c:if test="${fn:contains(seatidsToday, 1)}">
-					<button class="deleteBooking" style="font-size: 0.6em;" seatid=1>取消</button>
-				</c:if> <c:if test="${!fn:contains(seatidsToday, 1)}">
-					<button class="insertBooking" style="font-size: 0.8em;" seatid=1>訂位</button>
-				</c:if>
-			</td>
-			<td>2<c:if test="${fn:contains(seatidsToday, 2)}">
-					<button class="deleteBooking" style="font-size: 0.6em;" seatid=2>取消</button>
-				</c:if> <c:if test="${!fn:contains(seatidsToday, 2)}">
-					<button class="insertBooking" style="font-size: 0.8em;" seatid=2>訂位</button>
-				</c:if>
-			</td>
+		<c:set var="col1" value="26" />
+		<c:set var="col2" value="24" />
+		<c:set var="col3" value="20" />
+		<c:forEach var="row" begin="1" end="2" step="1">
+			<tr>
+				<c:forEach var="col" begin="1" end="${col1}" step="1">
+					<c:set var="seatid" value="${((row-1)*col1)+col}" />
+					<td><c:if test="${fn:contains(seatidsToday, seatid)}">
+							<button class="deleteBooking" style="font-size: 0.6em;"
+								seatid=${seatid}>取消</button>
+						</c:if> <c:if test="${!fn:contains(seatidsToday, seatid)}">
+							<button class="insertBooking" style="font-size: 0.8em;"
+								seatid=${seatid}>
+								搶
+								<fmt:formatNumber pattern="000" value="${seatid}" />
+							</button>
+						</c:if></td>
+				</c:forEach>
+			</tr>
+		</c:forEach>
+		<tr style="height: 1em;">
 		</tr>
-		<tr>
-			<td>3
-				<button class="insertBooking" style="font-size: 0.8em;" seatid=3>訂位</button>
-			</td>
-			<td>4
-				<button class="insertBooking" style="font-size: 0.8em;" seatid=4>訂位</button>
-			</td>
+		<c:forEach var="row" begin="1" end="2" step="1">
+			<tr>
+				<c:forEach var="col" begin="1" end="${col2 }" step="1">
+					<c:set var="seatid" value="${(row-1)*col2+col+(col1*2)}" />
+					<td><c:if test="${fn:contains(seatidsToday, seatid)}">
+							<button class="deleteBooking" style="font-size: 0.6em;"
+								seatid=${seatid}>取消</button>
+						</c:if> <c:if test="${!fn:contains(seatidsToday, seatid)}">
+							<button class="insertBooking" style="font-size: 0.8em;"
+								seatid=${seatid}>
+								搶
+								<fmt:formatNumber pattern="000" value="${seatid}" />
+							</button>
+						</c:if></td>
+				</c:forEach>
+			</tr>
+		</c:forEach>
+		<tr style="height: 1em;">
 		</tr>
-		<tr>
-			<td>5
-				<button class="insertBooking" style="font-size: 0.8em;" seatid=5>訂位</button>
-			</td>
-			<td>6 <c:if test="${fn:contains(seatidsToday, 6)}">
-					<button class="deleteBooking" style="font-size: 0.6em;" seatid=6>取消</button>
-				</c:if> <c:if test="${!fn:contains(seatidsToday, 6)}">
-					<button class="insertBooking" style="font-size: 0.8em;" seatid=6>訂位</button>
-				</c:if>
-			</td>
-		</tr>
+		<c:forEach var="row" begin="1" end="2" step="1">
+			<tr>
+				<c:forEach var="col" begin="1" end="${col3}" step="1">
+					<c:set var="seatid" value="${(row-1)*col3+col+(col1+col2)*2}" />
+					<td><c:if test="${fn:contains(seatidsToday, seatid)}">
+							<button class="deleteBooking" style="font-size: 0.6em;"
+								seatid=${seatid}>取消</button>
+						</c:if> <c:if test="${!fn:contains(seatidsToday, seatid)}">
+							<button class="insertBooking" style="font-size: 0.8em;"
+								seatid=${seatid}>
+								搶
+								<fmt:formatNumber pattern="000" value="${seatid}" />
+							</button>
+						</c:if></td>
+				</c:forEach>
+			</tr>
+		</c:forEach>
 	</table>
 	<p>
 		<zero:toUpperCase>Filter</zero:toUpperCase>
