@@ -13,4 +13,6 @@
 	<entry key="client_id">953896450978-u82dc8hgj246t9fva61f0bl21v0ek97n.apps.googleusercontent.com</entry>
 	<entry key="client_secret">g_NdXLE9SvStnaYdpiQXcn8g</entry>
 	<entry key="redirect_uri">http://127.0.0.1:8080/Studyroom/oauth2callback</entry>
+	<entry key="starttime">06:00:00</entry>
+	<entry key="deadline">22:00:00</entry>
 </properties>

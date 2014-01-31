@@ -38,6 +38,10 @@ public class AppConfig {
 	private String client_secret = "";
 	@Property(key = "redirect_uri")
 	private String redirect_uri = "";
+	@Property(key = "starttime")
+	private java.sql.Time starttime = java.sql.Time.valueOf("06:00:00");
+	@Property(key = "deadline")
+	private java.sql.Time deadline = java.sql.Time.valueOf("18:00:00");
 
 	public String getManagerIP() {
 		return ManagerIP;
@@ -138,4 +142,27 @@ public class AppConfig {
 		this.redirect_uri = redirect_uri;
 	}
 
+	public java.sql.Time getStarttime() {
+		return starttime;
+	}
+
+	public void setStarttime(java.sql.Time starttime) {
+		this.starttime = starttime;
+	}
+
+	public void setStarttime(String starttime) {
+		this.setStarttime(java.sql.Time.valueOf(starttime));
+	}
+
+	public java.sql.Time getDeadline() {
+		return deadline;
+	}
+
+	public void setDeadline(java.sql.Time deadline) {
+		this.deadline = deadline;
+	}
+
+	public void setDeadline(String deadline) {
+		this.setDeadline(java.sql.Time.valueOf(deadline));
+	}
 }

@@ -13,6 +13,7 @@ public class BookingService {
 	public int insert(Booking booking) throws DataException {
 		BookingDAO bookingDao = new BookingDAO();
 		// 已經對資料庫的 studentid, date 兩個欄位設定為 UNIQUE 因此不需要在這邊作判斷。
+
 		try {
 			Booking otherbooking = bookingDao.getBookingByStudentidDate(
 					booking.getStudentid(), booking.getDate());
@@ -71,6 +72,15 @@ public class BookingService {
 		try {
 			return new BookingDAO().getBookupMapByDate(new Date(
 					new java.util.Date().getTime()));
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DataException(e);
+		}
+	}
+
+	public HashMap<Integer, String> getBookupMapByDate(java.sql.Date date) {
+		try {
+			return new BookingDAO().getBookupMapByDate(date);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new DataException(e);

@@ -6,6 +6,10 @@ import java.util.HashMap;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpSession;
+
+import tw.jiangsir.Studyroom.Servlets.BookUpServlet;
+import tw.jiangsir.Utils.Exceptions.AccessException;
+import tw.jiangsir.Utils.Exceptions.DataException;
 import tw.jiangsir.Utils.Objects.User;
 
 public class ApplicationScope {
@@ -16,6 +20,7 @@ public class ApplicationScope {
 	private static HashMap<String, HttpServlet> urlpatterns = new HashMap<String, HttpServlet>();
 	private static File appRoot = null;
 	private static AppConfig appConfig = null;
+	private static boolean canBookup = false;
 
 	public static void setAllAttributes(ServletContext servletContext) {
 		ApplicationScope.servletContext = servletContext;
@@ -25,6 +30,7 @@ public class ApplicationScope {
 		ApplicationScope.setOnlineUsers(onlineUsers);
 		ApplicationScope.setUrlpatterns(urlpatterns);
 		ApplicationScope.setAppConfig(ConfigHandler.getAppConfig());
+		ApplicationScope.setCanBookup();
 	}
 
 	public static HashMap<String, HttpSession> getOnlineSessions() {
@@ -73,4 +79,16 @@ public class ApplicationScope {
 		servletContext.setAttribute("appConfig", appConfig);
 	}
 
+	public static boolean getCanBookup() {
+		try {
+			return new BookUpServlet().accessible(null);
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	public static void setCanBookup() {
+		servletContext.setAttribute("canBookup",
+				ApplicationScope.getCanBookup());
+	}
 }

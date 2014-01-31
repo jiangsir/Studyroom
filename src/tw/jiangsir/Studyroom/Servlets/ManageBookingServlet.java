@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 
 import tw.jiangsir.Utils.Annotations.RoleSetting;
 import tw.jiangsir.Utils.Config.SessionScope;
+import tw.jiangsir.Utils.DAOs.BookingService;
 import tw.jiangsir.Utils.DAOs.UserService;
 import tw.jiangsir.Utils.Objects.Alert;
 import tw.jiangsir.Utils.Objects.User;
@@ -17,9 +18,8 @@ import tw.jiangsir.Utils.Objects.User;
 /**
  * Servlet implementation class SignUp
  */
-@WebServlet(urlPatterns = { "/Booking.do" })
-@RoleSetting(allowHigherThen = User.ROLE.USER)
-public class BookingServlet extends HttpServlet {
+@WebServlet(urlPatterns = { "/ManageBooking" })
+ public class ManageBookingServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -28,12 +28,18 @@ public class BookingServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession(false);
-		Alert alert = new Alert();
-		alert.setTitle(new SessionScope(session).getCurrentUser().getName()
-				+ " 進行預約!!!");
-		request.setAttribute("alert", alert);
-		request.getRequestDispatcher("/Alert.jsp").forward(request, response);
+		java.sql.Date date;
+		try {
+			date = java.sql.Date.valueOf(request.getParameter("date"));
+		} catch (Exception e) {
+			e.printStackTrace();
+			date = new java.sql.Date(System.currentTimeMillis());
+		}
+		request.setAttribute("date", date);
+		request.setAttribute("bookupMap",
+				new BookingService().getBookupMapByDate(date));
+		request.getRequestDispatcher("/ManageBooking.jsp").forward(request,
+				response);
 	}
 
 	/**

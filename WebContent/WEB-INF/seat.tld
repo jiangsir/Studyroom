@@ -9,10 +9,17 @@
 		<function-class>tw.jiangsir.Studyroom.TLDs.SeatTLD</function-class>
 		<function-signature>boolean isOccupied(java.util.HashMap, java.lang.Integer)</function-signature>
 	</function>
-    <function>
-        <name>studentid</name>
-        <function-class>tw.jiangsir.Studyroom.TLDs.SeatTLD</function-class>
-        <function-signature>String studentid(java.util.HashMap, java.lang.Integer)</function-signature>
-    </function>
+
+	<function>
+		<name>studentid</name>
+		<function-class>tw.jiangsir.Studyroom.TLDs.SeatTLD</function-class>
+		<function-signature>String studentid(java.util.HashMap, java.lang.Integer)</function-signature>
+	</function>
+
+	<function>
+		<name>canBookup</name>
+		<function-class>tw.jiangsir.Studyroom.TLDs.SeatTLD</function-class>
+		<function-signature>boolean canBookup(java.sql.Date)</function-signature>
+	</function>
 
 </taglib>

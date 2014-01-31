@@ -22,6 +22,7 @@
 	margin-bottom: 1em; /* 下面留一點空間。 */
 	padding-right: 10em; /* 第一層左右都內縮，看起來不比較好看 */
 	padding-left: 10em;
+	z-index: 100; /* 提升 menu 的圖層，否則會被 button 擋到。 */
 }
 
 .ui-menu .ui-menu {
