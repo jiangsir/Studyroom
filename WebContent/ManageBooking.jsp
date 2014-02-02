@@ -173,7 +173,7 @@
 	<div>已被訂位: ${bookupMap } ${applicationScope.appConfig.starttime }
 		: ${applicationScope.appConfig.deadline }</div>
 	<div>date: ${date}, canBookup: ${seat:canBookup(date)}</div>
-	<table style="border: 0px;">
+	<table style="border: 0px; padding-right: 5em;">
 		<c:set var="grouplist" value="${fn:split('26,24,20', ',')}" />
 		<c:set var="base" value="0" />
 		<c:forEach var="group" items="${grouplist }">
@@ -187,7 +187,7 @@
 										<span>${seat:studentid(bookupMap, seatid)}</span>
 									</c:if>
 									<c:if test="${!seat:isOccupied(bookupMap, seatid)}">
-										<button style="font-size: 0.8em;">
+										<button style="font-size: 0.8em; height: 4em;">
 											<fmt:formatNumber pattern="000" value="${seatid}" />
 										</button>
 									</c:if>
@@ -199,7 +199,7 @@
 												seatid)}</span>
 										</c:when>
 										<c:otherwise>
-											<button class="insertBooking" style="font-size: 0.8em;"
+											<button class="insertBooking" style="font-size: 0.8em; height: 4em;"
 												seatid=${seatid}>
 												搶
 												<fmt:formatNumber pattern="000" value="${seatid}" />
