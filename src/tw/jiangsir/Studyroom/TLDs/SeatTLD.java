@@ -22,7 +22,12 @@ public class SeatTLD {
 
 	public static boolean canBookup(java.sql.Date date) {
 		try {
-			return new BookUpServlet().canBookup(date);
+			if (date == null) {
+				return new BookUpServlet().canBookup(new java.sql.Date(System
+						.currentTimeMillis()));
+			} else {
+				return new BookUpServlet().canBookup(date);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;

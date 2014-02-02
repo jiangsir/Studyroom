@@ -92,7 +92,6 @@ public class BookUpServlet extends HttpServlet implements IAccessible {
 	}
 
 	public boolean canBookup(java.sql.Date date) {
-
 		java.sql.Timestamp starttime = java.sql.Timestamp.valueOf(date + " "
 				+ ApplicationScope.getAppConfig().getStarttime().toString());
 		java.sql.Timestamp deadline = java.sql.Timestamp.valueOf(date + " "

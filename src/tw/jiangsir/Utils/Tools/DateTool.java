@@ -28,6 +28,20 @@ public class DateTool {
 				+ now.get(Calendar.MINUTE) + ":" + now.get(Calendar.SECOND));
 	}
 
+	public static java.sql.Date getNextDate(java.sql.Date date) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.add(Calendar.DATE, 1);
+		return new java.sql.Date(calendar.getTime().getTime());
+	}
+
+	public static java.sql.Date getPrevDate(java.sql.Date date) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.add(Calendar.DATE, -1);
+		return new java.sql.Date(calendar.getTime().getTime());
+	}
+
 	public static void main(String[] args) {
 		java.sql.Date date = java.sql.Date.valueOf("2014-01-30");
 		java.sql.Time time = java.sql.Time.valueOf("10:00:00");

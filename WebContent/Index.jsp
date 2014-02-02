@@ -167,7 +167,7 @@
 	</h1>
 	<span class="ui-icon ui-icon-arrowthick-1-n"></span>
 	<div>已被訂位: ${bookupMapToday } ${applicationScope.appConfig.starttime } : ${applicationScope.appConfig.deadline }</div>
-	<div>now: ${now}, canBookup: ${seat:canBookup(now)}</div>
+	<div>now: ${now}, canBookup: ${seat:canBookup(null)}</div>
 	<table style="border: 0px;">
 		<c:set var="grouplist" value="${fn:split('26,24,20', ',')}" />
 		<c:set var="base" value="0" />
@@ -177,7 +177,7 @@
 					<c:forEach var="col" begin="1" end="${group}" step="1">
 						<c:set var="seatid" value="${base+(row-1)*group+col}" />
 						<td><c:choose>
-								<c:when test="${!seat:canBookup(now)}">
+								<c:when test="${!seat:canBookup(null)}">
 									<button style="font-size: 0.8em;">
 										<fmt:formatNumber pattern="000" value="${seatid}" />
 									</button>

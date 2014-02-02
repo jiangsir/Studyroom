@@ -160,12 +160,16 @@
 		</fieldset>
 	</div>
 	<jsp:useBean id="now" class="java.util.Date"></jsp:useBean>
-	<h1 style="text-align: center;">
-		本日(
-		<fmt:formatDate value="${date}" pattern="yyyy-MM-dd" />
-		)訂位狀況
-	</h1>
-	<span class="ui-icon ui-icon-arrowthick-1-n"></span>
+	<div style="text-align: center;">
+		<a href="?date=${prevdate }" type="button">前一日</a>
+
+		<h1 style="display: inline-block;">
+			本日(
+			<fmt:formatDate value="${date}" pattern="yyyy-MM-dd" />
+			)訂位狀況
+		</h1>
+		<a href="?date=${nextdate}" type="button">後一日</a>
+	</div>
 	<div>已被訂位: ${bookupMap } ${applicationScope.appConfig.starttime }
 		: ${applicationScope.appConfig.deadline }</div>
 	<div>date: ${date}, canBookup: ${seat:canBookup(date)}</div>

@@ -6,20 +6,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import tw.jiangsir.Utils.Annotations.RoleSetting;
-import tw.jiangsir.Utils.Config.SessionScope;
 import tw.jiangsir.Utils.DAOs.BookingService;
-import tw.jiangsir.Utils.DAOs.UserService;
-import tw.jiangsir.Utils.Objects.Alert;
-import tw.jiangsir.Utils.Objects.User;
+import tw.jiangsir.Utils.Tools.DateTool;
 
 /**
  * Servlet implementation class SignUp
  */
 @WebServlet(urlPatterns = { "/ManageBooking" })
- public class ManageBookingServlet extends HttpServlet {
+public class ManageBookingServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -35,7 +29,10 @@ import tw.jiangsir.Utils.Objects.User;
 			e.printStackTrace();
 			date = new java.sql.Date(System.currentTimeMillis());
 		}
+
 		request.setAttribute("date", date);
+		request.setAttribute("nextdate", DateTool.getNextDate(date));
+		request.setAttribute("prevdate", DateTool.getPrevDate(date));
 		request.setAttribute("bookupMap",
 				new BookingService().getBookupMapByDate(date));
 		request.getRequestDispatcher("/ManageBooking.jsp").forward(request,
