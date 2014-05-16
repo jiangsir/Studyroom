@@ -137,90 +137,21 @@
 </head>
 <body>
 	<jsp:include page="Header.jsp" />
-	<div id="insertBookingDialog" title="請輸入帳號密碼！" style="display: none;">
-		<fieldset style="padding: 5px;">
-			<legend>
-				確定要訂位 <span id="seatid"></span> 號的位置？
-			</legend>
-			<br /> <label>請輸入學號</label><br /> <input type="text"
-				name="studentid" value="" style="width: 90%;"></input><br /> <label>請輸入學生信箱密碼
-				(stu.nknush.kh.edu.tw)</label><br /> <input type="text" name="passwd"
-				value="" style="width: 90%;"></input> <br />
-		</fieldset>
-	</div>
-	<div id="deleteBookingDialog" title="請輸入帳號密碼！" style="display: none;">
-		<fieldset style="padding: 5px;">
-			<legend>
-				確定要取消訂位 <span id="seatid"></span> 號的位置？
-			</legend>
-			<br /> <label>請輸入學號</label><br /> <input type="text"
-				name="studentid" value="" style="width: 90%;"></input><br /> <label>請輸入學生信箱密碼
-				(stu.nknush.kh.edu.tw)</label><br /> <input type="text" name="passwd"
-				value="" style="width: 90%;"></input> <br />
-		</fieldset>
-	</div>
 	<jsp:useBean id="now" class="java.util.Date"></jsp:useBean>
 	<div style="text-align: center;">
-		<a href="?date=${prevdate }" type="button">前一日</a>
-
-		<h1 style="display: inline-block;">
-			本日(
-			<fmt:formatDate value="${date}" pattern="yyyy-MM-dd" />
-			)訂位狀況
-		</h1>
-		<a href="?date=${nextdate}" type="button">後一日</a>
-	</div>
-	<div>已被訂位: ${bookupMap } ${applicationScope.appConfig.starttime }
-		: ${applicationScope.appConfig.deadline }</div>
-	<div>date: ${date}, canBookup: ${seat:canBookup(date)}</div>
-	<table style="border: 0px; padding-right: 5em;">
-		<c:set var="grouplist" value="${fn:split('26,24,20', ',')}" />
-		<c:set var="base" value="0" />
-		<c:forEach var="group" items="${grouplist }">
-			<c:forEach var="row" begin="1" end="2" step="1">
-				<tr>
-					<c:forEach var="col" begin="1" end="${group}" step="1">
-						<c:set var="seatid" value="${base+(row-1)*group+col}" />
-						<td><c:choose>
-								<c:when test="${!seat:canBookup(date)}">
-									<c:if test="${seat:isOccupied(bookupMap, seatid)}">
-										<span>${seat:studentid(bookupMap, seatid)}</span>
-									</c:if>
-									<c:if test="${!seat:isOccupied(bookupMap, seatid)}">
-										<button style="font-size: 0.8em; height: 4em;">
-											<fmt:formatNumber pattern="000" value="${seatid}" />
-										</button>
-									</c:if>
-								</c:when>
-								<c:otherwise>
-									<c:choose>
-										<c:when test="${seat:isOccupied(bookupMap, seatid)}">
-											<span class="deleteBooking">${seat:studentid(bookupMap,
-												seatid)}</span>
-										</c:when>
-										<c:otherwise>
-											<button class="insertBooking"
-												style="font-size: 0.8em; height: 4em;" seatid=${seatid}>
-												搶
-												<fmt:formatNumber pattern="000" value="${seatid}" />
-											</button>
-										</c:otherwise>
-									</c:choose>
-								</c:otherwise>
-							</c:choose></td>
+		<a href="?date=${prevdate }" type="button">上個月</a> <a
+			href="?date=${nextdate}" type="button">下個月</a>
+		<p></p>
+		<table style="margin: auto;">
+			<c:forEach var="row" begin="1" end="6" step="1">
+				<tr style="line-height: 1em;">
+					<c:forEach var="col" begin="1" end="7" step="1">
+						<td style="padding: 1em; font-size: 1.2em;">${col+(row-1)*7}</td>
 					</c:forEach>
 				</tr>
 			</c:forEach>
-			<c:set var="base" value="${base+group*2 }" />
-
-			<tr style="height: 1em;">
-			</tr>
-		</c:forEach>
-	</table>
-	<!-- 
-	加入圖片放大的功能。
-	jquery.hoverpulse.js
-	 -->
+		</table>
+	</div>
 	<jsp:include page="Footer.jsp" />
 </body>
 </html>

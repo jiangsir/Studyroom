@@ -22,42 +22,42 @@ import tw.jiangsir.Utils.Config.SessionScope;
 @WebFilter(filterName = "HistoryFilter", urlPatterns = { "/*" }, asyncSupported = true)
 public class HistoryFilter implements Filter {
 
-    /**
-     * Default constructor.
-     */
-    public HistoryFilter() {
-    }
-
-    /**
-     * @see Filter#destroy()
-     */
-    public void destroy() {
-    }
-
-    /**
-     * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
-     */
-    public void doFilter(ServletRequest req, ServletResponse resp,
-	    FilterChain chain) throws IOException, ServletException {
-	HttpServletRequest request = (HttpServletRequest) req;
-	HttpServletResponse response = (HttpServletResponse) resp;
-
-	HttpSession session = request.getSession(false);
-	String servletPath = request.getServletPath();
-
-	HttpServlet httpServlet = ApplicationScope.getUrlpatterns().get(
-		servletPath);
-	if (httpServlet != null) {
-	    new SessionScope(session).addHistory(servletPath,
-		    request.getQueryString());
+	/**
+	 * Default constructor.
+	 */
+	public HistoryFilter() {
 	}
-	chain.doFilter(request, response);
-    }
 
-    /**
-     * @see Filter#init(FilterConfig)
-     */
-    public void init(FilterConfig fConfig) throws ServletException {
-    }
+	/**
+	 * @see Filter#destroy()
+	 */
+	public void destroy() {
+	}
+
+	/**
+	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
+	 */
+	public void doFilter(ServletRequest req, ServletResponse resp,
+			FilterChain chain) throws IOException, ServletException {
+		HttpServletRequest request = (HttpServletRequest) req;
+		HttpServletResponse response = (HttpServletResponse) resp;
+
+		HttpSession session = request.getSession(false);
+		String servletPath = request.getServletPath();
+
+		HttpServlet httpServlet = ApplicationScope.getUrlpatterns().get(
+				servletPath);
+		if (httpServlet != null) {
+			new SessionScope(session).addHistory(servletPath,
+					request.getQueryString());
+		}
+		chain.doFilter(request, response);
+	}
+
+	/**
+	 * @see Filter#init(FilterConfig)
+	 */
+	public void init(FilterConfig fConfig) throws ServletException {
+	}
 
 }

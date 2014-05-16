@@ -1,10 +1,9 @@
-package tw.jiangsir.Utils.Objects;
+package tw.jiangsir.Utils.Exceptions;
 
 import java.net.URL;
 import java.util.HashMap;
 
 import tw.jiangsir.Utils.Annotations.Persistent;
-import tw.jiangsir.Utils.Exceptions.Cause;
 
 public class Alert {
 

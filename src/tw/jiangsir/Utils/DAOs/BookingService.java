@@ -3,9 +3,11 @@ package tw.jiangsir.Utils.DAOs;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
+
+import tw.jiangsir.Studyroom.Objects.Booking;
 import tw.jiangsir.Utils.Exceptions.DataException;
-import tw.jiangsir.Utils.Objects.Booking;
 import tw.jiangsir.Utils.Tools.DateTool;
 
 public class BookingService {
@@ -94,6 +96,30 @@ public class BookingService {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new DataException(e);
+		}
+	}
+
+	/**
+	 * 一次新增多筆預約
+	 * 
+	 * @param userid
+	 * @param studentid
+	 * @param seatid
+	 * @param begindate
+	 * @param enddate
+	 */
+	public void insertBookings(long userid, String studentid, int seatid,
+			Date begindate, Date enddate) {
+		Calendar date = Calendar.getInstance();
+		date.setTime(begindate);
+		for (int day = 0; day <= DateTool.getDaysBetween(begindate, enddate); day++) {
+			Booking booking = new Booking();
+			booking.setUserid(userid);
+			booking.setStudentid(studentid);
+			booking.setSeatid(seatid);
+			booking.setDate(new java.sql.Date(date.getTimeInMillis()));
+			new BookingService().insert(booking);
+			date.add(Calendar.DATE, 1);
 		}
 	}
 

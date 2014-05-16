@@ -11,7 +11,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpSession;
 
 import tw.jiangsir.Utils.Objects.CurrentUser;
-import tw.jiangsir.Utils.Objects.User;
 import tw.jiangsir.Utils.Servlets.LoginServlet;
 import tw.jiangsir.Utils.Servlets.LogoutServlet;
 import tw.jiangsir.Utils.Servlets.ShowSessionsServlet;

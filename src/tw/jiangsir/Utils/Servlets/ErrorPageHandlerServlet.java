@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import tw.jiangsir.Utils.Objects.Alert;
+import tw.jiangsir.Utils.Exceptions.Alert;
 
 /**
  * Servlet implementation class ErrorHandlerServlet

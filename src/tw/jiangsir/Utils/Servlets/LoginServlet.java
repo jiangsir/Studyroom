@@ -52,7 +52,7 @@ public class LoginServlet extends HttpServlet {
 		User user = new UserService().getUserByAccountPasswd(account, passwd);
 		if (user != null) {
 			SessionScope sessionScope = new SessionScope(session);
-			sessionScope.setCurrentUser(new UserService().getCurrentUser(
+			sessionScope.setCurrentUser(new UserService().createCurrentUser(
 					user.getId(), session));
 			response.sendRedirect(request.getContextPath()
 					+ sessionScope.getHistories().get(0));

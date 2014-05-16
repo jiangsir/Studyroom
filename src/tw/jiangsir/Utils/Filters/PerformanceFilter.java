@@ -10,7 +10,11 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import tw.jiangsir.Utils.Config.ApplicationScope;
 
 /**
  * Servlet Filter implementation class PerformanceFilter
@@ -36,9 +40,19 @@ public class PerformanceFilter implements Filter {
 	/**
 	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
 	 */
-	public void doFilter(ServletRequest request, ServletResponse response,
+	public void doFilter(ServletRequest req, ServletResponse resp,
 			FilterChain chain) throws IOException, ServletException {
+		HttpServletRequest request = (HttpServletRequest) req;
+		HttpServletResponse response = (HttpServletResponse) resp;
+
 		long begin = System.currentTimeMillis();
+		HttpServlet httpServlet = ApplicationScope.getUrlpatterns().get(
+				request.getServletPath());
+		if (httpServlet == null) { // null 代表可能是 .png 圖片及其它檔案。
+			chain.doFilter(request, response);
+			return;
+		}
+
 		request.setAttribute("ms", begin);
 		chain.doFilter(request, response);
 		logger.info("requestURL="

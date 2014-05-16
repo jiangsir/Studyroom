@@ -8,7 +8,7 @@ import tw.jiangsir.Utils.Exceptions.AccessException;
  * @author jiangsir
  * 
  */
-public interface IAccessible {
+public interface IAccessFilter {
     public boolean accessible(HttpServletRequest request)
 	    throws AccessException;
 }

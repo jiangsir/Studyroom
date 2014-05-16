@@ -2,25 +2,25 @@ package tw.jiangsir.Utils.Exceptions;
 
 public class AccessException extends RuntimeException {
 
-    /**
+	/**
 	 * 
 	 */
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    public AccessException() {
-	super();
-    }
+	public AccessException() {
+		super();
+	}
 
-    public AccessException(String message, Throwable cause) {
-	super(message, cause);
-    }
+	public AccessException(String message, Throwable cause) {
+		super(message, cause);
+	}
 
-    public AccessException(String message) {
-	super(message);
-    }
+	public AccessException(String message) {
+		super(message);
+	}
 
-    public AccessException(Throwable cause) {
-	super(cause);
-    }
+	public AccessException(Throwable cause) {
+		super(cause);
+	}
 
 }

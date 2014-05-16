@@ -11,7 +11,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
-import tw.jiangsir.Utils.Objects.Booking;
+
+import tw.jiangsir.Studyroom.Objects.Booking;
 
 /**
  * @author jiangsir

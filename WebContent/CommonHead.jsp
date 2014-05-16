@@ -26,7 +26,7 @@
 }
 
 .ui-menu .ui-menu {
-    padding: 1px 1px 1px 1px; /* 第二層以下的 menu 就不內縮了。 */
+	padding: 1px 1px 1px 1px; /* 第二層以下的 menu 就不內縮了。 */
 	overflow: visible !important;
 }
 
@@ -83,6 +83,13 @@
 				$("button").button().click(function(event) {
 					event.preventDefault(); // 讓預設的動作失效！
 				});
+				$(".closethick").button({
+					icons : {
+						primary : "ui-icon-closethick"
+					},
+					text : false
+				});
+
 				$("#menu").menu({
 					position : {
 						at : "left bottom"

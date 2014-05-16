@@ -18,45 +18,45 @@ import tw.jiangsir.Utils.Wrappers.EncodingWrapper;
  */
 @WebFilter(filterName = "EncodingFilter", urlPatterns = { "/*" }, asyncSupported = true)
 public class EncodingFilter implements Filter {
-    private String ENCODING = "UTF-8";
+	private String ENCODING = "UTF-8";
 
-    /**
-     * Default constructor.
-     */
-    public EncodingFilter() {
-    }
-
-    /**
-     * @see Filter#destroy()
-     */
-    public void destroy() {
-    }
-
-    /**
-     * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
-     */
-    public void doFilter(ServletRequest request, ServletResponse response,
-	    FilterChain chain) throws IOException, ServletException {
-	HttpServletRequest req = (HttpServletRequest) request;
-	HttpServletResponse resp = (HttpServletResponse) response;
-
-	if ("GET".equals(req.getMethod())) {
-	    req = new EncodingWrapper(req, ENCODING);
-	} else {
-	    req.setCharacterEncoding(ENCODING);
+	/**
+	 * Default constructor.
+	 */
+	public EncodingFilter() {
 	}
-	req.setCharacterEncoding(ENCODING);
 
-	// resp 也要設定好 ENCODING 否則直接 response.writer 輸出會亂碼。
-	resp.setContentType("text/html;charset=" + ENCODING);
+	/**
+	 * @see Filter#destroy()
+	 */
+	public void destroy() {
+	}
 
-	chain.doFilter(req, resp);
-    }
+	/**
+	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
+	 */
+	public void doFilter(ServletRequest request, ServletResponse response,
+			FilterChain chain) throws IOException, ServletException {
+		HttpServletRequest req = (HttpServletRequest) request;
+		HttpServletResponse resp = (HttpServletResponse) response;
 
-    /**
-     * @see Filter#init(FilterConfig)
-     */
-    public void init(FilterConfig fConfig) throws ServletException {
-    }
+		if ("GET".equals(req.getMethod())) {
+			req = new EncodingWrapper(req, ENCODING);
+		} else {
+			req.setCharacterEncoding(ENCODING);
+		}
+		req.setCharacterEncoding(ENCODING);
+
+		// resp 也要設定好 ENCODING 否則直接 response.writer 輸出會亂碼。
+		resp.setContentType("text/html;charset=" + ENCODING);
+
+		chain.doFilter(req, resp);
+	}
+
+	/**
+	 * @see Filter#init(FilterConfig)
+	 */
+	public void init(FilterConfig fConfig) throws ServletException {
+	}
 
 }

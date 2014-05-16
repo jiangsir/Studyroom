@@ -53,7 +53,14 @@ public class UserService {
 		return new UserDAO().getUserByAccountPasswd(account, passwd);
 	}
 
-	public CurrentUser getCurrentUser(long userid, HttpSession session) {
+	/**
+	 * 用 userid 到資料庫中取出 user 製作成 CurrentUser。準備放入 SessionScope 當中。
+	 * 
+	 * @param userid
+	 * @param session
+	 * @return
+	 */
+	public CurrentUser createCurrentUser(long userid, HttpSession session) {
 		return new CurrentUserDAO().getCurrentUserById(userid, session);
 	}
 

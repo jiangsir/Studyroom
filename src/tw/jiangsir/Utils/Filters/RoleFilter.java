@@ -1,6 +1,8 @@
 package tw.jiangsir.Utils.Filters;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.HashSet;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -17,7 +19,10 @@ import tw.jiangsir.Utils.Annotations.RoleSetting;
 import tw.jiangsir.Utils.Config.ApplicationScope;
 import tw.jiangsir.Utils.Config.SessionScope;
 import tw.jiangsir.Utils.DAOs.UserService;
+import tw.jiangsir.Utils.Exceptions.AccessException;
+import tw.jiangsir.Utils.Exceptions.Cause;
 import tw.jiangsir.Utils.Exceptions.RoleException;
+import tw.jiangsir.Utils.Interfaces.IAccessFilter;
 import tw.jiangsir.Utils.Objects.CurrentUser;
 import tw.jiangsir.Utils.Objects.User;
 
@@ -49,17 +54,6 @@ public class RoleFilter implements Filter {
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response = (HttpServletResponse) resp;
 		String servletPath = request.getServletPath();
-		System.out.println("RoleFilter: " + servletPath);
-		// if (!servletPath.equals(LoginServlet.urlPatterns[0])) {
-		// System.out.println("servletPath=" + request.getServletPath());
-		// String returnPage = servletPath
-		// + (request.getQueryString() == null ? "" : "?"
-		// + request.getQueryString());
-		// request.setAttribute("returnPage", returnPage);
-		// } else {
-		// request.setAttribute("returnPage",
-		// request.getAttribute("returnPage"));
-		// }
 
 		HttpServlet httpServlet = ApplicationScope.getUrlpatterns().get(
 				servletPath);
@@ -84,6 +78,49 @@ public class RoleFilter implements Filter {
 				.getAnnotation(RoleSetting.class))) {
 			throw new RoleException("您沒有權限瀏覽這個頁面。");
 		}
+
+		/**
+		 * 這裡一定要在使用者確定登入之後才進行判斷。<br>
+		 * 如果單獨成為一個 Filter, 則不見得會在 RoleFilter 之前執行，導致沒有登入就判斷 Accessible 一定無權讀取的。
+		 * 最後一關，確定該使用者已經具備存取這個頁面之後，才進行判斷。<br>
+		 * 由 servlet 獲得的參數來決定是否可以存取。
+		 */
+		for (Class<?> iface : httpServlet.getClass().getInterfaces()) {
+			if (iface == IAccessFilter.class) {
+				for (Method method : IAccessFilter.class.getMethods()) {
+					try {
+						Method servletMethod = httpServlet.getClass()
+								.getDeclaredMethod(method.getName(),
+										HttpServletRequest.class);
+						servletMethod.invoke(httpServlet.getClass()
+								.newInstance(), new Object[] { request });
+					} catch (SecurityException e) {
+						e.printStackTrace();
+						throw new AccessException(new Cause(e));
+					} catch (NoSuchMethodException e) {
+						e.printStackTrace();
+						throw new AccessException(new Cause(e));
+					} catch (IllegalArgumentException e) {
+						e.printStackTrace();
+						throw new AccessException(new Cause(e));
+					} catch (IllegalAccessException e) {
+						e.printStackTrace();
+						throw new AccessException(new Cause(e));
+					} catch (InvocationTargetException e) {
+						// if (e.getTargetException() instanceof
+						// AccessException) {
+						// throw (AccessException) e.getTargetException();
+						// }
+						throw new AccessException(new Cause(
+								e.getTargetException()));
+					} catch (InstantiationException e) {
+						e.printStackTrace();
+						throw new AccessException(new Cause(e));
+					}
+				}
+			}
+		}
+
 		chain.doFilter(request, response);
 	}
 

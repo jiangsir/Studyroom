@@ -11,21 +11,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import tw.jiangsir.Studyroom.Objects.Booking;
 import tw.jiangsir.Utils.Config.ApplicationScope;
 import tw.jiangsir.Utils.Config.SessionScope;
 import tw.jiangsir.Utils.DAOs.BookingService;
 import tw.jiangsir.Utils.Exceptions.AccessException;
 import tw.jiangsir.Utils.Exceptions.DataException;
 import tw.jiangsir.Utils.GoogleChecker.PopChecker;
-import tw.jiangsir.Utils.Interfaces.IAccessible;
-import tw.jiangsir.Utils.Objects.Booking;
+import tw.jiangsir.Utils.Interfaces.IAccessFilter;
 import tw.jiangsir.Utils.Tools.DateTool;
 
 /**
  * Servlet implementation class BookUp
  */
 @WebServlet(urlPatterns = { "/BookUp" })
-public class BookUpServlet extends HttpServlet implements IAccessible {
+public class BookUpServlet extends HttpServlet implements IAccessFilter {
 	private static final long serialVersionUID = 1L;
 
 	/**

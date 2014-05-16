@@ -42,6 +42,64 @@ public class DateTool {
 		return new java.sql.Date(calendar.getTime().getTime());
 	}
 
+	/**
+	 * 計算兩個日期相隔的天數
+	 * 
+	 * @param d1
+	 * @param d2
+	 * @return
+	 */
+	public int getDaysBetween(java.util.Calendar d1, java.util.Calendar d2) {
+		if (d1.after(d2)) { // swap dates so that d1 is start and d2 is end
+			java.util.Calendar swap = d1;
+			d1 = d2;
+			d2 = swap;
+		}
+		int days = d2.get(java.util.Calendar.DAY_OF_YEAR)
+				- d1.get(java.util.Calendar.DAY_OF_YEAR);
+		int y2 = d2.get(java.util.Calendar.YEAR);
+		if (d1.get(java.util.Calendar.YEAR) != y2) {
+			d1 = (java.util.Calendar) d1.clone();
+			do {
+				days = d1.getActualMaximum(java.util.Calendar.DAY_OF_YEAR);
+				d1.add(java.util.Calendar.YEAR, 1);
+			} while (d1.get(java.util.Calendar.YEAR) != y2);
+		}
+		return days;
+	}
+
+	public static Long getDaysBetween(Date startDate, Date endDate) {
+		Calendar fromCalendar = Calendar.getInstance();
+		fromCalendar.setTime(startDate);
+		fromCalendar.set(Calendar.HOUR_OF_DAY, 0);
+		fromCalendar.set(Calendar.MINUTE, 0);
+		fromCalendar.set(Calendar.SECOND, 0);
+		fromCalendar.set(Calendar.MILLISECOND, 0);
+
+		Calendar toCalendar = Calendar.getInstance();
+		toCalendar.setTime(endDate);
+		toCalendar.set(Calendar.HOUR_OF_DAY, 0);
+		toCalendar.set(Calendar.MINUTE, 0);
+		toCalendar.set(Calendar.SECOND, 0);
+		toCalendar.set(Calendar.MILLISECOND, 0);
+
+		return (toCalendar.getTime().getTime() - fromCalendar.getTime()
+				.getTime()) / (1000 * 60 * 60 * 24);
+	}
+
+	/**
+	 * 計算兩個 sql.date 之間相隔的天數。因為時間都是 00:00:00.0 因此可以直接相減計算。
+	 * 
+	 * @param begindate
+	 * @param enddate
+	 * @return
+	 */
+	public static Long getDaysBetween(java.sql.Date begindate,
+			java.sql.Date enddate) {
+		return (enddate.getTime() - begindate.getTime())
+				/ (1000 * 60 * 60 * 24);
+	}
+
 	public static void main(String[] args) {
 		java.sql.Date date = java.sql.Date.valueOf("2014-01-30");
 		java.sql.Time time = java.sql.Time.valueOf("10:00:00");
@@ -55,7 +113,9 @@ public class DateTool {
 			System.out.println(nowtime + " is not after " + time);
 		}
 
-		System.out.println(java.sql.Date.valueOf("2014-01-30"));
+		System.out.println("date="
+				+ new java.util.Date(java.sql.Date.valueOf("2014-01-30")
+						.getTime()));
 		System.out.println(java.sql.Time.valueOf("10:00:00"));
 		System.out.println(date.toString() + time.toString());
 
