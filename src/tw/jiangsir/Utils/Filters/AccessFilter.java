@@ -30,12 +30,12 @@ import tw.jiangsir.Utils.Objects.User;
  * Servlet Filter implementation class RoleFilter
  */
 @WebFilter(filterName = "RoleFilter", urlPatterns = { "/*" }, asyncSupported = true)
-public class RoleFilter implements Filter {
+public class AccessFilter implements Filter {
 
 	/**
 	 * Default constructor.
 	 */
-	public RoleFilter() {
+	public AccessFilter() {
 		// TODO Auto-generated constructor stub
 	}
 
