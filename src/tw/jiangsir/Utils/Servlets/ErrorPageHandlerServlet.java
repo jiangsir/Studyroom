@@ -1,12 +1,18 @@
 package tw.jiangsir.Utils.Servlets;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import tw.jiangsir.Utils.Config.SessionScope;
 import tw.jiangsir.Utils.Exceptions.Alert;
 
 /**
@@ -19,6 +25,7 @@ public class ErrorPageHandlerServlet extends HttpServlet {
 	@Override
 	protected void service(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession(false);
 		Integer statusCode = (Integer) request
 				.getAttribute("javax.servlet.error.status_code");
 		String servletName = (String) request
@@ -32,11 +39,46 @@ public class ErrorPageHandlerServlet extends HttpServlet {
 			requestUri = "Unknown";
 		}
 
-		Alert alert = new Alert();
-		alert.setType(Alert.TYPE.ERROR);
-		alert.setTitle("網頁錯誤！");
-		alert.setSubtitle(statusCode + ": " + requestUri);
-		request.setAttribute("alert", alert);
-		request.getRequestDispatcher("/Alert.jsp").forward(request, response);
+		Throwable throwable = (Throwable) request
+				.getAttribute("javax.servlet.error.exception");
+
+		if (throwable != null) {
+			Alert alert = new Alert(throwable);
+
+			Throwable rootCause = throwable;
+			alert.getDebugs().add(
+					"由 " + this.getClass().getSimpleName() + " 處理");
+			ArrayList<String> list = alert.getList();
+			while (rootCause.getCause() != null) {
+				list.add(rootCause.getClass().getSimpleName() + ": "
+						+ rootCause.getLocalizedMessage());
+				rootCause = rootCause.getCause();
+			}
+			try {
+				alert.getUris().put(
+						"回前頁",
+						new URI(request.getContextPath()
+								+ new SessionScope(session).getHistories().get(
+										1)));
+			} catch (URISyntaxException e1) {
+				e1.printStackTrace();
+			}
+			// alert.setSubtitle("由 " + this.getClass().getSimpleName() +
+			// " 所處理");
+			// alert.setList(list);
+			request.setAttribute("alert", alert);
+			request.getRequestDispatcher("/Alert.jsp").forward(request,
+					response);
+			return;
+		} else {
+			Alert alert = new Alert();
+			alert.setType(Alert.TYPE.ERROR);
+			alert.setTitle("網頁錯誤！");
+			alert.setSubtitle(statusCode + ": " + requestUri);
+			request.setAttribute("alert", alert);
+			request.getRequestDispatcher("/Alert.jsp").forward(request,
+					response);
+			return;
+		}
 	}
 }

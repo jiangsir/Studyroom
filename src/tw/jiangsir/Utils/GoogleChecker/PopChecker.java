@@ -46,7 +46,7 @@ public class PopChecker {
 				throw new DataException("連線逾時！");
 			}
 			if (e.getLocalizedMessage().contains("Connect failed")) {
-				throw new DataException("無法連線！");
+				throw new DataException("無法與驗證主機連線！");
 			}
 
 			throw new DataException(e);

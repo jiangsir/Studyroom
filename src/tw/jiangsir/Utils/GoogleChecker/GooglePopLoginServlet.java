@@ -1,27 +1,6 @@
 package tw.jiangsir.Utils.GoogleChecker;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.security.Security;
-import java.util.Date;
-import java.util.Properties;
-
-import javax.mail.Address;
-import javax.mail.AuthenticationFailedException;
-import javax.mail.Authenticator;
-import javax.mail.Folder;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.NoSuchProviderException;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Provider;
-import javax.mail.Session;
-import javax.mail.Store;
-import javax.mail.Transport;
-import javax.mail.URLName;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebInitParam;
@@ -31,8 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import tw.jiangsir.Utils.Config.SessionScope;
-import tw.jiangsir.Utils.DAOs.UserService;
-import tw.jiangsir.Utils.Exceptions.DataException;
+import tw.jiangsir.Utils.Exceptions.ResponseException;
 import tw.jiangsir.Utils.Objects.CurrentUser;
 import tw.jiangsir.Utils.Objects.User;
 
@@ -72,8 +50,9 @@ public class GooglePopLoginServlet extends HttpServlet {
 		String account = request.getParameter("account");
 		String passwd = request.getParameter("passwd");
 
-		if (new PopChecker().isGmailAccount(account + "@stu.nknush.kh.edu.tw",
-				passwd)) {
+		try {
+			new PopChecker().isGmailAccount(account + "@stu.nknush.kh.edu.tw",
+					passwd);
 			CurrentUser currentUser = new CurrentUser();
 			currentUser.setAccount(account);
 			currentUser.setPasswd(passwd);
@@ -86,10 +65,17 @@ public class GooglePopLoginServlet extends HttpServlet {
 			response.sendRedirect(request.getContextPath()
 					+ sessionScope.getHistories().get(1));
 			return;
-		} else {
-			request.getRequestDispatcher(VIEW).forward(request, response);
-			return;
+		} catch (Exception e) {
+			throw new ResponseException(e);
 		}
+
+		// if (new PopChecker().isGmailAccount(account +
+		// "@stu.nknush.kh.edu.tw",
+		// passwd)) {
+		// } else {
+		// request.getRequestDispatcher(VIEW).forward(request, response);
+		// return;
+		// }
 	}
 
 }

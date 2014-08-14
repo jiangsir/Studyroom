@@ -1,25 +1,20 @@
 package tw.jiangsir.Studyroom.Servlets;
 
 import java.io.IOException;
-import java.util.Calendar;
-import java.util.Date;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import tw.jiangsir.Studyroom.Objects.Booking;
 import tw.jiangsir.Utils.Config.ApplicationScope;
 import tw.jiangsir.Utils.Config.SessionScope;
 import tw.jiangsir.Utils.DAOs.BookingService;
 import tw.jiangsir.Utils.Exceptions.AccessException;
-import tw.jiangsir.Utils.Exceptions.DataException;
+import tw.jiangsir.Utils.Exceptions.ResponseException;
 import tw.jiangsir.Utils.GoogleChecker.PopChecker;
 import tw.jiangsir.Utils.Interfaces.IAccessFilter;
-import tw.jiangsir.Utils.Tools.DateTool;
 
 /**
  * Servlet implementation class BookUp
@@ -64,8 +59,12 @@ public class BookUpServlet extends HttpServlet implements IAccessFilter {
 		String studentid = request.getParameter("studentid");
 		String passwd = request.getParameter("passwd");
 
-		new PopChecker().isGmailAccount(studentid.trim()
-				+ "@stu.nknush.kh.edu.tw", passwd);
+		try {
+			new PopChecker().isGmailAccount(studentid.trim()
+					+ "@stu.nknush.kh.edu.tw", passwd);
+		} catch (Exception e) {
+			throw new ResponseException(e);
+		}
 
 		Booking newBooking = new Booking();
 		newBooking.setSeatid(seatid);

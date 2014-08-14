@@ -1,5 +1,6 @@
 package tw.jiangsir.Utils.Tools;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -40,6 +41,60 @@ public class DateTool {
 		calendar.setTime(date);
 		calendar.add(Calendar.DATE, -1);
 		return new java.sql.Date(calendar.getTime().getTime());
+	}
+
+	public static java.sql.Date getNextMonth(java.sql.Date date) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.add(Calendar.MONTH, 1);
+		return new java.sql.Date(calendar.getTime().getTime());
+	}
+
+	public static java.sql.Date getPrevMonth(java.sql.Date date) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.add(Calendar.MONTH, -1);
+		return new java.sql.Date(calendar.getTime().getTime());
+	}
+
+	/**
+	 * 取得 date 所屬的月份的第一天禮拜幾
+	 * 
+	 * @param date
+	 * @return
+	 */
+	public static int getFirstdayOfMonth(java.sql.Date date) {
+		java.util.Calendar currentCal = java.util.Calendar.getInstance();
+		currentCal.setTime(date);
+		currentCal.set(Calendar.DAY_OF_MONTH, 1);
+		// java.util.Date date2 = currentCal.getTime();
+		// java.text.SimpleDateFormat format = new
+		// java.text.SimpleDateFormat("E");
+		// return format.format(date2);
+		System.out.println(currentCal);
+		System.out.println(currentCal.getTime());
+		System.out.println(currentCal.get(Calendar.DAY_OF_WEEK));
+		return currentCal.get(Calendar.DAY_OF_WEEK);
+	}
+
+	public static int getLastDayOfMonth(java.sql.Date date) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		return cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+	}
+
+	public static ArrayList<java.util.Date> getDaysOfMonth(java.sql.Date date) {
+		ArrayList<java.util.Date> days = new ArrayList<java.util.Date>();
+		for (int i = 1; i < DateTool.getFirstdayOfMonth(date); i++) {
+			days.add(null);
+		}
+		for (int i = 1; i <= DateTool.getLastDayOfMonth(date); i++) {
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(date);
+			cal.set(Calendar.DAY_OF_MONTH, i);
+			days.add(cal.getTime());
+		}
+		return days;
 	}
 
 	/**

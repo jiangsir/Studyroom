@@ -16,8 +16,9 @@
 	<h1>ALERT.jsp ${alert.type}: ${alert.title }</h1>
 	<h2>${alert.subtitle }</h2>
 	<div>${alert.content }</div>
-	<c:forEach var="contentmap" items="${alert.contentmap}">${contentmap.key }=${contentmap.value}
+	<%-- 	<c:forEach var="contentmap" items="${alert.contentmap}">${contentmap.key }=${contentmap.value}
 	</c:forEach>
+ --%>
 	<c:if test="${fn:length(alert.stacktrace)>0}">
 		<h3>stacktrace:</h3>
 		<div style="font-family: monospace;">
@@ -25,10 +26,10 @@
 			</c:forEach>
 		</div>
 	</c:if>
-	<c:forEach var="url" items="${alert.urls}">
+<%-- 	<c:forEach var="url" items="${alert.urls}">
 		<a href="${url.value}">${url.key}</a>
 	</c:forEach>
-
+ --%>
 	<jsp:include page="Footer.jsp" />
 </body>
 </html>

@@ -21,7 +21,7 @@
 							href="${pageContext.request.contextPath}/ManageBooking">管理每日訂位</a></li>
 						<li><a href="${pageContext.request.contextPath}/BatchBooking">進行長期訂位</a></li>
 						<li><a
-							href="${pageContext.request.contextPath}/ManageStudyroom">管理開館、閉館</a></li>
+							href="${pageContext.request.contextPath}/ManageRoomstatus">管理開館、閉館日期</a></li>
 						<li><a href="#">統計違規紀錄</a></li>
 						<li><a
 							href="${pageContext.request.contextPath}/EditAppConfig">編輯系統參數（訂位截至時間，不開放日期）</a></li>

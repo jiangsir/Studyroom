@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import tw.jiangsir.Utils.DAOs.BookingService;
+import tw.jiangsir.Utils.Tools.DateTool;
 
 /**
  * Servlet implementation class Index
@@ -33,8 +34,22 @@ public class IndexServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		request.setAttribute("bookupMapToday",
-				new BookingService().getBookupMapToday());
+		java.sql.Date date;
+		try {
+			date = java.sql.Date.valueOf(request.getParameter("date"));
+		} catch (Exception e) {
+			e.printStackTrace();
+			date = new java.sql.Date(System.currentTimeMillis());
+		}
+
+		request.setAttribute("date", date);
+		request.setAttribute("nextdate", DateTool.getNextDate(date));
+		request.setAttribute("prevdate", DateTool.getPrevDate(date));
+		request.setAttribute("bookupMap",
+				new BookingService().getBookupMapByDate(date));
+		//
+		// request.setAttribute("bookupMapToday",
+		// new BookingService().getBookupMapToday());
 		request.getRequestDispatcher("/Index.jsp").forward(request, response);
 	}
 

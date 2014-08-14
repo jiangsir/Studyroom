@@ -1,17 +1,28 @@
 package tw.jiangsir.Utils.Exceptions;
 
-import java.net.URL;
+import java.net.URI;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import tw.jiangsir.Utils.Annotations.Persistent;
+import tw.jiangsir.Utils.Objects.CurrentUser;
 
-public class Alert {
+public class Alert extends Throwable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public static enum TYPE {
 		INFO, // 處理一些一般訊息的呈現。
+		DATAERROR, // 資料錯誤，各種欄位資料的檢查。
+		ROLEERROR, // 角色權限不正確。
+		IPERROR, // IP 來源被拒。
 		WARNING, // 顯示使用者填報錯誤，或違規行為。
 		EXCEPTION, // 系統丟出的例外。
-		ERROR // 顯示一些錯誤訊息。
+		ERROR // 顯示一些未知、未處理的錯誤訊息。
 	};
 
 	@Persistent(name = "type")
@@ -22,29 +33,51 @@ public class Alert {
 	private String subtitle = "";
 	@Persistent(name = "content")
 	private String content = "";
+	@Persistent(name = "list")
+	private ArrayList<String> list = new ArrayList<String>();
+	@Persistent(name = "map")
+	private HashMap<String, String> map = new HashMap<String, String>();
 	@Persistent(name = "stacktrace")
 	private StackTraceElement[] stacktrace = new StackTraceElement[] {};
-	@Persistent(name = "contentmap")
-	private HashMap<String, String> contentmap = new HashMap<String, String>();
 	@Persistent(name = "urls")
-	private HashMap<String, URL> urls = new HashMap<String, URL>();
+	private HashMap<String, URI> uris = new HashMap<String, URI>();
+	@Persistent(name = "debugs")
+	private HashSet<String> debugs = new HashSet<String>();
+	@Persistent(name = "currentuser")
+	private CurrentUser currentUser = new CurrentUser();
 
 	public Alert() {
 	}
 
-	public Alert(Throwable throwable) {
+	public Alert(TYPE type, String title, String subtitle, String content,
+			HashMap<String, URI> uris) {
+		this.setType(type);
+		this.setTitle(title);
+		this.setSubtitle(subtitle);
+		this.setContent(content);
+		this.appendUris(uris);
+	}
+
+	public Alert(String title, Throwable throwable) {
 		this.setType(TYPE.EXCEPTION);
-		this.setTitle(throwable.getLocalizedMessage());
-		this.setSubtitle(throwable.getClass().getName());
+		this.setTitle(title);
+		this.setSubtitle("FROM: " + throwable.getClass().getSimpleName());
 		this.setStacktrace(throwable.getStackTrace());
 	}
 
-	public Alert(Cause cause) {
-		this.setType(TYPE.EXCEPTION);
-		this.setTitle(cause.getTitle());
-		this.setSubtitle(cause.getSubtitle());
-		this.setStacktrace(cause.getStackTrace());
+	public Alert(Throwable throwable) {
+		this(throwable.getLocalizedMessage(), throwable);
 	}
+
+	// public Alert(Cause cause) {
+	// this.setType(TYPE.EXCEPTION);
+	// this.setTitle(cause.getTitle());
+	// this.setSubtitle(cause.getSubtitle());
+	// this.setList(cause.getContentlist());
+	// this.setStacktrace(cause.getStackTrace());
+	// this.setDebugs(cause.getDebugs());
+	// this.setOnlineUser(cause.getOnlineUser());
+	// }
 
 	public TYPE getType() {
 		return type;
@@ -78,6 +111,22 @@ public class Alert {
 		this.content = content;
 	}
 
+	public ArrayList<String> getList() {
+		return list;
+	}
+
+	public void setList(ArrayList<String> list) {
+		this.list = list;
+	}
+
+	public HashMap<String, String> getMap() {
+		return map;
+	}
+
+	public void setMap(HashMap<String, String> map) {
+		this.map = map;
+	}
+
 	public StackTraceElement[] getStacktrace() {
 		return stacktrace;
 	}
@@ -86,20 +135,34 @@ public class Alert {
 		this.stacktrace = stacktrace;
 	}
 
-	public HashMap<String, String> getContentmap() {
-		return contentmap;
+	public HashMap<String, URI> getUris() {
+		return uris;
 	}
 
-	public void setContentmap(HashMap<String, String> contentmap) {
-		this.contentmap = contentmap;
+	public void setUris(HashMap<String, URI> uris) {
+		this.uris = uris;
 	}
 
-	public HashMap<String, URL> getUrls() {
-		return urls;
+	public void appendUris(HashMap<String, URI> uris) {
+		if (uris != null && uris.size() > 0) {
+			this.getUris().putAll(uris);
+		}
 	}
 
-	public void setUrls(HashMap<String, URL> urls) {
-		this.urls = urls;
+	public HashSet<String> getDebugs() {
+		return debugs;
+	}
+
+	public void setDebugs(HashSet<String> debugs) {
+		this.debugs = debugs;
+	}
+
+	public CurrentUser getCurrentUser() {
+		return currentUser;
+	}
+
+	public void setCurrentUser(CurrentUser currentUser) {
+		this.currentUser = currentUser;
 	}
 
 }

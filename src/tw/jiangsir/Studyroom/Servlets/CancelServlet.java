@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import tw.jiangsir.Studyroom.Objects.Booking;
 import tw.jiangsir.Utils.DAOs.BookingService;
 import tw.jiangsir.Utils.Exceptions.DataException;
+import tw.jiangsir.Utils.Exceptions.ResponseException;
 import tw.jiangsir.Utils.GoogleChecker.PopChecker;
 
 /**
@@ -46,8 +47,16 @@ public class CancelServlet extends HttpServlet {
 		String studentid = request.getParameter("studentid");
 		String passwd = request.getParameter("passwd");
 
-		new PopChecker().isGmailAccount(studentid.trim()
-				+ "@stu.nknush.kh.edu.tw", passwd);
+		try {
+			new PopChecker().isGmailAccount(studentid.trim()
+					+ "@stu.nknush.kh.edu.tw", passwd);
+		} catch (Exception e) {
+			throw new ResponseException(e);
+			// response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			// response.getWriter().write(e.getLocalizedMessage());
+			// response.flushBuffer();
+			// return;
+		}
 
 		Booking booking = new BookingService()
 				.getBookingByStudentidToday(studentid);
@@ -59,5 +68,4 @@ public class CancelServlet extends HttpServlet {
 		}
 		new BookingService().delete(booking.getId());
 	}
-
 }

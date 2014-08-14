@@ -22,43 +22,47 @@
 					<td style="padding: 10px;"><input name="Title" type="text"
 						id="Title" value="${appConfig.title}" size="50" maxlength="50" /></td>
 				</tr>
-                <tr style="padding: 10px;">
-                    <th>Page Size</th>
-                    <td style="padding: 10px;"><input name="PageSize" type="text"
-                        id="Title" value="${appConfig.pageSize}" size="50" maxlength="50" /></td>
-                </tr>
-                <tr style="padding: 10px;">
-                    <th>預設 Login 的路徑</th>
-                    <td style="padding: 10px;"><input name="efaultLogin" type="text"
-                        id="Title" value="${appConfig.defaultLogin}" size="50" maxlength="50" /></td>
-                </tr>
-                <tr style="padding: 10px;">
-                    <th>clientid</th>
-                    <td style="padding: 10px;"><input name="client_id" type="text"
-                        id="Title" value="${appConfig.client_id}" size="50" maxlength="50" /></td>
-                </tr>
-                <tr style="padding: 10px;">
-                    <th>client_secret</th>
-                    <td style="padding: 10px;"><input name="client_secret" type="text"
-                        id="Title" value="${appConfig.client_secret}" size="50" maxlength="50" /></td>
-                </tr>
-                <tr style="padding: 10px;">
-                    <th>redirect_uri</th>
-                    <td style="padding: 10px;"><input name="redirect_uri" type="text"
-                        id="Title" value="${appConfig.redirect_uri}" size="50" maxlength="50" /></td>
-                </tr>
-                <tr style="padding: 10px;">
-                    <th>訂位開始時間</th>
-                    <td style="padding: 10px;"><input name="deadline" type="text"
-                        id="Title" value="${appConfig.starttime}" size="50" maxlength="50" /></td>
-                </tr>
-                <tr style="padding: 10px;">
-                    <th>訂位截止時間</th>
-                    <td style="padding: 10px;"><input name="deadline" type="text"
-                        id="Title" value="${appConfig.deadline}" size="50" maxlength="50" /></td>
-                </tr>
+				<tr style="padding: 10px;">
+					<th>Page Size</th>
+					<td style="padding: 10px;"><input name="PageSize" type="text"
+						id="Title" value="${appConfig.pageSize}" size="50" maxlength="50" /></td>
+				</tr>
+				<tr style="padding: 10px;">
+					<th>預設 Login 的路徑</th>
+					<td style="padding: 10px;"><input name="DefaultLogin"
+						type="text" id="DefaultLogin" value="${appConfig.defaultLogin}"
+						size="50" maxlength="50" /></td>
+				</tr>
+				<tr style="padding: 10px;">
+					<th>clientid</th>
+					<td style="padding: 10px;"><input name="client_id" type="text"
+						id="Title" value="${appConfig.client_id}" size="50" maxlength="50" /></td>
+				</tr>
+				<tr style="padding: 10px;">
+					<th>client_secret</th>
+					<td style="padding: 10px;"><input name="client_secret"
+						type="text" id="Title" value="${appConfig.client_secret}"
+						size="50" maxlength="50" /></td>
+				</tr>
+				<tr style="padding: 10px;">
+					<th>redirect_uri</th>
+					<td style="padding: 10px;"><input name="redirect_uri"
+						type="text" id="Title" value="${appConfig.redirect_uri}" size="50"
+						maxlength="50" /></td>
+				</tr>
+				<tr style="padding: 10px;">
+					<th>訂位開始時間</th>
+					<td style="padding: 10px;"><input name="starttime" type="text"
+						id="Title" value="${appConfig.starttime}" size="50" maxlength="50" /></td>
+				</tr>
+				<tr style="padding: 10px;">
+					<th>訂位截止時間</th>
+					<td style="padding: 10px;"><input name="deadline" type="text"
+						id="Title" value="${appConfig.deadline}" size="50" maxlength="50" /></td>
+				</tr>
 			</table>
 		</div>
+		<input type="submit" value="送出" />
 	</form>
 
 	<jsp:include page="Footer.jsp" />

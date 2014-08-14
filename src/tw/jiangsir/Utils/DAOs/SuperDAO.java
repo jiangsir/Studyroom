@@ -12,12 +12,15 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.TreeMap;
 import java.util.logging.Logger;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import tw.jiangsir.Utils.Annotations.Persistent;
+import tw.jiangsir.Utils.Config.ConfigHandler;
 
 abstract public class SuperDAO<T> {
 	private static Connection conn = null;
@@ -31,6 +34,7 @@ abstract public class SuperDAO<T> {
 
 	Logger logger = Logger.getLogger(this.getClass().getName());
 	HashMap<String, Field> fields = new HashMap<String, Field>();
+	int PAGESIZE = ConfigHandler.getAppConfig().getPageSize();
 
 	public Connection getConnection() {
 		try {
@@ -311,7 +315,7 @@ abstract public class SuperDAO<T> {
 	 * @param sql
 	 * @return
 	 */
-	public int executeCount(String sql) {
+	private int executeCount(String sql) {
 		int result = 0;
 		if (sql.matches("^SELECT.+FROM.*")) {
 			sql = sql.replaceFirst("^SELECT.+FROM",
@@ -339,6 +343,76 @@ abstract public class SuperDAO<T> {
 			return -1;
 		}
 		return result;
+	}
+
+	/**
+	 * 將 fields 組合成 sql 語法。 <br>
+	 * 注意：只有 WHERE 以後的部分進行組合。
+	 * 
+	 * @param fields
+	 * @param orderby
+	 * @param page
+	 * @return
+	 */
+	public String makeFields(TreeMap<String, Object> fields, String orderby,
+			int page) {
+		StringBuffer sql = new StringBuffer(5000);
+		sql.append(" ");
+		if (fields != null) {
+			Iterator<String> keys = fields.keySet().iterator();
+			if (keys.hasNext()) {
+				sql.append("WHERE ");
+			}
+			while (keys.hasNext()) {
+				sql.append(" (" + keys.next() + "=?)");
+				if (keys.hasNext()) {
+					sql.append(" AND ");
+				}
+			}
+		}
+		if (orderby != null && !"".equals(orderby.trim())) {
+			sql.append(" ORDER BY " + orderby);
+		}
+		// 不論 page 是多少，都必須 LIMIT ?? 為什麼？會導致 UserStatistic 裏面的題目列表都只有 20 個。
+		if (page > 0) {
+			sql.append(" LIMIT " + ((page > 1 ? page : 1) - 1) * PAGESIZE + ","
+					+ PAGESIZE);
+		}
+		System.out.println("makeFields=" + sql.toString());
+		return sql.toString();
+	}
+
+	/**
+	 * 新的 executeCount 不再去更改原始 sql 字串，而是直接製作 count 語法，並利用 fields 來加入條件。
+	 * 
+	 * @param tablename
+	 * @param fields
+	 * @return
+	 */
+	public int executeCount(String tablename, TreeMap<String, Object> fields) {
+		long starttime = System.currentTimeMillis();
+		String sql = "SELECT COUNT(*) AS COUNT FROM " + tablename
+				+ this.makeFields(fields, null, 0);
+		int count = 0;
+		try {
+			PreparedStatement pstmt = this.getConnection()
+					.prepareStatement(sql);
+			int i = 1;
+			for (String key : fields.keySet()) {
+				pstmt.setObject(i++, fields.get(key));
+			}
+			ResultSet rs = pstmt.executeQuery();
+			System.out.println("PSTMT_SQL=" + pstmt.toString() + " 共耗時 "
+					+ (System.currentTimeMillis() - starttime) + " ms");
+			rs.next();
+			count = rs.getInt("COUNT");
+			rs.close();
+			pstmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return -1;
+		}
+		return count;
 	}
 
 }
