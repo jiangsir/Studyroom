@@ -8,6 +8,7 @@ package tw.jiangsir.Utils.Config;
 import java.util.TreeSet;
 
 import tw.jiangsir.Utils.Annotations.Property;
+import tw.jiangsir.Utils.Tools.Ipv4Cidr;
 import tw.jiangsir.Utils.Tools.StringTool;
 
 /**
@@ -42,6 +43,9 @@ public class AppConfig {
 	private java.sql.Time starttime = java.sql.Time.valueOf("06:00:00");
 	@Property(key = "deadline")
 	private java.sql.Time deadline = java.sql.Time.valueOf("18:00:00");
+
+	@Property(key = "SigninIp")
+	private Ipv4Cidr SigninIp = Ipv4Cidr.newInstance("127.0.0.1/24");
 
 	public String getManagerIP() {
 		return ManagerIP;
@@ -165,4 +169,17 @@ public class AppConfig {
 	public void setDeadline(String deadline) {
 		this.setDeadline(java.sql.Time.valueOf(deadline));
 	}
+
+	public Ipv4Cidr getSigninIp() {
+		return SigninIp;
+	}
+
+	public void setSigninIp(Ipv4Cidr signinIp) {
+		SigninIp = signinIp;
+	}
+
+	public void setSigninIp(String signinIp) {
+		this.setSigninIp(Ipv4Cidr.newInstance(signinIp));
+	}
+
 }

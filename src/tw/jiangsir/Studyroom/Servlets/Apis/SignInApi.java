@@ -1,31 +1,43 @@
-package tw.jiangsir.Studyroom.Servlets;
+package tw.jiangsir.Studyroom.Servlets.Apis;
 
 import java.io.IOException;
+import java.sql.Date;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import tw.jiangsir.Studyroom.Objects.Attendance;
 import tw.jiangsir.Studyroom.Objects.Booking;
+import tw.jiangsir.Utils.DAOs.AttendanceService;
 import tw.jiangsir.Utils.DAOs.BookingService;
-import tw.jiangsir.Utils.Exceptions.DataException;
+import tw.jiangsir.Utils.DAOs.RoomstatusService;
+import tw.jiangsir.Utils.Exceptions.AccessException;
 import tw.jiangsir.Utils.Exceptions.ApiException;
-import tw.jiangsir.Utils.GoogleChecker.PopChecker;
+import tw.jiangsir.Utils.Exceptions.DataException;
+import tw.jiangsir.Utils.Interfaces.IAccessFilter;
 
 /**
  * Servlet implementation class BookUp
  */
-@WebServlet(urlPatterns = { "/Cancel" })
-public class CancelServlet extends HttpServlet {
+@WebServlet(urlPatterns = { "/SignIn.api" })
+public class SignInApi extends HttpServlet implements IAccessFilter {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public CancelServlet() {
+	public SignInApi() {
 		super();
 		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public boolean accessible(HttpServletRequest request)
+			throws AccessException {
+		return true;
 	}
 
 	/**
@@ -34,7 +46,6 @@ public class CancelServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-
 	}
 
 	/**
@@ -43,29 +54,21 @@ public class CancelServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		int seatid = Integer.parseInt(request.getParameter("seatid"));
-		String studentid = request.getParameter("studentid");
-		String passwd = request.getParameter("passwd");
-
-		try {
-			new PopChecker().isGmailAccount(studentid.trim()
-					+ "@stu.nknush.kh.edu.tw", passwd);
-		} catch (Exception e) {
-			throw new ApiException(e);
-			// response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			// response.getWriter().write(e.getLocalizedMessage());
-			// response.flushBuffer();
-			// return;
-		}
-
+		String studentid = request.getParameter("id");
 		Booking booking = new BookingService()
 				.getBookingTodayByStudentid(studentid);
 		if (booking == null) {
-			throw new DataException("這個位置今天沒有預約，請訂位！");
-		} else if (booking.getSeatid() != seatid) {
-			throw new DataException("您(" + studentid + ")可能不是這個位置(" + seatid
-					+ ")的主人，無法讓您取消訂位。");
+			throw new ApiException("『" + studentid + "』 今天並未訂位，無法進行簽到／退。");
 		}
-		new BookingService().delete(booking.getId());
+
+		Attendance attendance = new AttendanceService()
+				.getLastAttendanceTodayByStudentid(studentid);
+		if (attendance == null
+				|| attendance.getStatus() == Attendance.STATUS.SignOut) {
+			new AttendanceService().doSignIn(studentid);
+		} else {
+			new AttendanceService().doSignOut(studentid);
+		}
 	}
+
 }

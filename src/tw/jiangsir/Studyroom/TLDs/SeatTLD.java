@@ -2,7 +2,9 @@ package tw.jiangsir.Studyroom.TLDs;
 
 import java.util.HashMap;
 
+import tw.jiangsir.Studyroom.Objects.Attendance;
 import tw.jiangsir.Studyroom.Servlets.BookUpServlet;
+import tw.jiangsir.Utils.DAOs.AttendanceService;
 
 public class SeatTLD {
 	/**
@@ -17,7 +19,16 @@ public class SeatTLD {
 
 	public static String studentid(HashMap<Integer, String> bookupMap,
 			Integer seatid) {
-		return bookupMap.get(seatid);
+		String studentid = bookupMap.get(seatid);
+		Attendance attendance = new AttendanceService()
+				.getLastAttendanceTodayByStudentid(studentid);
+		String s = "";
+		if (attendance == null) {
+			s = studentid + "\n 尚未簽到";
+		} else {
+			s = studentid + "\n" + attendance.getStatus();
+		}
+		return s;
 	}
 
 	public static boolean canBookup(java.sql.Date date) {

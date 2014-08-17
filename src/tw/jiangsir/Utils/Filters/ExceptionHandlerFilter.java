@@ -18,7 +18,7 @@ import javax.servlet.http.HttpSession;
 import tw.jiangsir.Utils.Config.SessionScope;
 import tw.jiangsir.Utils.Exceptions.Alert;
 import tw.jiangsir.Utils.Exceptions.Cause;
-import tw.jiangsir.Utils.Exceptions.ResponseException;
+import tw.jiangsir.Utils.Exceptions.ApiException;
 
 /**
  * Servlet Filter implementation class EncodingFilter
@@ -51,7 +51,7 @@ public class ExceptionHandlerFilter implements Filter {
 			HttpServletResponse response = (HttpServletResponse) resp;
 			HttpSession session = request.getSession(false);
 
-			if (e instanceof ResponseException) {
+			if (e instanceof ApiException) {
 				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 				response.getWriter().write(e.getLocalizedMessage());
 				response.flushBuffer();

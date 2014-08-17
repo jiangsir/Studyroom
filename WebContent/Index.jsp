@@ -23,6 +23,20 @@
 	max-width: 4em;
 	width: 4em;
 }
+
+div.deleteBooking {
+	font-size: 0.8em;
+	max-height: 4em;
+	height: 4em;
+	max-width: 4em;
+	width: 4em;
+	box-sizing: border-box;
+	border: 1px solid #bbbbbb;
+	border-radius: 5px;
+	text-align: center;
+	vertical-align: middle;
+	display: table-cell;
+}
 </style>
 </head>
 <body>
@@ -36,7 +50,7 @@
 			</legend>
 			<br /> <label>請輸入學號</label><br /> <input type="text"
 				name="studentid" value="" style="width: 90%;"></input><br /> <label>請輸入學生信箱密碼
-				(stu.nknush.kh.edu.tw)</label><br /> <input type="text" name="passwd"
+				(stu.nknush.kh.edu.tw)</label><br /> <input type="password" name="passwd"
 				value="" style="width: 90%;"></input> <br />
 		</fieldset>
 	</div>
@@ -47,7 +61,7 @@
 			</legend>
 			<br /> <label>請輸入學號</label><br /> <input type="text"
 				name="studentid" value="" style="width: 90%;"></input><br /> <label>請輸入學生信箱密碼
-				(stu.nknush.kh.edu.tw)</label><br /> <input type="text" name="passwd"
+				(stu.nknush.kh.edu.tw)</label><br /> <input type="password" name="passwd"
 				value="" style="width: 90%;"></input> <br />
 		</fieldset>
 	</div>
@@ -65,45 +79,57 @@
 	<div>已被訂位: ${bookupMap } ${applicationScope.appConfig.starttime }
 		: ${applicationScope.appConfig.deadline }</div>
 	<div>now: ${now}, canBookup: ${seat:canBookup(date)}</div>
-	<c:if test="${!room:isOpen(date) }">今日不開放訂位哦！</c:if>
-	<table style="border: 0px;">
-		<c:set var="grouplist" value="${fn:split('26,24,20', ',')}" />
-		<c:set var="base" value="0" />
-		<c:forEach var="group" items="${grouplist }">
-			<c:forEach var="row" begin="1" end="2" step="1">
-				<tr>
-					<c:forEach var="col" begin="1" end="${group}" step="1">
-						<c:set var="seatid" value="${base+(row-1)*group+col}" />
-						<td><c:choose>
-								<c:when test="${!seat:canBookup(date)}">
-									<button class="seat">
-										<fmt:formatNumber pattern="000" value="${seatid}" />
-									</button>
-								</c:when>
-								<c:otherwise>
-									<c:choose>
-										<c:when test="${seat:isOccupied(bookupMap, seatid)}">
-											<span class="deleteBooking">${seat:studentid(bookupMap,
-												seatid)}</span>
-										</c:when>
-										<c:otherwise>
-											<button id="insertBooking" class="seat" seatid=${seatid}>
-												搶
+	<c:choose>
+		<c:when test="${room:isOpen(date) }">
+			<table style="border: 0px;">
+				<c:set var="grouplist" value="${fn:split('26,24,20', ',')}" />
+				<c:set var="base" value="0" />
+				<c:forEach var="group" items="${grouplist }">
+					<c:forEach var="row" begin="1" end="2" step="1">
+						<tr>
+							<c:forEach var="col" begin="1" end="${group}" step="1">
+								<c:set var="seatid" value="${base+(row-1)*group+col}" />
+								<td><c:choose>
+										<c:when test="${!seat:canBookup(date)}">
+											<button class="seat">
 												<fmt:formatNumber pattern="000" value="${seatid}" />
 											</button>
+										</c:when>
+										<c:otherwise>
+											<c:choose>
+												<c:when test="${seat:isOccupied(bookupMap, seatid)}">
+													<div class="deleteBooking">${seat:studentid(bookupMap,
+														seatid)}</div>
+												</c:when>
+												<c:otherwise>
+													<button id="insertBooking" class="seat" seatid=${seatid}>
+														搶
+														<fmt:formatNumber pattern="000" value="${seatid}" />
+													</button>
+												</c:otherwise>
+											</c:choose>
 										</c:otherwise>
-									</c:choose>
-								</c:otherwise>
-							</c:choose></td>
+									</c:choose></td>
+							</c:forEach>
+						</tr>
 					</c:forEach>
-				</tr>
-			</c:forEach>
-			<c:set var="base" value="${base+group*2 }" />
+					<c:set var="base" value="${base+group*2 }" />
 
-			<tr style="height: 1em;">
-			</tr>
-		</c:forEach>
-	</table>
+					<tr style="height: 1em;">
+					</tr>
+				</c:forEach>
+			</table>
+
+		</c:when>
+		<c:otherwise>
+			<div style="text-align: center;">
+				<h1>今日不開放訂位哦！</h1>
+			</div>
+		</c:otherwise>
+	</c:choose>
+	<c:if test="${!room:isOpen(date) }">今日不開放訂位哦！</c:if>
+
+
 	<p>
 		<zero:toUpperCase>Filter</zero:toUpperCase>
 	</p>

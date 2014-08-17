@@ -128,7 +128,7 @@
 			</legend>
 			<br /> <label>請輸入學號</label><br /> <input type="text"
 				name="studentid" value="" style="width: 90%;"></input><br /> <label>請輸入學生信箱密碼
-				(stu.nknush.kh.edu.tw)</label><br /> <input type="text" name="passwd"
+				(stu.nknush.kh.edu.tw)</label><br /> <input type="password" name="passwd"
 				value="" style="width: 90%;"></input> <br />
 		</fieldset>
 	</div>
@@ -139,7 +139,7 @@
 			</legend>
 			<br /> <label>請輸入學號</label><br /> <input type="text"
 				name="studentid" value="" style="width: 90%;"></input><br /> <label>請輸入學生信箱密碼
-				(stu.nknush.kh.edu.tw)</label><br /> <input type="text" name="passwd"
+				(stu.nknush.kh.edu.tw)</label><br /> <input type="password" name="passwd"
 				value="" style="width: 90%;"></input> <br />
 		</fieldset>
 	</div>

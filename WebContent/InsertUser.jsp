@@ -22,9 +22,9 @@
 	<div>新增一個 User.</div>
 	<form method="post" action="">
 		帳號：<input name="account" value="${user.account}" /><br /> 密碼：<input
-			name="passwd1" /><br /> 確認密碼：<input name="passwd2" /><br /> 姓名：<input
-			name="name" value="${user.name}" /><br /> 角色： <select id="role"
-			name="role" role="${user.role}">
+			type="password" name="passwd1" /><br /> 確認密碼：<input type="password"
+			name="passwd2" /><br /> 姓名：<input name="name" value="${user.name}" /><br />
+		角色： <select id="role" name="role" role="${user.role}">
 			<c:forEach var="role" items="${user.roles}">
 				<option>${role }</option>
 			</c:forEach>

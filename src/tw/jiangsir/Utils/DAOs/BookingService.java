@@ -89,7 +89,13 @@ public class BookingService {
 		}
 	}
 
-	public Booking getBookingByStudentidToday(String studentid) {
+	/**
+	 * 取得當前某學生的訂位記錄。
+	 * 
+	 * @param studentid
+	 * @return
+	 */
+	public Booking getBookingTodayByStudentid(String studentid) {
 		try {
 			return new BookingDAO().getBookingByStudentidDate(studentid,
 					new Date(new java.util.Date().getTime()));

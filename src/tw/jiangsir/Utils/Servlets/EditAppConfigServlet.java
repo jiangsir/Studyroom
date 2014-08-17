@@ -10,8 +10,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import tw.jiangsir.Utils.Annotations.Property;
 import tw.jiangsir.Utils.Annotations.RoleSetting;
 import tw.jiangsir.Utils.Config.AppConfig;
@@ -49,7 +47,6 @@ public class EditAppConfigServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession(false);
 		AppConfig appConfig = ApplicationScope.getAppConfig();
 
 		for (Field field : appConfig.getClass().getDeclaredFields()) {

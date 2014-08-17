@@ -17,7 +17,7 @@ jQuery(document).ready(function() {
 		$("#dialog-confirm").dialog("open");
 	});
 
-	$("#insertBooking").each(function() {
+	$("button#insertBooking").each(function() {
 		$(this).click(function() {
 			$("div#insertBookingDialog span#seatid").html($(this).attr("seatid"));
 			$("#insertBookingDialog").dialog("open");

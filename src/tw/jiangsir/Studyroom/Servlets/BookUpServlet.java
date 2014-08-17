@@ -12,7 +12,7 @@ import tw.jiangsir.Utils.Config.ApplicationScope;
 import tw.jiangsir.Utils.Config.SessionScope;
 import tw.jiangsir.Utils.DAOs.BookingService;
 import tw.jiangsir.Utils.Exceptions.AccessException;
-import tw.jiangsir.Utils.Exceptions.ResponseException;
+import tw.jiangsir.Utils.Exceptions.ApiException;
 import tw.jiangsir.Utils.GoogleChecker.PopChecker;
 import tw.jiangsir.Utils.Interfaces.IAccessFilter;
 
@@ -63,7 +63,7 @@ public class BookUpServlet extends HttpServlet implements IAccessFilter {
 			new PopChecker().isGmailAccount(studentid.trim()
 					+ "@stu.nknush.kh.edu.tw", passwd);
 		} catch (Exception e) {
-			throw new ResponseException(e);
+			throw new ApiException(e);
 		}
 
 		Booking newBooking = new Booking();

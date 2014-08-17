@@ -15,4 +15,5 @@
 	<entry key="redirect_uri">http://127.0.0.1:8080/Studyroom/oauth2callback</entry>
 	<entry key="starttime">06:00:00</entry>
 	<entry key="deadline">18:00:00</entry>
+	<entry key="SigninIp">127.0.0.1/24</entry>
 </properties>

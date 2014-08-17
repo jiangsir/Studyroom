@@ -135,6 +135,9 @@ public class ConfigHandler {
 			} catch (InvocationTargetException e) {
 				e.printStackTrace();
 				throw new DataException(new Cause(e.getTargetException()));
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw new DataException(new Cause(e));
 			}
 		}
 		return appConfig;

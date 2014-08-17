@@ -12,6 +12,7 @@
 	</div>
 
 	<ul id="menu">
+		<li><a href="${pageContext.request.contextPath}/SignIn">簽到／退</a></li>
 		<li><c:if test="${sessionScope.currentUser==null}">
 				<a href="${pageContext.request.contextPath}/Login">登入</a>
 			</c:if> <c:if test="${sessionScope.currentUser!=null}">
@@ -25,13 +26,6 @@
 						<li><a href="#">統計違規紀錄</a></li>
 						<li><a
 							href="${pageContext.request.contextPath}/EditAppConfig">編輯系統參數（訂位截至時間，不開放日期）</a></li>
-					</ul></li>
-				<li><a href="#">工讀生</a>
-					<ul>
-						<li><a href="#">簽到</a></li>
-						<li><a href="#">簽退</a></li>
-						<li><a href="#"></a></li>
-						<li><a href="#"></a></li>
 					</ul></li>
 				<li><a href="#">${sessionScope.currentUser.name}</a>
 					<ul>

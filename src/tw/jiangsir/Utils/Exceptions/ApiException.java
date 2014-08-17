@@ -1,6 +1,6 @@
 package tw.jiangsir.Utils.Exceptions;
 
-public class ResponseException extends RuntimeException {
+public class ApiException extends RuntimeException {
 
 	/**
 	 * 
@@ -10,19 +10,19 @@ public class ResponseException extends RuntimeException {
 	/**
 	 * 專門回傳 Response 的錯誤訊息，適用與讓 jQuery 捕捉錯誤訊息。
 	 */
-	public ResponseException() {
+	public ApiException() {
 		super();
 	}
 
-	public ResponseException(String message, Throwable cause) {
+	public ApiException(String message, Throwable cause) {
 		super(message, cause);
 	}
 
-	public ResponseException(String message) {
+	public ApiException(String message) {
 		super(message);
 	}
 
-	public ResponseException(Throwable cause) {
+	public ApiException(Throwable cause) {
 		super(cause);
 	}
 

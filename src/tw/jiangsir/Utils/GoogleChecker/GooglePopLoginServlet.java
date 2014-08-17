@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import tw.jiangsir.Utils.Config.SessionScope;
-import tw.jiangsir.Utils.Exceptions.ResponseException;
+import tw.jiangsir.Utils.Exceptions.ApiException;
 import tw.jiangsir.Utils.Objects.CurrentUser;
 import tw.jiangsir.Utils.Objects.User;
 
@@ -66,7 +66,7 @@ public class GooglePopLoginServlet extends HttpServlet {
 					+ sessionScope.getHistories().get(1));
 			return;
 		} catch (Exception e) {
-			throw new ResponseException(e);
+			throw new ApiException(e);
 		}
 
 		// if (new PopChecker().isGmailAccount(account +
