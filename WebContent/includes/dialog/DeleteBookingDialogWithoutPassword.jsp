@@ -6,9 +6,12 @@
 
 <%@ page isELIgnored="false"%>
 
-<div class="error_dialog"
-	style="cursor: default; padding: 10px; text-align: center; display: none;">
-	<h2 id="title"></h2>
-	<h3 id="subtitletitle"></h3>
-	<pre id="content"></pre>
+<div id="deleteBookingDialogWithoutPassword" title="請輸入帳號密碼！"
+	style="display: none;">
+	<fieldset style="padding: 5px;">
+		<legend>
+			確定要取消 <span id="seatid"></span> 號的位置？
+		</legend>
+
+	</fieldset>
 </div>

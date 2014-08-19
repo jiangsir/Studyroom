@@ -1,18 +1,21 @@
 function showErrorDialog(jqXHR, textStatus, errorThrown) {
 
-	var error;
+	var errorjson;
 	if (jqXHR.responseText !== '') {
-		error = jqXHR.responseText;
+		errorjson = jQuery.parseJSON(jqXHR.responseText);
 	} else {
-		error = errorThrown;
+		errorjson = errorThrown;
 	}
 
 	var error_dialog = $("div.error_dialog");
-	error_dialog.find("h2").html(error);
+	error_dialog.find("#title").html(errorjson.title);
+	error_dialog.find("#subtitle").html(errorjson.subtitle);
+	error_dialog.find("#content").html(errorjson.content);
 	var $dialog = error_dialog.dialog({
 		autoOpen : false,
+		modal : true,
 		width : '40%',
-		title : 'Error Message',
+		title : errorjson.type,
 		close : function() {
 			$(this).dialog("destroy");
 		},

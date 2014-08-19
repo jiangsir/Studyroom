@@ -15,64 +15,28 @@
 <script type="text/javascript" src="Index.js"></script>
 <script type="text/javascript"
 	src="jscripts/functions/showErrorDialog.js"></script>
-<style type="text/css">
-.seat {
-	font-size: 0.8em;
-	max-height: 4em;
-	height: 4em;
-	max-width: 4em;
-	width: 4em;
-}
-
-div.deleteBooking {
-	font-size: 0.8em;
-	max-height: 4em;
-	height: 4em;
-	max-width: 4em;
-	width: 4em;
-	box-sizing: border-box;
-	border: 1px solid #bbbbbb;
-	border-radius: 5px;
-	text-align: center;
-	vertical-align: middle;
-	display: table-cell;
-}
-</style>
+<script type="text/javascript"
+	src="jscripts/functions/showLoadingDialog.js"></script>
 </head>
 <body>
 	<jsp:include page="includes/dialog/Error.jsp" />
+	<jsp:include page="includes/dialog/Loading.jsp" />
+	<jsp:include page="includes/dialog/InsertBookingDialog.jsp" />
+	<jsp:include page="includes/dialog/DeleteBookingDialog.jsp" />
 
 	<jsp:include page="Header.jsp" />
-	<div id="insertBookingDialog" title="請輸入帳號密碼！" style="display: none;">
-		<fieldset style="padding: 5px;">
-			<legend>
-				確定要訂位 <span id="seatid"></span> 號的位置？
-			</legend>
-			<br /> <label>請輸入學號</label><br /> <input type="text"
-				name="studentid" value="" style="width: 90%;"></input><br /> <label>請輸入學生信箱密碼
-				(stu.nknush.kh.edu.tw)</label><br /> <input type="password" name="passwd"
-				value="" style="width: 90%;"></input> <br />
-		</fieldset>
-	</div>
-	<div id="deleteBookingDialog" title="請輸入帳號密碼！" style="display: none;">
-		<fieldset style="padding: 5px;">
-			<legend>
-				確定要取消訂位 <span id="seatid"></span> 號的位置？
-			</legend>
-			<br /> <label>請輸入學號</label><br /> <input type="text"
-				name="studentid" value="" style="width: 90%;"></input><br /> <label>請輸入學生信箱密碼
-				(stu.nknush.kh.edu.tw)</label><br /> <input type="password" name="passwd"
-				value="" style="width: 90%;"></input> <br />
-		</fieldset>
-	</div>
+
 	<jsp:useBean id="now" class="java.util.Date"></jsp:useBean>
 	<div style="text-align: center;">
 		<h1>
 			<fmt:formatDate value="${date}" pattern="yyyy-MM-dd" />
 			的訂位狀況
 		</h1>
-		<a href="?date=${prevdate }" type="button">前一日</a> <a href="?"
-			type="button">今天</a> <a href="?date=${nextdate}" type="button">後一日</a>
+		<c:if test="${sessionScope.currentUser.isAdmin}">
+			<a href="?date=${prevdate }" type="button">前一日</a>
+			<a href="?" type="button">今天</a>
+			<a href="?date=${nextdate}" type="button">後一日</a>
+		</c:if>
 	</div>
 
 	<span class="ui-icon ui-icon-arrowthick-1-n"></span>
@@ -89,7 +53,10 @@ div.deleteBooking {
 						<tr>
 							<c:forEach var="col" begin="1" end="${group}" step="1">
 								<c:set var="seatid" value="${base+(row-1)*group+col}" />
-								<td><c:choose>
+								<td><c:set var="bookupMap" value="${bookupMap}"
+										scope="request" /> <jsp:include page="includes/div/Seat.jsp">
+										<jsp:param name="seatid" value="${seatid }" />
+									</jsp:include> <%-- <c:choose>
 										<c:when test="${!seat:canBookup(date)}">
 											<button class="seat">
 												<fmt:formatNumber pattern="000" value="${seatid}" />
@@ -109,7 +76,7 @@ div.deleteBooking {
 												</c:otherwise>
 											</c:choose>
 										</c:otherwise>
-									</c:choose></td>
+									</c:choose> --%></td>
 							</c:forEach>
 						</tr>
 					</c:forEach>

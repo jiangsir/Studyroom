@@ -1,8 +1,6 @@
 package tw.jiangsir.Studyroom.Servlets.Apis;
 
 import java.io.IOException;
-import java.sql.Date;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,10 +11,8 @@ import tw.jiangsir.Studyroom.Objects.Attendance;
 import tw.jiangsir.Studyroom.Objects.Booking;
 import tw.jiangsir.Utils.DAOs.AttendanceService;
 import tw.jiangsir.Utils.DAOs.BookingService;
-import tw.jiangsir.Utils.DAOs.RoomstatusService;
 import tw.jiangsir.Utils.Exceptions.AccessException;
 import tw.jiangsir.Utils.Exceptions.ApiException;
-import tw.jiangsir.Utils.Exceptions.DataException;
 import tw.jiangsir.Utils.Interfaces.IAccessFilter;
 
 /**
@@ -35,9 +31,7 @@ public class SignInApi extends HttpServlet implements IAccessFilter {
 	}
 
 	@Override
-	public boolean accessible(HttpServletRequest request)
-			throws AccessException {
-		return true;
+	public void AccessFilter(HttpServletRequest request) throws AccessException {
 	}
 
 	/**
@@ -61,13 +55,18 @@ public class SignInApi extends HttpServlet implements IAccessFilter {
 			throw new ApiException("『" + studentid + "』 今天並未訂位，無法進行簽到／退。");
 		}
 
-		Attendance attendance = new AttendanceService()
-				.getLastAttendanceTodayByStudentid(studentid);
-		if (attendance == null
-				|| attendance.getStatus() == Attendance.STATUS.SignOut) {
-			new AttendanceService().doSignIn(studentid);
-		} else {
-			new AttendanceService().doSignOut(studentid);
+		try {
+			Attendance attendance = new AttendanceService()
+					.getLastAttendanceTodayByStudentid(studentid);
+			if (attendance == null
+					|| attendance.getStatus() == Attendance.STATUS.SignOut) {
+				new AttendanceService().doSignIn(studentid);
+			} else {
+				new AttendanceService().doSignOut(studentid);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ApiException(e);
 		}
 	}
 

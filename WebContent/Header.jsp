@@ -12,7 +12,6 @@
 	</div>
 
 	<ul id="menu">
-		<li><a href="${pageContext.request.contextPath}/SignIn">簽到／退</a></li>
 		<li><c:if test="${sessionScope.currentUser==null}">
 				<a href="${pageContext.request.contextPath}/Login">登入</a>
 			</c:if> <c:if test="${sessionScope.currentUser!=null}">
@@ -36,6 +35,8 @@
 					</ul></li>
 
 			</c:if></li>
+		<li><a href="${pageContext.request.contextPath}/SignIn">簽到／退</a></li>
+		<li><a href="${pageContext.request.contextPath}/">訂位</a></li>
 		<!-- 		<li><a href="#">Item 1</a></li>
 		<li><a href="#">Item 2</a></li>
 		<li><a href="#">Item 3</a>

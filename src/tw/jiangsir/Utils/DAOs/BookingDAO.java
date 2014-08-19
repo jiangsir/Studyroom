@@ -85,6 +85,15 @@ public class BookingDAO extends SuperDAO<Booking> {
 		return this.executeQuery(pstmt, Booking.class);
 	}
 
+	protected ArrayList<Booking> getBookingsBySeatidDate(int seatid, Date date)
+			throws SQLException {
+		String sql = "SELECT * FROM bookings WHERE seatid=? AND date=?";
+		PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
+		pstmt.setInt(1, seatid);
+		pstmt.setDate(2, date);
+		return this.executeQuery(pstmt, Booking.class);
+	}
+
 	protected HashMap<Integer, String> getBookupMapByDate(Date date)
 			throws SQLException {
 		HashMap<Integer, String> bookupmap = new HashMap<Integer, String>();

@@ -77,8 +77,7 @@ public class BookUpServlet extends HttpServlet implements IAccessFilter {
 	}
 
 	@Override
-	public boolean accessible(HttpServletRequest request)
-			throws AccessException {
+	public void AccessFilter(HttpServletRequest request) throws AccessException {
 		java.sql.Date date;
 		try {
 			date = java.sql.Date.valueOf(request.getParameter("date"));
@@ -86,11 +85,10 @@ public class BookUpServlet extends HttpServlet implements IAccessFilter {
 			e.printStackTrace();
 			date = new java.sql.Date(System.currentTimeMillis());
 		}
-
-		return canBookup(date);
+		this.AccessFilter(date);
 	}
 
-	public boolean canBookup(java.sql.Date date) {
+	public void AccessFilter(java.sql.Date date) {
 		java.sql.Timestamp starttime = java.sql.Timestamp.valueOf(date + " "
 				+ ApplicationScope.getAppConfig().getStarttime().toString());
 		java.sql.Timestamp deadline = java.sql.Timestamp.valueOf(date + " "
@@ -98,11 +96,19 @@ public class BookUpServlet extends HttpServlet implements IAccessFilter {
 		java.sql.Timestamp thedate = new java.sql.Timestamp(
 				System.currentTimeMillis());
 		if (thedate.before(starttime) || thedate.after(deadline)) {
-			// throw new DataException("目前不是開放訂位時間，訂位時間為 " + starttime + "到 "
-			// + deadline);
-			return false;
+			throw new AccessException("目前不是開放訂位時間，訂位時間為 " + starttime + "到 "
+					+ deadline);
 		}
-		return true;
 	}
+
+	// public boolean canBookup(java.sql.Date date) {
+	// try {
+	// this.Bookup(date);
+	// return true;
+	// } catch (AccessException e) {
+	// e.printStackTrace();
+	// return false;
+	// }
+	// }
 
 }

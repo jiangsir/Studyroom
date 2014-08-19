@@ -41,4 +41,8 @@ public class CurrentUser extends User implements HttpSessionBindingListener,
 		}
 	}
 
+	public boolean getIsAdmin() {
+		return getRole() == User.ROLE.ADMIN;
+	}
+
 }

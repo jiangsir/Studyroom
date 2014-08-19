@@ -15,6 +15,9 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import org.codehaus.jackson.map.ObjectMapper;
+
 import tw.jiangsir.Utils.Config.SessionScope;
 import tw.jiangsir.Utils.Exceptions.Alert;
 import tw.jiangsir.Utils.Exceptions.Cause;
@@ -51,13 +54,6 @@ public class ExceptionHandlerFilter implements Filter {
 			HttpServletResponse response = (HttpServletResponse) resp;
 			HttpSession session = request.getSession(false);
 
-			if (e instanceof ApiException) {
-				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-				response.getWriter().write(e.getLocalizedMessage());
-				response.flushBuffer();
-				return;
-			}
-
 			Throwable rootCause = e;
 			Cause cause = new Cause(e);
 			ArrayList<String> contentlist = cause.getContentlist();
@@ -84,10 +80,20 @@ public class ExceptionHandlerFilter implements Filter {
 			cause.setUris(uris);
 			cause.setContentlist(contentlist);
 			Alert alert = new Alert(cause);
-			request.setAttribute("alert", alert);
-			request.getRequestDispatcher("/Alert.jsp").forward(request,
-					response);
-			return;
+
+			if (e instanceof ApiException) {
+				ObjectMapper mapper = new ObjectMapper();
+				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+				response.getWriter().write(mapper.writeValueAsString(alert));
+				response.flushBuffer();
+				return;
+			} else {
+				request.setAttribute("alert", alert);
+				request.getRequestDispatcher("/Alert.jsp").forward(request,
+						response);
+				return;
+
+			}
 		}
 	}
 

@@ -43,29 +43,25 @@ public class CancelServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		int seatid = Integer.parseInt(request.getParameter("seatid"));
-		String studentid = request.getParameter("studentid");
-		String passwd = request.getParameter("passwd");
-
 		try {
+			int seatid = Integer.parseInt(request.getParameter("seatid"));
+			String studentid = request.getParameter("studentid");
+			String passwd = request.getParameter("passwd");
+
 			new PopChecker().isGmailAccount(studentid.trim()
 					+ "@stu.nknush.kh.edu.tw", passwd);
+
+			Booking booking = new BookingService()
+					.getBookingTodayByStudentid(studentid);
+			if (booking == null) {
+				throw new DataException("這個位置今天沒有預約，請訂位！");
+			} else if (booking.getSeatid() != seatid) {
+				throw new DataException("您(" + studentid + ")可能不是這個位置("
+						+ seatid + ")的主人，無法讓您取消訂位。");
+			}
+			new BookingService().delete(booking.getId());
 		} catch (Exception e) {
 			throw new ApiException(e);
-			// response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			// response.getWriter().write(e.getLocalizedMessage());
-			// response.flushBuffer();
-			// return;
 		}
-
-		Booking booking = new BookingService()
-				.getBookingTodayByStudentid(studentid);
-		if (booking == null) {
-			throw new DataException("這個位置今天沒有預約，請訂位！");
-		} else if (booking.getSeatid() != seatid) {
-			throw new DataException("您(" + studentid + ")可能不是這個位置(" + seatid
-					+ ")的主人，無法讓您取消訂位。");
-		}
-		new BookingService().delete(booking.getId());
 	}
 }

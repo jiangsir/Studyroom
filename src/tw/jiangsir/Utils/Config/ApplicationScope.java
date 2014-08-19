@@ -1,6 +1,7 @@
 package tw.jiangsir.Utils.Config;
 
 import java.io.File;
+import java.sql.Date;
 import java.util.HashMap;
 
 import javax.servlet.ServletContext;
@@ -8,8 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpSession;
 
 import tw.jiangsir.Studyroom.Servlets.BookUpServlet;
-import tw.jiangsir.Utils.Exceptions.AccessException;
-import tw.jiangsir.Utils.Exceptions.DataException;
 import tw.jiangsir.Utils.Objects.User;
 
 public class ApplicationScope {
@@ -81,8 +80,11 @@ public class ApplicationScope {
 
 	public static boolean getCanBookup() {
 		try {
-			return new BookUpServlet().accessible(null);
+			new BookUpServlet().AccessFilter(new Date(System
+					.currentTimeMillis()));
+			return true;
 		} catch (Exception e) {
+			e.printStackTrace();
 			return false;
 		}
 	}

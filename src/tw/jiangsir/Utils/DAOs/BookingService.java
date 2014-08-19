@@ -20,7 +20,9 @@ public class BookingService {
 			Booking otherbooking = bookingDao.getBookingByStudentidDate(
 					booking.getStudentid(), booking.getDate());
 			if (otherbooking != null) {
-				throw new DataException("您在 "
+				throw new DataException("您("
+						+ booking.getStudentid()
+						+ ")在 "
 						+ (DateTool.isSameday(otherbooking.getDate(),
 								new java.util.Date()) ? "今天"
 								: otherbooking.getDate()) + " 已經訂過 "
@@ -54,6 +56,18 @@ public class BookingService {
 	public void delete(long bookingid) throws DataException {
 		try {
 			new BookingDAO().delete(bookingid);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DataException(e);
+		}
+	}
+
+	public void delete(int seatid, Date date) {
+		try {
+			for (Booking booking : new BookingDAO().getBookingsBySeatidDate(
+					seatid, date)) {
+				this.delete(booking.getId());
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new DataException(e);

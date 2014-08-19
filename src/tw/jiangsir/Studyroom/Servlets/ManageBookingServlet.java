@@ -6,6 +6,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import tw.jiangsir.Utils.Annotations.RoleSetting;
 import tw.jiangsir.Utils.DAOs.BookingService;
 import tw.jiangsir.Utils.Tools.DateTool;
 
@@ -13,6 +15,7 @@ import tw.jiangsir.Utils.Tools.DateTool;
  * Servlet implementation class SignUp
  */
 @WebServlet(urlPatterns = { "/ManageBooking" })
+@RoleSetting
 public class ManageBookingServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -26,7 +29,6 @@ public class ManageBookingServlet extends HttpServlet {
 		try {
 			date = java.sql.Date.valueOf(request.getParameter("date"));
 		} catch (Exception e) {
-			e.printStackTrace();
 			date = new java.sql.Date(System.currentTimeMillis());
 		}
 

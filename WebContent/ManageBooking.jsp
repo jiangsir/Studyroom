@@ -10,55 +10,50 @@
 <html>
 <head>
 <jsp:include page="CommonHead.jsp" />
+<script type="text/javascript"
+	src="jscripts/functions/showErrorDialog.js"></script>
 
 <script>
 	$(function() {
-		$("#dialog-confirm").dialog({
-			autoOpen : false,
-			height : 300,
-			width : 350,
-			modal : true,
-			buttons : {
-				"+加入" : function() {
-					$(this).dialog("close");
-				},
-				Cancel : function() {
-					$(this).dialog("close");
-				}
+		$.urlParam = function(name) {
+			var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+			if (results == null) {
+				return null;
+			} else {
+				return results[1] || 0;
 			}
-		});
-		$("#opendialog").click(function() {
-			$("#dialog-confirm").dialog("open");
-		});
-
-		$(".insertBooking").each(function() {
+		}
+		$("button#insertBooking").each(function() {
 			$(this).click(function() {
-				$("div#insertBookingDialog span#seatid").html($(this).attr("seatid"));
-				$("#insertBookingDialog").dialog("open");
+				var seatid = $(this).closest("div.seat").attr("seatid");
+				$("div#insertBookingDialogWithoutPassword span#seatid").html(seatid);
+				$("#insertBookingDialogWithoutPassword").dialog("open");
 			});
 		});
-		$("#insertBookingDialog").dialog({
+		$("#insertBookingDialogWithoutPassword").dialog({
 			autoOpen : false,
-			height : 400,
+			modal : true,
 			width : 350,
 			modal : true,
 			buttons : {
 				"訂位" : function() {
 					var studentid = $(this).find("input[name='studentid']").val();
-					var passwd = $(this).find("input[name='passwd']").val();
 					var seatid = $(this).find("span[id='seatid']").text();
+					var date = jQuery.urlParam("date");
 
 					jQuery.ajax({
 						type : "POST",
-						url : "BookUp",
-						data : "studentid=" + studentid + "&passwd=" + passwd + "&seatid=" + seatid,
+						url : "Booking.api",
+						data : "action=booked&studentid=" + studentid + "&seatid=" + seatid + "&date=" + date,
 						async : false,
 						timeout : 5000,
 						success : function(result) {
 							location.reload();
+						},
+						error : function(jqXHR, textStatus, errorThrown) {
+							showErrorDialog(jqXHR, textStatus, errorThrown);
 						}
 					});
-
 					$(this).dialog("close");
 				},
 				"取消" : function() {
@@ -69,37 +64,40 @@
 
 		$(".deleteBooking").each(function() {
 			$(this).click(function() {
-				$("div#deleteBookingDialog span#seatid").html($(this).attr("seatid"));
-				$("#deleteBookingDialog").dialog("open");
+				var seatid = $(this).closest("div.seat").attr("seatid");
+				$("div#deleteBookingDialogWithoutPassword span#seatid").html(seatid);
+				$("#deleteBookingDialogWithoutPassword").dialog("open");
 			});
 		});
-		$("#deleteBookingDialog").dialog({
+		$("#deleteBookingDialogWithoutPassword").dialog({
 			autoOpen : false,
-			height : 400,
 			width : 350,
 			modal : true,
 			buttons : {
 				"取消訂位" : function() {
-					var studentid = $(this).find("input[name='studentid']").val();
-					var passwd = $(this).find("input[name='passwd']").val();
 					var seatid = $(this).find("span[id='seatid']").text();
-
+					var date = jQuery.urlParam("date");
 					jQuery.ajax({
 						type : "POST",
-						url : "Cancel",
-						data : "studentid=" + studentid + "&passwd=" + passwd + "&seatid=" + seatid,
+						url : "Booking.api",
+						data : "action=cancel&seatid=" + seatid + "&date=" + date,
 						async : false,
 						timeout : 5000,
+						beforeSend : function() {
+						},
 						success : function(result) {
 							location.reload();
+						},
+						error : function(jqXHR, textStatus, errorThrown) {
+							showErrorDialog(jqXHR, textStatus, errorThrown);
 						}
 					});
-
 					$(this).dialog("close");
 				},
 				"取消" : function() {
 					$(this).dialog("close");
 				}
+
 			}
 		});
 
@@ -118,36 +116,48 @@
 
 	});
 </script>
+<style type="text/css">
+.seat {
+	font-size: 0.8em;
+	max-height: 4em;
+	height: 4em;
+	max-width: 4em;
+	width: 4em;
+	border-color: black;
+}
+
+div.deleteBooking {
+	font-size: 0.8em;
+	max-height: 4em;
+	height: 4em;
+	max-width: 4em;
+	width: 4em;
+	box-sizing: border-box;
+	border: 1px solid #bbbbbb;
+	border-radius: 5px;
+	text-align: center;
+
+	/*     display: table-cell;
+	vertical-align: middle;
+ */
+}
+</style>
 </head>
 <body>
+	<jsp:include page="includes/dialog/Error.jsp" />
+	<jsp:include
+		page="includes/dialog/InsertBookingDialogWithoutPassword.jsp" />
+	<jsp:include
+		page="includes/dialog/DeleteBookingDialogWithoutPassword.jsp" />
+
 	<jsp:include page="Header.jsp" />
-	<div id="insertBookingDialog" title="請輸入帳號密碼！" style="display: none;">
-		<fieldset style="padding: 5px;">
-			<legend>
-				確定要訂位 <span id="seatid"></span> 號的位置？
-			</legend>
-			<br /> <label>請輸入學號</label><br /> <input type="text"
-				name="studentid" value="" style="width: 90%;"></input><br /> <label>請輸入學生信箱密碼
-				(stu.nknush.kh.edu.tw)</label><br /> <input type="password" name="passwd"
-				value="" style="width: 90%;"></input> <br />
-		</fieldset>
-	</div>
-	<div id="deleteBookingDialog" title="請輸入帳號密碼！" style="display: none;">
-		<fieldset style="padding: 5px;">
-			<legend>
-				確定要取消訂位 <span id="seatid"></span> 號的位置？
-			</legend>
-			<br /> <label>請輸入學號</label><br /> <input type="text"
-				name="studentid" value="" style="width: 90%;"></input><br /> <label>請輸入學生信箱密碼
-				(stu.nknush.kh.edu.tw)</label><br /> <input type="password" name="passwd"
-				value="" style="width: 90%;"></input> <br />
-		</fieldset>
-	</div>
 	<jsp:useBean id="now" class="java.util.Date"></jsp:useBean>
 	<div style="text-align: center;">
 		<h1>
+			每日訂位管理 （
 			<fmt:formatDate value="${date}" pattern="yyyy-MM-dd" />
-			的訂位狀況
+			）
+
 		</h1>
 		<a href="?date=${prevdate }" type="button">前一日</a> <a href="?"
 			type="button">今天</a> <a href="?date=${nextdate}" type="button">後一日</a>
@@ -163,33 +173,21 @@
 				<tr>
 					<c:forEach var="col" begin="1" end="${group}" step="1">
 						<c:set var="seatid" value="${base+(row-1)*group+col}" />
-						<td><c:choose>
-								<c:when test="${!seat:canBookup(date)}">
-									<c:if test="${seat:isOccupied(bookupMap, seatid)}">
-										<span>${seat:studentid(bookupMap, seatid)}</span>
-									</c:if>
-									<c:if test="${!seat:isOccupied(bookupMap, seatid)}">
-										<button style="font-size: 0.8em; height: 4em;">
+						<td>
+							<div class="seat" seatid="${seatid}">
+								<c:choose>
+									<c:when test="${seat:isOccupied(bookupMap, seatid)}">
+										<div class="deleteBooking">${seat:studentid(bookupMap,
+											seatid)}</div>
+									</c:when>
+									<c:otherwise>
+										<button id="insertBooking" class="seat" seatid=${seatid}>
 											<fmt:formatNumber pattern="000" value="${seatid}" />
 										</button>
-									</c:if>
-								</c:when>
-								<c:otherwise>
-									<c:choose>
-										<c:when test="${seat:isOccupied(bookupMap, seatid)}">
-											<span class="deleteBooking">${seat:studentid(bookupMap,
-												seatid)}</span>
-										</c:when>
-										<c:otherwise>
-											<button class="insertBooking"
-												style="font-size: 0.8em; height: 4em;" seatid=${seatid}>
-												搶
-												<fmt:formatNumber pattern="000" value="${seatid}" />
-											</button>
-										</c:otherwise>
-									</c:choose>
-								</c:otherwise>
-							</c:choose></td>
+									</c:otherwise>
+								</c:choose>
+							</div>
+						</td>
 					</c:forEach>
 				</tr>
 			</c:forEach>

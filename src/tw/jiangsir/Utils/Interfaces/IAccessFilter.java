@@ -9,6 +9,5 @@ import tw.jiangsir.Utils.Exceptions.AccessException;
  * 
  */
 public interface IAccessFilter {
-    public boolean accessible(HttpServletRequest request)
-	    throws AccessException;
+	public void AccessFilter(HttpServletRequest request) throws AccessException;
 }

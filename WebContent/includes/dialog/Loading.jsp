@@ -6,9 +6,7 @@
 
 <%@ page isELIgnored="false"%>
 
-<div class="error_dialog"
+<div class="loading_dialog"
 	style="cursor: default; padding: 10px; text-align: center; display: none;">
-	<h2 id="title"></h2>
-	<h3 id="subtitletitle"></h3>
-	<pre id="content"></pre>
+	<img src="images/ajax-loader.gif" width="128" height="15" alt="Loading" />
 </div>

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import tw.jiangsir.Utils.DAOs.RoomstatusService;
 import tw.jiangsir.Utils.Exceptions.AccessException;
+import tw.jiangsir.Utils.Exceptions.ApiException;
 import tw.jiangsir.Utils.Interfaces.IAccessFilter;
 
 /**
@@ -34,9 +35,7 @@ public class RoomstatusApi extends HttpServlet implements IAccessFilter {
 	}
 
 	@Override
-	public boolean accessible(HttpServletRequest request)
-			throws AccessException {
-		return true;
+	public void AccessFilter(HttpServletRequest request) throws AccessException {
 	}
 
 	/**
@@ -54,23 +53,28 @@ public class RoomstatusApi extends HttpServlet implements IAccessFilter {
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		ACTION action = ACTION.valueOf(request.getParameter("action"));
-		switch (action) {
-		case doChangeStatus:
-			Date date = Date.valueOf(request.getParameter("date"));
-			new RoomstatusService().doChangeStatus(date);
-			return;
-		case doClose:
-			date = Date.valueOf(request.getParameter("date"));
-			new RoomstatusService().doOpen(date);
-			break;
-		case doOpen:
-			date = Date.valueOf(request.getParameter("date"));
-			new RoomstatusService().doClose(date);
-			break;
-		default:
-			break;
+		try {
+			ACTION action = ACTION.valueOf(request.getParameter("action"));
+			switch (action) {
+			case doChangeStatus:
+				Date date = Date.valueOf(request.getParameter("date"));
+				new RoomstatusService().doChangeStatus(date);
+				return;
+			case doClose:
+				date = Date.valueOf(request.getParameter("date"));
+				new RoomstatusService().doOpen(date);
+				break;
+			case doOpen:
+				date = Date.valueOf(request.getParameter("date"));
+				new RoomstatusService().doClose(date);
+				break;
+			default:
+				break;
 
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ApiException(e);
 		}
 	}
 

@@ -69,15 +69,14 @@ public class Alert extends Throwable {
 		this(throwable.getLocalizedMessage(), throwable);
 	}
 
-	// public Alert(Cause cause) {
-	// this.setType(TYPE.EXCEPTION);
-	// this.setTitle(cause.getTitle());
-	// this.setSubtitle(cause.getSubtitle());
-	// this.setList(cause.getContentlist());
-	// this.setStacktrace(cause.getStackTrace());
-	// this.setDebugs(cause.getDebugs());
-	// this.setOnlineUser(cause.getOnlineUser());
-	// }
+	public Alert(Cause cause) {
+		this.setType(TYPE.EXCEPTION);
+		this.setTitle(cause.getTitle());
+		this.setSubtitle(cause.getSubtitle());
+		this.setList(cause.getContentlist());
+		this.setStacktrace(cause.getStackTrace());
+		this.setDebugs(cause.getDebugs());
+	}
 
 	public TYPE getType() {
 		return type;
