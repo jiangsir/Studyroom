@@ -33,16 +33,13 @@
 			的訂位狀況
 		</h1>
 		<c:if test="${sessionScope.currentUser.isAdmin}">
-			<a href="?date=${prevdate }" type="button">前一日</a>
-			<a href="?" type="button">今天</a>
-			<a href="?date=${nextdate}" type="button">後一日</a>
+			<div style="margin: 1em;">
+				<a href="?date=${prevdate }" type="button">前一日</a> <a href="?"
+					type="button">今天</a> <a href="?date=${nextdate}" type="button">後一日</a>
+			</div>
 		</c:if>
 	</div>
 
-	<span class="ui-icon ui-icon-arrowthick-1-n"></span>
-	<div>已被訂位: ${bookupMap } ${applicationScope.appConfig.starttime }
-		: ${applicationScope.appConfig.deadline }</div>
-	<div>now: ${now}, canBookup: ${seat:canBookup(date)}</div>
 	<c:choose>
 		<c:when test="${room:isOpen(date) }">
 			<table style="border: 0px;">

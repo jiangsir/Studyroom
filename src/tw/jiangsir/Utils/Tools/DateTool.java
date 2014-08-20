@@ -83,6 +83,12 @@ public class DateTool {
 		return cal.getActualMaximum(Calendar.DAY_OF_MONTH);
 	}
 
+	/**
+	 * 該月份的所有日期集合
+	 * 
+	 * @param date
+	 * @return
+	 */
 	public static ArrayList<java.util.Date> getDaysOfMonth(java.sql.Date date) {
 		ArrayList<java.util.Date> days = new ArrayList<java.util.Date>();
 		for (int i = 1; i < DateTool.getFirstdayOfMonth(date); i++) {

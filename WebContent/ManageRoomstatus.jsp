@@ -52,16 +52,16 @@
 
 .css_td {
 	display: table-cell;
-	width: 3em;
-	height: 3em;
+	width: 2.5em;
+	height: 2.5em;
 	vertical-align: middle;
 	text-align: center;
 }
 
 .css_day {
 	display: table-cell;
-	width: 3em;
-	height: 3em;
+	width: 2.5em;
+	height: 2.5em;
 	vertical-align: middle;
 	text-align: center;
 }
@@ -93,6 +93,9 @@
 				value="${nextmonth}" pattern="yyyy-MM" />)
 		</a>
 		<hr>
+		<h1>
+			<fmt:formatDate value="${thedate}" pattern="yyyy-MM" />
+		</h1>
 		<div id="css_table">
 			<div class="css_tr">
 				<div class="css_td">日</div>

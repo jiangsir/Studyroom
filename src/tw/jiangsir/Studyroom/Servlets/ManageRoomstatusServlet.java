@@ -41,6 +41,7 @@ public class ManageRoomstatusServlet extends HttpServlet {
 			thedate = new Date(new java.util.Date().getTime());
 		}
 
+		request.setAttribute("thedate", thedate);
 		request.setAttribute("prevmonth", DateTool.getPrevMonth(thedate));
 		request.setAttribute("nextmonth", DateTool.getNextMonth(thedate));
 		request.setAttribute("firstweekdayofmonth",

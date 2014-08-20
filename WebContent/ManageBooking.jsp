@@ -152,7 +152,7 @@ div.deleteBooking {
 
 	<jsp:include page="Header.jsp" />
 	<jsp:useBean id="now" class="java.util.Date"></jsp:useBean>
-	<div style="text-align: center;">
+	<div style="text-align: center; margin: 1em;">
 		<h1>
 			每日訂位管理 （
 			<fmt:formatDate value="${date}" pattern="yyyy-MM-dd" />
@@ -162,9 +162,6 @@ div.deleteBooking {
 		<a href="?date=${prevdate }" type="button">前一日</a> <a href="?"
 			type="button">今天</a> <a href="?date=${nextdate}" type="button">後一日</a>
 	</div>
-	<div>已被訂位: ${bookupMap } ${applicationScope.appConfig.starttime }
-		: ${applicationScope.appConfig.deadline }</div>
-	<div>date: ${date}, canBookup: ${seat:canBookup(date)}</div>
 	<table style="border: 0px; padding-right: 5em;">
 		<c:set var="grouplist" value="${fn:split('26,24,20', ',')}" />
 		<c:set var="base" value="0" />
