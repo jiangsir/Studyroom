@@ -2,9 +2,7 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
 	<comment>應用程式參數</comment>
-	<entry key="AllowedIP">*</entry>
 	<entry key="Title">高師大附中－晚自習教室訂位系統</entry>
-	<entry key="TitleImage">images/BANNER_IMAGE.png</entry>
 	<entry key="Header">高師大附中－晚自習教室訂位系統</entry>
 	<entry key="Author">Qixun Jiang</entry>
 	<entry key="PageSize">20</entry>
@@ -14,6 +12,6 @@
 	<entry key="client_secret">g_NdXLE9SvStnaYdpiQXcn8g</entry>
 	<entry key="redirect_uri">http://127.0.0.1:8080/Studyroom/oauth2callback</entry>
 	<entry key="starttime">06:00:00</entry>
-	<entry key="deadline">18:00:00</entry>
-	<entry key="SigninIp">127.0.0.1/24</entry>
+	<entry key="deadline">22:00:00</entry>
+	<entry key="signinip">127.0.0.1</entry>
 </properties>

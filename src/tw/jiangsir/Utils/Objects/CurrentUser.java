@@ -27,13 +27,13 @@ public class CurrentUser extends User implements HttpSessionBindingListener,
 		ApplicationScope.getOnlineUsers().remove(event.getSession().getId());
 	}
 
-	public HttpSession getSession() {
-		return session;
-	}
-
-	public void setSession(HttpSession session) {
-		this.session = session;
-	}
+	// public HttpSession getSession() {
+	// return session;
+	// }
+	//
+	// public void setSession(HttpSession session) {
+	// this.session = session;
+	// }
 
 	public void doLogout() {
 		if (session != null) {

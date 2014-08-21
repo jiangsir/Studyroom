@@ -17,9 +17,9 @@ import tw.jiangsir.Utils.Servlets.ShowSessionsServlet;
 
 public class SessionScope implements Serializable {
 	/**
-     * 
-     */
-	private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = -6891646410999335660L;
 	private HttpSession session = null;
 	private String sessionid = "";
 	private String session_ip = "";
@@ -30,10 +30,13 @@ public class SessionScope implements Serializable {
 	private CurrentUser currentUser = null;
 	private Date lastsubmission = new Date();
 	private ArrayList<String> histories = new ArrayList<String>() {
-		private static final long serialVersionUID = 1L;
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 7989893466104807011L;
 		{
-			add("");
-			add("");
+			add("/");
+			add("/");
 		}
 	};
 
@@ -193,6 +196,24 @@ public class SessionScope implements Serializable {
 			System.out.println("histories3=" + histories);
 			this.setHistories(histories);
 		}
+	}
+
+	/**
+	 * 回到前一頁
+	 * 
+	 * @return
+	 */
+	public String getPreviousPage() {
+		return this.getHistories().get(1);
+	}
+
+	/**
+	 * 回到同一頁。
+	 * 
+	 * @return
+	 */
+	public String getCurrentPage() {
+		return this.getHistories().get(0);
 	}
 
 }

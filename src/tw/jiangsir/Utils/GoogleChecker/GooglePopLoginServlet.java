@@ -58,7 +58,7 @@ public class GooglePopLoginServlet extends HttpServlet {
 			currentUser.setPasswd(passwd);
 			currentUser.setName(account);
 			currentUser.setRole(User.ROLE.USER);
-			currentUser.setSession(session);
+			// currentUser.setSession(session);
 			SessionScope sessionScope = new SessionScope(session);
 
 			sessionScope.setCurrentUser(currentUser);

@@ -26,7 +26,7 @@ public class CurrentUserDAO extends SuperDAO<CurrentUser> {
 			pstmt.setLong(1, userid);
 			for (CurrentUser currentUser : this.executeQuery(pstmt,
 					CurrentUser.class)) {
-				currentUser.setSession(session);
+				// currentUser.setSession(session);
 				return currentUser;
 			}
 		} catch (SQLException e) {

@@ -14,6 +14,8 @@ import tw.jiangsir.Utils.Annotations.Property;
 import tw.jiangsir.Utils.Annotations.RoleSetting;
 import tw.jiangsir.Utils.Config.AppConfig;
 import tw.jiangsir.Utils.Config.ApplicationScope;
+import tw.jiangsir.Utils.Config.ConfigHandler;
+import tw.jiangsir.Utils.Config.SessionScope;
 
 /**
  * Servlet implementation class EditAppConfigServlet
@@ -71,7 +73,13 @@ public class EditAppConfigServlet extends HttpServlet {
 			} catch (InvocationTargetException e) {
 				e.printStackTrace();
 			}
+
 		}
+
+		ConfigHandler.writeAppConfig(appConfig);
+		response.sendRedirect("."
+				+ new SessionScope(request.getSession(false)).getPreviousPage());
+		return;
 	}
 
 }

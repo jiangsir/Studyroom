@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.sql.Time;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.InvalidPropertiesFormatException;
@@ -169,7 +170,10 @@ public class ConfigHandler {
 				if (getter.getReturnType() == String.class
 						|| getter.getReturnType() == int.class
 						|| getter.getReturnType() == double.class
-						|| getter.getReturnType() == boolean.class) {
+						|| getter.getReturnType() == boolean.class
+						|| getter.getReturnType() == Time.class) {
+					System.out.println("key=" + propertykey);
+					System.out.println("value=" + gettervalue.toString());
 					props.setProperty(propertykey, gettervalue.toString());
 				} else {
 					props.setProperty(propertykey,

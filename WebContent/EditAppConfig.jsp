@@ -23,6 +23,16 @@
 						id="Title" value="${appConfig.title}" size="50" maxlength="50" /></td>
 				</tr>
 				<tr style="padding: 10px;">
+					<th>Header</th>
+					<td style="padding: 10px;"><input name="Header" type="text"
+						id="Header" value="${appConfig.header}" size="50" maxlength="50" /></td>
+				</tr>
+				<tr style="padding: 10px;">
+					<th>Author</th>
+					<td style="padding: 10px;"><input name="Author" type="text"
+						id="Author" value="${appConfig.author}" size="50" maxlength="50" /></td>
+				</tr>
+				<tr style="padding: 10px;">
 					<th>Page Size</th>
 					<td style="padding: 10px;"><input name="PageSize" type="text"
 						id="Title" value="${appConfig.pageSize}" size="50" maxlength="50" /></td>

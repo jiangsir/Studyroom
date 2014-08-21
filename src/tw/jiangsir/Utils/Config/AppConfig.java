@@ -15,17 +15,30 @@ import tw.jiangsir.Utils.Tools.StringTool;
  * 
  */
 public class AppConfig {
+	// <entry key="AllowedIP">*</entry>
+	// <entry key="Title">高師大附中－晚自習教室訂位系統</entry>
+	// <entry key="TitleImage">images/BANNER_IMAGE.png</entry>
+	// <entry key="Header">高師大附中－晚自習教室訂位系統</entry>
+	// <entry key="Author">Qixun Jiang</entry>
+	// <entry key="PageSize">20</entry>
+	// <entry key="DefaultLogin">Login</entry>
+	// <entry
+	// key="AuthDomains">["stu.nknush.kh.edu.tw","tea.nknush.kh.edu.tw"]</entry>
+	// <entry
+	// key="client_id">953896450978-u82dc8hgj246t9fva61f0bl21v0ek97n.apps.googleusercontent.com</entry>
+	// <entry key="client_secret">g_NdXLE9SvStnaYdpiQXcn8g</entry>
+	// <entry
+	// key="redirect_uri">http://127.0.0.1:8080/Studyroom/oauth2callback</entry>
+	// <entry key="starttime">06:00:00</entry>
+	// <entry key="deadline">22:00:00</entry>
+	// <entry key="signinip">127.0.0.1</entry>
 
-	@Property(key = "ManagerIP")
-	private String ManagerIP = "*";
 	@Property(key = "Title")
 	private String Title = "A Title for Your Site";
+	@Property(key = "Header")
+	private String Header = "Header";
 	@Property(key = "Author")
 	private String Author = "Qixun Jiang";
-	@Property(key = "AuthorEmail")
-	private String AuthorEmail = "jiangsir@zerojudge.tw";
-	@Property(key = "AllowedIP")
-	private String AllowedIP = "*";
 	@Property(key = "PageSize")
 	private int PageSize = 20;
 	@Property(key = "DefaultLogin")
@@ -41,18 +54,9 @@ public class AppConfig {
 	@Property(key = "starttime")
 	private java.sql.Time starttime = java.sql.Time.valueOf("06:00:00");
 	@Property(key = "deadline")
-	private java.sql.Time deadline = java.sql.Time.valueOf("18:00:00");
-
+	private java.sql.Time deadline = java.sql.Time.valueOf("22:00:00");
 	@Property(key = "signinip")
 	private String signinip = "127.0.0.1";
-
-	public String getManagerIP() {
-		return ManagerIP;
-	}
-
-	public void setManagerIP(String managerIP) {
-		ManagerIP = managerIP;
-	}
 
 	public String getTitle() {
 		return Title;
@@ -62,28 +66,20 @@ public class AppConfig {
 		Title = title;
 	}
 
+	public String getHeader() {
+		return Header;
+	}
+
+	public void setHeader(String header) {
+		Header = header;
+	}
+
 	public String getAuthor() {
 		return Author;
 	}
 
 	public void setAuthor(String author) {
 		Author = author;
-	}
-
-	public String getAuthorEmail() {
-		return AuthorEmail;
-	}
-
-	public void setAuthorEmail(String authorEmail) {
-		AuthorEmail = authorEmail;
-	}
-
-	public String getAllowedIP() {
-		return AllowedIP;
-	}
-
-	public void setAllowedIP(String allowedIP) {
-		AllowedIP = allowedIP;
 	}
 
 	public int getPageSize() {

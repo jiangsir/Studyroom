@@ -80,7 +80,7 @@ public class OAuth2CallbackServlet extends HttpServlet {
 		currentUser.setAccount(googleUser.getEmail());
 		currentUser.setName(googleUser.getName());
 		currentUser.setRole(User.ROLE.USER);
-		currentUser.setSession(session);
+		// currentUser.setSession(session);
 		new SessionScope(session).setCurrentUser(currentUser);
 		// response.sendRedirect("."
 		// + new SessionScope(session).getHistories().get(0));
