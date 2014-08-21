@@ -76,44 +76,42 @@
 }
 </style>
 <script language="javascript">
-	jQuery(document).ready(
-			function() {
-				$("input:first").focus();
-				$("input[type=submit], [type='button']").button();
-				$("button").button().click(function(event) {
-					event.preventDefault(); // 讓預設的動作失效！
-				});
-				$(".closethick").button({
-					icons : {
-						primary : "ui-icon-closethick"
-					},
-					text : false
-				});
+	jQuery(document).ready(function() {
+		$("input:first").focus();
+		$("input[type=submit], [type='button'], [type='checkbox']").button();
+		$("input[type='checkbox']").buttonset();
+		$("button").button().click(function(event) {
+			event.preventDefault(); // 讓預設的動作失效！
+		});
+		$(".closethick").button({
+			icons : {
+				primary : "ui-icon-closethick"
+			},
+			text : false
+		});
 
-				$("#menu").menu({
-					position : {
-						at : "left bottom"
-					}
-				});
-				/* 				$("ul#uimenu").menu({
-				 minWidth : 120,
-				 arrowSrc : 'arrow_right.gif',
-				 onClick : function(e, menuItem) {
-				 alert('you clicked item "' + $(this).text() + '"');
-				 }
-				 });
-				 */
-				//mytime(parseInt(${now.time}) );
-				//$("#account_menu").menu();
-				var servletPath = jQuery("span#servletPath").attr("page");
-				jQuery("div#menu > ul > li").each(
-						function() {
-							if ($(this).attr("uri") == servletPath
-									|| $(this).attr("uri2") == servletPath) {
-								$(this).addClass("selected");
-							}
-						});
+		$("#menu").menu({
+			position : {
+				at : "left bottom"
+			}
+		});
+		/* 				$("ul#uimenu").menu({
+		 minWidth : 120,
+		 arrowSrc : 'arrow_right.gif',
+		 onClick : function(e, menuItem) {
+		 alert('you clicked item "' + $(this).text() + '"');
+		 }
+		 });
+		 */
+		//mytime(parseInt(${now.time}) );
+		//$("#account_menu").menu();
+		var servletPath = jQuery("span#servletPath").attr("page");
+		jQuery("div#menu > ul > li").each(function() {
+			if ($(this).attr("uri") == servletPath || $(this).attr("uri2") == servletPath) {
+				$(this).addClass("selected");
+			}
+		});
 
-			});
+	});
 </script>
 

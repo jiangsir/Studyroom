@@ -12,6 +12,7 @@
 	</div>
 
 	<ul id="menu">
+		<li style="float: left; text-align: left;">${pageContext.request.remoteAddr}</li>
 		<li><c:if test="${sessionScope.currentUser==null}">
 				<a href="${pageContext.request.contextPath}/Login">登入</a>
 			</c:if> <c:if test="${sessionScope.currentUser!=null}">

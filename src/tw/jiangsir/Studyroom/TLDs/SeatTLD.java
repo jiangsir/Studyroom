@@ -20,16 +20,17 @@ public class SeatTLD {
 
 	public static String studentid(HashMap<Integer, String> bookupMap,
 			Integer seatid) {
-		String studentid = bookupMap.get(seatid);
-		Attendance attendance = new AttendanceService()
-				.getLastAttendanceTodayByStudentid(studentid);
-		String s = "";
-		if (attendance == null) {
-			s = studentid + "\n 尚未簽到";
-		} else {
-			s = studentid + "\n" + attendance.getStatus();
-		}
-		return s;
+		return bookupMap.get(seatid);
+
+		// Attendance attendance = new AttendanceService()
+		// .getLastAttendanceTodayByStudentid(studentid);
+		// String s = "";
+		// if (attendance == null) {
+		// s = studentid + "\n 尚未簽到";
+		// } else {
+		// s = studentid + "\n" + attendance.getStatus();
+		// }
+		// return s;
 	}
 
 	public static boolean canBookup(java.sql.Date date) {

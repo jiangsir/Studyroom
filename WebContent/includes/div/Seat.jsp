@@ -15,7 +15,7 @@
 	width: 4em;
 }
 
-div.deleteBooking {
+.unseat {
 	font-size: 0.8em;
 	max-height: 4em;
 	height: 4em;
@@ -26,15 +26,22 @@ div.deleteBooking {
 	border-radius: 5px;
 	text-align: center;
 	vertical-align: middle;
+	line-height: 1.4em;
+
+	/*
 	display: table-cell;
+	*/
 }
 </style>
 
-<div class="seat" seatid="${param.seatid}">
+<div seatid="${param.seatid}">
 	<c:choose>
 		<c:when test="${!seat:canBookup(date)}">
 			<c:if test="${seat:isOccupied(bookupMap, param.seatid)}">
-				<div class="seat">${seat:studentid(bookupMap, param.seatid)}</div>
+				<div class="unseat">
+					${seat:studentid(bookupMap, param.seatid)}<br />
+					<fmt:formatNumber pattern="000" value="${param.seatid}" />
+				</div>
 			</c:if>
 			<c:if test="${!seat:isOccupied(bookupMap, param.seatid)}">
 				<button class="seat">
@@ -45,12 +52,16 @@ div.deleteBooking {
 		<c:otherwise>
 			<c:choose>
 				<c:when test="${seat:isOccupied(bookupMap, param.seatid)}">
-					<div class="deleteBooking">${seat:studentid(bookupMap,
-						param.seatid)}</div>
+					<div id="deleteBooking" class="unseat" seatid=${param.seatid}>
+						<div style="margin-top: 0.6em;">
+							${seat:studentid(bookupMap, param.seatid)}<br />
+							<fmt:formatNumber pattern="000" value="${param.seatid}" />
+						</div>
+					</div>
 				</c:when>
 				<c:otherwise>
 					<button id="insertBooking" class="seat" seatid=${param.seatid}>
-						搶
+						搶<br />
 						<fmt:formatNumber pattern="000" value="${param.seatid}" />
 					</button>
 				</c:otherwise>

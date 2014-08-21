@@ -19,7 +19,7 @@ jQuery(document).ready(function() {
 
 	$("button#insertBooking").each(function() {
 		$(this).click(function() {
-			var seatid = $(this).closest("div.seat").attr("seatid");
+			var seatid = $(this).attr("seatid");
 			$("div#insertBookingDialog span#seatid").html(seatid);
 			$("#insertBookingDialog").dialog("open");
 		});
@@ -57,9 +57,9 @@ jQuery(document).ready(function() {
 		}
 	});
 
-	$(".deleteBooking").each(function() {
+	$("div#deleteBooking").each(function() {
 		$(this).click(function() {
-			var seatid = $(this).closest("div.seat").attr("seatid");
+			var seatid = $(this).attr("seatid");
 			$("div#deleteBookingDialog span#seatid").html(seatid);
 			$("#deleteBookingDialog").dialog("open");
 		});

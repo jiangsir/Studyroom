@@ -61,9 +61,9 @@
 						id="Title" value="${appConfig.deadline}" size="50" maxlength="50" /></td>
 				</tr>
 				<tr style="padding: 10px;">
-					<th>可以進行簽到／退的 ip 範圍(以 CIDR 格式表示)</th>
-					<td style="padding: 10px;"><input name="signinIp" type="text"
-						id="SigninIp" value="${appConfig.signinIp}" size="50"
+					<th>可以進行簽到／退的 ip</th>
+					<td style="padding: 10px;"><input name="signinip" type="text"
+						id="SigninIp" value="${appConfig.signinip}" size="50"
 						maxlength="50" /></td>
 				</tr>
 			</table>

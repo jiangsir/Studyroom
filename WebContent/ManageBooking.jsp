@@ -25,7 +25,7 @@
 		}
 		$("button#insertBooking").each(function() {
 			$(this).click(function() {
-				var seatid = $(this).closest("div.seat").attr("seatid");
+				var seatid = $(this).attr("seatid");
 				$("div#insertBookingDialogWithoutPassword span#seatid").html(seatid);
 				$("#insertBookingDialogWithoutPassword").dialog("open");
 			});
@@ -62,9 +62,9 @@
 			}
 		});
 
-		$(".deleteBooking").each(function() {
+		$("div#deleteBooking").each(function() {
 			$(this).click(function() {
-				var seatid = $(this).closest("div.seat").attr("seatid");
+				var seatid = $(this).attr("seatid");
 				$("div#deleteBookingDialogWithoutPassword span#seatid").html(seatid);
 				$("#deleteBookingDialogWithoutPassword").dialog("open");
 			});
@@ -123,23 +123,25 @@
 	height: 4em;
 	max-width: 4em;
 	width: 4em;
-	border-color: black;
+	box-sizing: border-box;
+	border: 1px solid #000000;
 }
 
-div.deleteBooking {
+.unseat {
 	font-size: 0.8em;
 	max-height: 4em;
 	height: 4em;
 	max-width: 4em;
 	width: 4em;
 	box-sizing: border-box;
-	border: 1px solid #bbbbbb;
+	border: 1px solid #000000;
 	border-radius: 5px;
 	text-align: center;
-
-	/*     display: table-cell;
 	vertical-align: middle;
- */
+	line-height: 1.4em;
+	/*
+    display: table-cell;
+    */
 }
 </style>
 </head>
@@ -171,11 +173,16 @@ div.deleteBooking {
 					<c:forEach var="col" begin="1" end="${group}" step="1">
 						<c:set var="seatid" value="${base+(row-1)*group+col}" />
 						<td>
-							<div class="seat" seatid="${seatid}">
+							<div seatid="${seatid}">
 								<c:choose>
 									<c:when test="${seat:isOccupied(bookupMap, seatid)}">
-										<div class="deleteBooking">${seat:studentid(bookupMap,
-											seatid)}</div>
+										<div id="deleteBooking" class="unseat" seatid="${seatid }">
+											<div style="margin-top: 0.6em;">
+												${seat:studentid(bookupMap, seatid)} <span
+													style="font-weight: bold;"> <fmt:formatNumber
+														pattern="000" value="${seatid}" /></span>
+											</div>
+										</div>
 									</c:when>
 									<c:otherwise>
 										<button id="insertBooking" class="seat" seatid=${seatid}>
