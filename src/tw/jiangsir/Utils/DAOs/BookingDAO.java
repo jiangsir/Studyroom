@@ -9,6 +9,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -22,26 +23,28 @@ public class BookingDAO extends SuperDAO<Booking> {
 
 	@Override
 	protected synchronized int insert(Booking booking) throws SQLException {
-		String sql = "INSERT INTO bookings(userid, studentid, seatid, `date`, `timestamp`) VALUES (?,?,?,?,?);";
+		String sql = "INSERT INTO bookings(userid, studentid, seatid, `date`, `status`, `timestamp`) VALUES (?,?,?,?,?,?);";
 		PreparedStatement pstmt = this.getConnection().prepareStatement(sql,
 				Statement.RETURN_GENERATED_KEYS);
 		pstmt.setLong(1, booking.getUserid());
 		pstmt.setString(2, booking.getStudentid());
 		pstmt.setInt(3, booking.getSeatid());
 		pstmt.setDate(4, booking.getDate());
-		pstmt.setTimestamp(5, booking.getTimestamp());
+		pstmt.setString(5, booking.getStatus().toString());
+		pstmt.setTimestamp(6, new Timestamp(System.currentTimeMillis()));
 		return this.executeInsert(pstmt);
 	}
 
 	protected synchronized int update(Booking booking) throws SQLException {
-		String sql = "UPDATE bookings SET userid=?, studentid=?, seatid=?, `date`=? WHERE id=?";
+		String sql = "UPDATE bookings SET userid=?, studentid=?, seatid=?, `date`=?, `status`=? WHERE id=?";
 		int result = -1;
 		PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
 		pstmt.setLong(1, booking.getUserid());
 		pstmt.setString(2, booking.getStudentid());
 		pstmt.setInt(3, booking.getSeatid());
 		pstmt.setDate(4, booking.getDate());
-		pstmt.setLong(5, booking.getId());
+		pstmt.setString(5, booking.getStatus().toString());
+		pstmt.setLong(6, booking.getId());
 		result = this.executeUpdate(pstmt);
 		pstmt.close();
 		return result;

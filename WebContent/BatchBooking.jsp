@@ -90,56 +90,88 @@
 		});
 
 		$("input#deleteBatchBookings").click(function(event) { // 事件發生
-            event.preventDefault();
-            jQuery.ajax({
-                type : "POST",
-                url : "deleteBatchBookings",
-                data : $('form#deleteBatchBookings').serialize(),
-                dataType : "json",
-                async : false,
-                timeout : 5000,
-                success : function(result) {
-                }
-            });
-        });
+			event.preventDefault();
+			jQuery.ajax({
+				type : "POST",
+				url : "deleteBatchBookings",
+				data : $('form#deleteBatchBookings').serialize(),
+				dataType : "json",
+				async : false,
+				timeout : 5000,
+				success : function(result) {
+				}
+			});
+		});
 
 	});
 </script>
 </head>
 <body>
 	<jsp:include page="Header.jsp" />
-	<div>新增長期訂位！</div>
-	<button id="addRow" style="font-size: 0.8em;">＋增加一列</button>
-	<form id="addBatchBookings">
-		<ul>
-			<li id="row">學號：<input name="studentid" />: 座位號碼：<input
-				name="seatid" />: 由<input class="datepicker" name="begindate" />日
-				到 <input class="datepicker" name="enddate" /> 日
-				<button id="removeRow" class="closethick"
-					style="display: inline; vertical-align: middle; font-size: 0.5em;">移除本列</button>
-			</li>
-		</ul>
-	</form>
-	<div style="display: inline;">
-		<input id="addBatchBookings" type="submit" value="全部訂位"></input>
-	</div>
-	<p></p>
-	<button id="addRow2" style="font-size: 0.8em;">＋增加一列</button>
-	<form id="deleteBatchBookings">
-		<ul>
-			<li id="row2">學號：<input name="studentid" />: 由<input
-				class="datepicker" name="begindate" />日 到 <input class="datepicker"
-				name="enddate" /> 日
-				<button id="removeRow2" class="closethick"
-					style="display: inline; vertical-align: middle; font-size: 0.5em;">移除本列</button>
-			</li>
-		</ul>
-	</form>
+	<fieldset>
+		<legend>長期訂位</legend>
+		<button id="addRow" style="font-size: 0.8em;">＋增加一列</button>
+		<form id="addBatchBookings">
+			<ul>
+				<li id="row">學號：<input name="studentid" />: 座位號碼：<input
+					name="seatid" /><br />固定訂位每週 <input type="checkbox"
+					name="weekday" value="1">日<input type="checkbox"
+					name="weekday" value="2" checked="checked">一 <input
+					type="checkbox" name="weekday" value="3" checked="checked">二<input
+					type="checkbox" name="weekday" value="4" checked="checked">三<input
+					type="checkbox" name="weekday" value="5" checked="checked">四<input
+					type="checkbox" name="weekday" value="6" checked="checked">五<input
+					type="checkbox" name="weekday" value="7">六 從<input
+					class="datepicker" name="begindate" />日 到 <input
+					class="datepicker" name="enddate" /> 日為止
+					<button id="removeRow" class="closethick"
+						style="display: inline; vertical-align: middle; font-size: 0.5em;">移除本列</button>
+				</li>
+			</ul>
+		</form>
+		<div style="display: inline;">
+			<input id="addBatchBookings" type="submit" value="全部訂位"></input>
+		</div>
 
-	<div style="display: inline;">
-		<input id="deleteBatchBookings" type="submit" value="全部退訂"></input>
-	</div>
+	</fieldset>
 	<p></p>
+	<fieldset>
+		<legend>大量退訂 － 依學號為準</legend>
+		<button id="addRow2" style="font-size: 0.8em;">＋增加一列</button>
+		<form id="deleteBatchBookings">
+			<ul>
+				<li id="row2">學號：<input name="studentid" />: 由<input
+					class="datepicker" name="begindate" />日 到 <input
+					class="datepicker" name="enddate" /> 日
+					<button id="removeRow2" class="closethick"
+						style="display: inline; vertical-align: middle; font-size: 0.5em;">移除本列</button>
+				</li>
+			</ul>
+		</form>
+
+		<div style="display: inline;">
+			<input id="deleteBatchBookings" type="submit" value="全部退訂"></input>
+		</div>
+	</fieldset>
+	<p></p>
+	<fieldset>
+		<legend>大量退訂 － 依座位為準（未完成！！）</legend>
+		<button id="addRow2" style="font-size: 0.8em;">＋增加一列</button>
+		<form id="deleteBatchBookings">
+			<ul>
+				<li id="row2">學號：<input name="studentid" />: 由<input
+					class="datepicker" name="begindate" />日 到 <input
+					class="datepicker" name="enddate" /> 日
+					<button id="removeRow2" class="closethick"
+						style="display: inline; vertical-align: middle; font-size: 0.5em;">移除本列</button>
+				</li>
+			</ul>
+		</form>
+
+		<div style="display: inline;">
+			<input id="deleteBatchBookings" type="submit" value="全部退訂"></input>
+		</div>
+	</fieldset>
 	<div>
 		學號：<input />: 訂位由 ??? 日 到 ??? 日 （在這段時間當中只要有訂位，就取消，沒有訂位就跳過。）
 	</div>

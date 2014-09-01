@@ -5,17 +5,15 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ page isELIgnored="false"%>
 <div id="header">
-	<div id="logo"
-		style="font-size: xx-large; text-align: center; margin-bottom: 1em;">
-		<a href="${pageContext.request.contextPath}"><img
-			src="${pageContext.request.contextPath}/images/BANNER_IMAGE.jpg"></a>
+	<div id="logo" style="font-size: 3em; text-align: center; margin: 1em;">
+		${applicationScope.appConfig.title }
+		<%-- <a href="${pageContext.request.contextPath}"><img
+			src="${pageContext.request.contextPath}/images/BANNER_IMAGE.jpg"></a> --%>
 	</div>
 
 	<ul id="menu">
 		<li style="float: left; text-align: left;">${pageContext.request.remoteAddr}</li>
-		<li><c:if test="${sessionScope.currentUser==null}">
-				<a href="${pageContext.request.contextPath}/Login">登入</a>
-			</c:if> <c:if test="${sessionScope.currentUser!=null}">
+		<li><c:if test="${sessionScope.currentUser!=null}">
 				<li><a href="#">管理</a>
 					<ul>
 						<li><a

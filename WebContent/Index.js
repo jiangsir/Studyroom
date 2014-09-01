@@ -21,6 +21,7 @@ jQuery(document).ready(function() {
 		$(this).click(function() {
 			var seatid = $(this).attr("seatid");
 			$("div#insertBookingDialog span#seatid").html(seatid);
+			$("#insertBookingDialog").find("input").val("");
 			$("#insertBookingDialog").dialog("open");
 		});
 	});
@@ -61,6 +62,7 @@ jQuery(document).ready(function() {
 		$(this).click(function() {
 			var seatid = $(this).attr("seatid");
 			$("div#deleteBookingDialog span#seatid").html(seatid);
+			$("#deleteBookingDialog").find("input").val("");
 			$("#deleteBookingDialog").dialog("open");
 		});
 	});

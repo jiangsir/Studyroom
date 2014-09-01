@@ -6,15 +6,24 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.catalina.tribes.util.Arrays;
+import tw.jiangsir.Utils.Annotations.RoleSetting;
+import tw.jiangsir.Utils.Exceptions.AccessException;
+import tw.jiangsir.Utils.Interfaces.IAccessFilter;
+import tw.jiangsir.Utils.Objects.User.ROLE;
 
 /**
  * Servlet implementation class BatchBooking
  */
 @WebServlet(urlPatterns = { "/BatchBooking" })
-public class BatchBookingServlet extends HttpServlet {
+@RoleSetting(allowHigherThen = ROLE.ADMIN)
+public class BatchBookingServlet extends HttpServlet implements IAccessFilter {
 	private static final long serialVersionUID = 1L;
+
+	@Override
+	public void AccessFilter(HttpServletRequest request) throws AccessException {
+		// TODO Auto-generated method stub
+
+	}
 
 	/**
 	 * @see HttpServlet#HttpServlet()

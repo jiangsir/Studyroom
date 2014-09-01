@@ -3,7 +3,6 @@ package tw.jiangsir.Utils.DAOs;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 
 import tw.jiangsir.Studyroom.Objects.Booking;
@@ -28,11 +27,16 @@ public class BookingService {
 								: otherbooking.getDate()) + " 已經訂過 "
 						+ otherbooking.getSeatid() + "號位置了，不能重複訂位。");
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DataException(e);
-		}
-		try {
+
+			if (new BookingDAO().getBookingsBySeatidDate(booking.getSeatid(),
+					booking.getDate()).size() > 0) {
+				throw new DataException(""
+						+ (DateTool.isSameday(booking.getDate(),
+								new java.util.Date()) ? "今天"
+								: booking.getDate()) + " "
+						+ booking.getSeatid() + "號位置了已經被預定了，您("
+						+ booking.getStudentid() + ") 無法再訂這個位置了。");
+			}
 			return bookingDao.insert(booking);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -44,7 +48,7 @@ public class BookingService {
 		}
 	}
 
-	public void update(Booking booking) throws DataException {
+	private void update(Booking booking) throws DataException {
 		try {
 			new BookingDAO().update(booking);
 		} catch (SQLException e) {
@@ -119,8 +123,33 @@ public class BookingService {
 		}
 	}
 
+	// /**
+	// * 一次新增多筆預約
+	// *
+	// * @param userid
+	// * @param studentid
+	// * @param seatid
+	// * @param begindate
+	// * @param enddate
+	// */
+	// public void insertBookings(long userid, String studentid, int seatid,
+	// Date begindate, Date enddate) {
+	// Calendar date = Calendar.getInstance();
+	// date.setTime(begindate);
+	// for (int day = 0; day <= DateTool
+	// .getDayCountBetween(begindate, enddate); day++) {
+	// Booking booking = new Booking();
+	// booking.setUserid(userid);
+	// booking.setStudentid(studentid);
+	// booking.setSeatid(seatid);
+	// booking.setDate(new java.sql.Date(date.getTimeInMillis()));
+	// this.insert(booking);
+	// date.add(Calendar.DATE, 1);
+	// }
+	// }
+
 	/**
-	 * 一次新增多筆預約
+	 * 指定 userid, studentid, seatid, 以及日期以便增加一筆訂位
 	 * 
 	 * @param userid
 	 * @param studentid
@@ -128,19 +157,14 @@ public class BookingService {
 	 * @param begindate
 	 * @param enddate
 	 */
-	public void insertBookings(long userid, String studentid, int seatid,
-			Date begindate, Date enddate) {
-		Calendar date = Calendar.getInstance();
-		date.setTime(begindate);
-		for (int day = 0; day <= DateTool.getDaysBetween(begindate, enddate); day++) {
-			Booking booking = new Booking();
-			booking.setUserid(userid);
-			booking.setStudentid(studentid);
-			booking.setSeatid(seatid);
-			booking.setDate(new java.sql.Date(date.getTimeInMillis()));
-			new BookingService().insert(booking);
-			date.add(Calendar.DATE, 1);
-		}
+	public void insertBooking(long userid, String studentid, int seatid,
+			Date date) {
+		Booking booking = new Booking();
+		booking.setUserid(userid);
+		booking.setStudentid(studentid);
+		booking.setSeatid(seatid);
+		booking.setDate(new java.sql.Date(date.getTime()));
+		this.insert(booking);
 	}
 
 }

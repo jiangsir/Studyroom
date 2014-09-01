@@ -78,8 +78,8 @@
 <script language="javascript">
 	jQuery(document).ready(function() {
 		$("input:first").focus();
-		$("input[type=submit], [type='button'], [type='checkbox']").button();
-		$("input[type='checkbox']").buttonset();
+		$("input[type=submit], [type='button']").button();
+		//$("input[type='checkbox']").buttonset();
 		$("button").button().click(function(event) {
 			event.preventDefault(); // 讓預設的動作失效！
 		});

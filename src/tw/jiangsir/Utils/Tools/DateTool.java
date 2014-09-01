@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import tw.jiangsir.Studyroom.Objects.Booking;
+import tw.jiangsir.Utils.DAOs.BookingService;
+
 public class DateTool {
 
 	public static boolean isSameday(Date date1, Date date2) {
@@ -129,24 +132,24 @@ public class DateTool {
 		return days;
 	}
 
-	public static Long getDaysBetween(Date startDate, Date endDate) {
-		Calendar fromCalendar = Calendar.getInstance();
-		fromCalendar.setTime(startDate);
-		fromCalendar.set(Calendar.HOUR_OF_DAY, 0);
-		fromCalendar.set(Calendar.MINUTE, 0);
-		fromCalendar.set(Calendar.SECOND, 0);
-		fromCalendar.set(Calendar.MILLISECOND, 0);
-
-		Calendar toCalendar = Calendar.getInstance();
-		toCalendar.setTime(endDate);
-		toCalendar.set(Calendar.HOUR_OF_DAY, 0);
-		toCalendar.set(Calendar.MINUTE, 0);
-		toCalendar.set(Calendar.SECOND, 0);
-		toCalendar.set(Calendar.MILLISECOND, 0);
-
-		return (toCalendar.getTime().getTime() - fromCalendar.getTime()
-				.getTime()) / (1000 * 60 * 60 * 24);
-	}
+	// public static Long getDaysBetween(Date startDate, Date endDate) {
+	// Calendar fromCalendar = Calendar.getInstance();
+	// fromCalendar.setTime(startDate);
+	// fromCalendar.set(Calendar.HOUR_OF_DAY, 0);
+	// fromCalendar.set(Calendar.MINUTE, 0);
+	// fromCalendar.set(Calendar.SECOND, 0);
+	// fromCalendar.set(Calendar.MILLISECOND, 0);
+	//
+	// Calendar toCalendar = Calendar.getInstance();
+	// toCalendar.setTime(endDate);
+	// toCalendar.set(Calendar.HOUR_OF_DAY, 0);
+	// toCalendar.set(Calendar.MINUTE, 0);
+	// toCalendar.set(Calendar.SECOND, 0);
+	// toCalendar.set(Calendar.MILLISECOND, 0);
+	//
+	// return (toCalendar.getTime().getTime() - fromCalendar.getTime()
+	// .getTime()) / (1000 * 60 * 60 * 24);
+	// }
 
 	/**
 	 * 計算兩個 sql.date 之間相隔的天數。因為時間都是 00:00:00.0 因此可以直接相減計算。
@@ -155,10 +158,42 @@ public class DateTool {
 	 * @param enddate
 	 * @return
 	 */
-	public static Long getDaysBetween(java.sql.Date begindate,
+	public static Long getDayCountBetween(java.sql.Date begindate,
 			java.sql.Date enddate) {
 		return (enddate.getTime() - begindate.getTime())
 				/ (1000 * 60 * 60 * 24);
+	}
+
+	/**
+	 * 取得兩個日期中間的每一天
+	 * 
+	 * @param begindate
+	 * @param enddate
+	 * @return
+	 */
+	public static ArrayList<java.sql.Date> getDaysBetween(
+			java.sql.Date begindate, java.sql.Date enddate) {
+		Calendar fromCalendar = Calendar.getInstance();
+		fromCalendar.setTime(begindate);
+		fromCalendar.set(Calendar.HOUR_OF_DAY, 0);
+		fromCalendar.set(Calendar.MINUTE, 0);
+		fromCalendar.set(Calendar.SECOND, 0);
+		fromCalendar.set(Calendar.MILLISECOND, 0);
+
+		// Calendar toCalendar = Calendar.getInstance();
+		// toCalendar.setTime(enddate);
+		// toCalendar.set(Calendar.HOUR_OF_DAY, 0);
+		// toCalendar.set(Calendar.MINUTE, 0);
+		// toCalendar.set(Calendar.SECOND, 0);
+		// toCalendar.set(Calendar.MILLISECOND, 0);
+
+		ArrayList<java.sql.Date> days = new ArrayList<java.sql.Date>();
+		for (int day = 0; day <= DateTool
+				.getDayCountBetween(begindate, enddate); day++) {
+			days.add(new java.sql.Date(fromCalendar.getTime().getTime()));
+			fromCalendar.add(Calendar.DATE, 1);
+		}
+		return days;
 	}
 
 	public static void main(String[] args) {
