@@ -73,7 +73,7 @@ public class ExceptionHandlerFilter implements Filter {
 
 			try {
 				uris.put("回前頁", new URI(request.getContextPath()
-						+ new SessionScope(session).getHistories().get(1)));
+						+ new SessionScope(session).getPreviousPage()));
 			} catch (URISyntaxException e1) {
 				e1.printStackTrace();
 			}

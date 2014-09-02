@@ -48,7 +48,7 @@ public class HistoryFilter implements Filter {
 		HttpServlet httpServlet = ApplicationScope.getUrlpatterns().get(
 				servletPath);
 		if (httpServlet != null) {
-			new SessionScope(session).addHistory(servletPath,
+			new SessionScope(session).setReturnPage(servletPath,
 					request.getQueryString());
 		}
 		chain.doFilter(request, response);

@@ -94,10 +94,6 @@ public class BatchBookingApi extends HttpServlet implements IAccessFilter {
 		String[] enddates = request.getParameterValues("enddate");
 		String[] weekdays = request.getParameterValues("weekdays");
 
-		System.out.println("studentids=" + Arrays.toString(studentids));
-		System.out.println("seatids=" + Arrays.toString(seatids));
-		System.out.println("begindates=" + Arrays.toString(begindates));
-		System.out.println("enddates=" + Arrays.toString(enddates));
 		System.out.println("weekdays=" + Arrays.toString(weekdays));
 
 		for (int i = 0; i < studentids.length; i++) {

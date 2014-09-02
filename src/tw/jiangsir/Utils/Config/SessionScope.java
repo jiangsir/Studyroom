@@ -29,11 +29,12 @@ public class SessionScope implements Serializable {
 	private HashMap<String, String> session_requestheaders = new HashMap<String, String>();
 	private CurrentUser currentUser = null;
 	private Date lastsubmission = new Date();
-	private ArrayList<String> histories = new ArrayList<String>() {
+	private ArrayList<String> returnPages = new ArrayList<String>() {
 		/**
 		 * 
 		 */
 		private static final long serialVersionUID = 7989893466104807011L;
+
 		{
 			add("/");
 			add("/");
@@ -57,7 +58,8 @@ public class SessionScope implements Serializable {
 				.getAttribute("session_requestheaders"));
 		this.setCurrentUser((CurrentUser) session.getAttribute("currentUser"));
 		this.setLastsubmission((Date) session.getAttribute("lastsubmission"));
-		this.setHistories((ArrayList<String>) session.getAttribute("histories"));
+		this.setReturnPages((ArrayList<String>) session
+				.getAttribute("returnPages"));
 	}
 
 	public String getSessionid() {
@@ -155,23 +157,28 @@ public class SessionScope implements Serializable {
 	}
 
 	@SuppressWarnings("unchecked")
-	public ArrayList<String> getHistories() {
-		if (session != null && session.getAttribute("histories") != null) {
-			this.histories = (ArrayList<String>) session
-					.getAttribute("histories");
+	public ArrayList<String> getReturnPages() {
+		if (session.getAttribute("returnPages") != null) {
+			this.returnPages = (ArrayList<String>) session
+					.getAttribute("returnPages");
 		}
-		return this.histories;
+		return this.returnPages;
 	}
 
-	public void setHistories(ArrayList<String> histories) {
-		if (histories == null || session == null) {
+	@SuppressWarnings("unchecked")
+	public void setReturnPages(Object returnPages) {
+		if (returnPages == null || !(returnPages instanceof ArrayList)) {
+			this.returnPages = new ArrayList<String>();
+			this.returnPages.add("/");
+			this.returnPages.add("/");
+			session.setAttribute("returnPages", this.returnPages);
 			return;
 		}
-		this.histories = histories;
-		session.setAttribute("histories", histories);
+		this.returnPages = (ArrayList<String>) returnPages;
+		session.setAttribute("returnPages", this.returnPages);
 	}
 
-	public void addHistory(String servletPath, String querystring) {
+	public void setReturnPage(String servletPath, String querystring) {
 		if (servletPath.startsWith(LoginServlet.class.getAnnotation(
 				WebServlet.class).urlPatterns()[0])
 				|| servletPath.startsWith(LogoutServlet.class.getAnnotation(
@@ -185,16 +192,17 @@ public class SessionScope implements Serializable {
 				|| servletPath.endsWith(".api")) {
 			return;
 		}
-		ArrayList<String> histories = this.getHistories();
-		String history = servletPath
+		ArrayList<String> returnPages = this.getReturnPages();
+		String returnPage = servletPath
 				+ (querystring == null ? "" : "?" + querystring);
-		System.out.println("histories1=" + histories);
-		if (!history.equals(histories.get(0))) {
-			histories.remove(histories.size() - 1);
-			System.out.println("histories2=" + histories);
-			histories.add(0, history);
-			System.out.println("histories3=" + histories);
-			this.setHistories(histories);
+		System.out.println("1returnPages=" + returnPages);
+		if (!returnPages.get(0).equals(returnPage)) {
+			returnPages.remove(returnPages.size() - 1);
+			System.out.println("2returnPages=" + returnPages);
+			returnPages.add(0, servletPath
+					+ (querystring == null ? "" : "?" + querystring));
+			System.out.println("3returnPages=" + returnPages);
+			this.setReturnPages(returnPages);
 		}
 	}
 
@@ -204,7 +212,7 @@ public class SessionScope implements Serializable {
 	 * @return
 	 */
 	public String getPreviousPage() {
-		return this.getHistories().get(1);
+		return this.getReturnPages().get(1);
 	}
 
 	/**
@@ -213,7 +221,7 @@ public class SessionScope implements Serializable {
 	 * @return
 	 */
 	public String getCurrentPage() {
-		return this.getHistories().get(0);
+		return this.getReturnPages().get(0);
 	}
 
 }

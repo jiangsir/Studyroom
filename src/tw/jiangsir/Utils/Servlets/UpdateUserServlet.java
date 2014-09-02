@@ -63,7 +63,8 @@ public class UpdateUserServlet extends HttpServlet {
 		user.setName(request.getParameter("name"));
 		user.setRole(request.getParameter("role"));
 		new UserService().update(user);
-		response.sendRedirect(IndexServlet.urlPatterns[0]);
+		response.sendRedirect(request.getContextPath()
+				+ IndexServlet.urlPatterns[0]);
 	}
 
 }

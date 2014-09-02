@@ -77,7 +77,7 @@ public class EditAppConfigServlet extends HttpServlet {
 		}
 
 		ConfigHandler.writeAppConfig(appConfig);
-		response.sendRedirect("."
+		response.sendRedirect(request.getContextPath()
 				+ new SessionScope(request.getSession(false)).getPreviousPage());
 		return;
 	}

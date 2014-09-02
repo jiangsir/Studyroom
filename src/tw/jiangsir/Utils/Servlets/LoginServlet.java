@@ -55,7 +55,7 @@ public class LoginServlet extends HttpServlet {
 			sessionScope.setCurrentUser(new UserService().createCurrentUser(
 					user.getId(), session));
 			response.sendRedirect(request.getContextPath()
-					+ sessionScope.getHistories().get(0));
+					+ sessionScope.getCurrentPage());
 			return;
 		} else {
 			request.getRequestDispatcher(VIEW).forward(request, response);
