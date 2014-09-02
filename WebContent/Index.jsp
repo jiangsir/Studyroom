@@ -39,7 +39,12 @@
 			</div>
 		</c:if>
 	</div>
-
+	<c:if test="${fn:trim(appConfig.announcement)!=''}">
+		<fieldset style="width: 60%; margin: auto; margin-bottom: 1em;">
+			<legend>說明：</legend>
+			<pre>${applicationScope.appConfig.announcement}</pre>
+		</fieldset>
+	</c:if>
 	<c:choose>
 		<c:when test="${room:isOpen(date) }">
 			<table style="border: 0px;">

@@ -57,6 +57,8 @@ public class AppConfig {
 	private java.sql.Time deadline = java.sql.Time.valueOf("22:00:00");
 	@Property(key = "signinip")
 	private String signinip = "127.0.0.1";
+	@Property(key = "announcement")
+	private String announcement = "";
 
 	public String getTitle() {
 		return Title;
@@ -174,6 +176,17 @@ public class AppConfig {
 			return;
 		}
 		this.signinip = signinip.trim();
+	}
+
+	public String getAnnouncement() {
+		return announcement;
+	}
+
+	public void setAnnouncement(String announcement) {
+		if (announcement == null) {
+			return;
+		}
+		this.announcement = announcement.trim();
 	}
 
 }

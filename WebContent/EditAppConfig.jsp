@@ -79,7 +79,7 @@
 				<tr style="padding: 10px;">
 					<th>首頁說明</th>
 					<td style="padding: 10px;"><textarea
-							style="width: 300px; height: 100px;">${appConfig.announcement}</textarea>
+							style="width: 50em; height: 20em;" name="announcement">${appConfig.announcement}</textarea>
 					</td>
 				</tr>
 			</table>

@@ -173,8 +173,13 @@ public class ConfigHandler {
 						|| getter.getReturnType() == boolean.class
 						|| getter.getReturnType() == Time.class) {
 					System.out.println("key=" + propertykey);
-					System.out.println("value=" + gettervalue.toString());
-					props.setProperty(propertykey, gettervalue.toString());
+					System.out.println("value="
+							+ (gettervalue == null ? "null" : gettervalue
+									.toString()));
+					props.setProperty(
+							propertykey,
+							(gettervalue == null ? "null" : gettervalue
+									.toString()));
 				} else {
 					props.setProperty(propertykey,
 							mapper.writeValueAsString(gettervalue));

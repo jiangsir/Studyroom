@@ -19,7 +19,6 @@ import tw.jiangsir.Utils.DAOs.BookingService;
 import tw.jiangsir.Utils.Exceptions.AccessException;
 import tw.jiangsir.Utils.Exceptions.ApiException;
 import tw.jiangsir.Utils.Exceptions.DataException;
-import tw.jiangsir.Utils.GoogleChecker.PopChecker;
 import tw.jiangsir.Utils.Interfaces.IAccessFilter;
 import tw.jiangsir.Utils.Objects.CurrentUser;
 import tw.jiangsir.Utils.Tools.DateTool;
@@ -81,6 +80,11 @@ public class BatchBookingApi extends HttpServlet implements IAccessFilter {
 
 	}
 
+	/**
+	 * 大量訂位。
+	 * 
+	 * @param request
+	 */
 	private void add(HttpServletRequest request) {
 		HttpSession session = request.getSession(false);
 		CurrentUser currentUser = new SessionScope(session).getCurrentUser();
@@ -106,22 +110,32 @@ public class BatchBookingApi extends HttpServlet implements IAccessFilter {
 			for (Date date : DateTool.getDaysBetween(begin, end)) {
 				Calendar calendar = Calendar.getInstance();
 				calendar.setTime(date);
-				String weekday = weekdays[i];
-				for (char day : weekday.toCharArray()) {
-					if (day - '0' == calendar.get(Calendar.DAY_OF_WEEK)) {
+				try {
+					if (weekdays[i].contains(String.valueOf(calendar
+							.get(Calendar.DAY_OF_WEEK)))) {
 						Booking booking = new Booking();
 						booking.setUserid(currentUser.getId());
 						booking.setStudentid(studentids[i]);
 						booking.setSeatid(Integer.parseInt(seatids[i]));
 						booking.setDate(date);
 						new BookingService().insert(booking);
+					} else {
+						new BookingService().deleteByStudentidDate(
+								studentids[i], date);
 					}
+				} catch (NumberFormatException e) {
+				} catch (DataException e) {
 				}
 			}
 		}
 
 	}
 
+	/**
+	 * 大量退訂
+	 * 
+	 * @param request
+	 */
 	private void delete(HttpServletRequest request) {
 		String[] studentids = request.getParameterValues("studentid");
 		String[] begindates = request.getParameterValues("begindate");
