@@ -112,9 +112,24 @@ public class BookingDAO extends SuperDAO<Booking> {
 	@Override
 	protected boolean delete(long id) throws SQLException {
 		String sql = "DELETE FROM bookings WHERE id=?";
-		PreparedStatement pstmt;
-		pstmt = this.getConnection().prepareStatement(sql);
+		PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
 		pstmt.setLong(1, id);
+		return this.executeDelete(pstmt);
+	}
+
+	protected boolean delete(int seatid, Date date) throws SQLException {
+		String sql = "DELETE FROM bookings WHERE seatid=? AND date=?";
+		PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
+		pstmt.setInt(1, seatid);
+		pstmt.setDate(2, date);
+		return this.executeDelete(pstmt);
+	}
+
+	protected boolean delete(String studentid, Date date) throws SQLException {
+		String sql = "DELETE FROM bookings WHERE studentid=? AND date=?";
+		PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
+		pstmt.setString(1, studentid);
+		pstmt.setDate(2, date);
 		return this.executeDelete(pstmt);
 	}
 

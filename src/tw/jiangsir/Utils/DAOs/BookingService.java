@@ -68,10 +68,16 @@ public class BookingService {
 
 	public void delete(int seatid, Date date) {
 		try {
-			for (Booking booking : new BookingDAO().getBookingsBySeatidDate(
-					seatid, date)) {
-				this.delete(booking.getId());
-			}
+			new BookingDAO().delete(seatid, date);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DataException(e);
+		}
+	}
+
+	public void deleteByStudentidDate(String studentid, Date date) {
+		try {
+			new BookingDAO().delete(studentid, date);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new DataException(e);

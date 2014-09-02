@@ -1,4 +1,4 @@
-package tw.jiangsir.Studyroom.Servlets;
+package tw.jiangsir.Studyroom.Servlets.Apis;
 
 import java.io.IOException;
 import java.sql.Date;
@@ -9,30 +9,38 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import org.apache.catalina.tribes.util.Arrays;
 
 import tw.jiangsir.Studyroom.Objects.Booking;
-import tw.jiangsir.Utils.Annotations.RoleSetting;
 import tw.jiangsir.Utils.Config.SessionScope;
 import tw.jiangsir.Utils.DAOs.BookingService;
+import tw.jiangsir.Utils.Exceptions.AccessException;
+import tw.jiangsir.Utils.Exceptions.ApiException;
+import tw.jiangsir.Utils.Exceptions.DataException;
+import tw.jiangsir.Utils.GoogleChecker.PopChecker;
+import tw.jiangsir.Utils.Interfaces.IAccessFilter;
 import tw.jiangsir.Utils.Objects.CurrentUser;
-import tw.jiangsir.Utils.Objects.User.ROLE;
 import tw.jiangsir.Utils.Tools.DateTool;
 
 /**
- * Servlet implementation class BatchBooking
+ * Servlet implementation class BookUp
  */
-@WebServlet(urlPatterns = { "/addBatchBookings" })
-@RoleSetting(allowHigherThen = ROLE.ADMIN)
-public class AddBatchBookingsServlet extends HttpServlet {
+@WebServlet(urlPatterns = { "/BatchBooking.api" })
+public class BatchBookingApi extends HttpServlet implements IAccessFilter {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public AddBatchBookingsServlet() {
+	public BatchBookingApi() {
 		super();
 		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public void AccessFilter(HttpServletRequest request) throws AccessException {
 	}
 
 	/**
@@ -43,19 +51,44 @@ public class AddBatchBookingsServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 	}
 
+	public enum ACTION {
+		add, // 大量訂位
+		delete;// 大量銷訂
+	}
+
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		CurrentUser currentUser = new SessionScope(request.getSession(false))
-				.getCurrentUser();
+		try {
+
+			switch (ACTION.valueOf(request.getParameter("action"))) {
+			case add:
+				add(request);
+				return;
+			case delete:
+				delete(request);
+				return;
+			default:
+				break;
+
+			}
+		} catch (Exception e) {
+			throw new ApiException(e);
+		}
+
+	}
+
+	private void add(HttpServletRequest request) {
+		HttpSession session = request.getSession(false);
+		CurrentUser currentUser = new SessionScope(session).getCurrentUser();
 		String[] studentids = request.getParameterValues("studentid");
 		String[] seatids = request.getParameterValues("seatid");
 		String[] begindates = request.getParameterValues("begindate");
 		String[] enddates = request.getParameterValues("enddate");
-		String[] weekdays = request.getParameterValues("weekday");
+		String[] weekdays = request.getParameterValues("weekdays");
 
 		System.out.println("studentids=" + Arrays.toString(studentids));
 		System.out.println("seatids=" + Arrays.toString(seatids));
@@ -73,9 +106,9 @@ public class AddBatchBookingsServlet extends HttpServlet {
 			for (Date date : DateTool.getDaysBetween(begin, end)) {
 				Calendar calendar = Calendar.getInstance();
 				calendar.setTime(date);
-				for (String weekday : weekdays) {
-					if (Integer.parseInt(weekday) == calendar
-							.get(Calendar.DAY_OF_WEEK)) {
+				String weekday = weekdays[i];
+				for (char day : weekday.toCharArray()) {
+					if (day - '0' == calendar.get(Calendar.DAY_OF_WEEK)) {
 						Booking booking = new Booking();
 						booking.setUserid(currentUser.getId());
 						booking.setStudentid(studentids[i]);
@@ -85,19 +118,24 @@ public class AddBatchBookingsServlet extends HttpServlet {
 					}
 				}
 			}
+		}
 
-			// for (int day = 0; day < DateTool.getDayCountBetween(begin, end);
-			// day++) {
-			// Booking booking = new Booking();
-			// booking.setStudentid(studentids[i]);
-			// booking.setSeatid(Integer.parseInt(seatids[i]));
-			// booking.setUserid(currentUser.getId());
-			// booking.setDate(date);
-			// new BookingService()
-			// .insertBookings(currentUser.getId(), studentids[i],
-			// Integer.parseInt(seatids[i]), begin, end);
-			// }
+	}
 
+	private void delete(HttpServletRequest request) {
+		String[] studentids = request.getParameterValues("studentid");
+		String[] begindates = request.getParameterValues("begindate");
+		String[] enddates = request.getParameterValues("enddate");
+		for (int i = 0; i < studentids.length; i++) {
+			if (studentids[i] == null || "".equals(studentids[i])) {
+				continue;
+			}
+			Date begin = Date.valueOf(begindates[i]);
+			Date end = Date.valueOf(enddates[i]);
+
+			for (Date date : DateTool.getDaysBetween(begin, end)) {
+				new BookingService().deleteByStudentidDate(studentids[i], date);
+			}
 		}
 
 	}

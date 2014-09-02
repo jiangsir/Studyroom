@@ -156,10 +156,8 @@
 	<jsp:useBean id="now" class="java.util.Date"></jsp:useBean>
 	<div style="text-align: center; margin: 1em;">
 		<h1>
-			每日訂位管理 （
-			<fmt:formatDate value="${date}" pattern="yyyy-MM-dd" />
-			）
-
+			訂位管理
+			<fmt:formatDate value="${date}" pattern="yyyy-MM-dd (E)" />
 		</h1>
 		<a href="?date=${prevdate }" type="button">前一日</a> <a href="?"
 			type="button">今天</a> <a href="?date=${nextdate}" type="button">後一日</a>

@@ -29,7 +29,7 @@
 	<jsp:useBean id="now" class="java.util.Date"></jsp:useBean>
 	<div style="text-align: center;">
 		<h1>
-			<fmt:formatDate value="${date}" pattern="yyyy-MM-dd" />
+			<fmt:formatDate value="${date}" pattern="yyyy-MM-dd (E)" />
 			的訂位狀況
 		</h1>
 		<c:if test="${sessionScope.currentUser.isAdmin}">

@@ -17,7 +17,13 @@
 			var lastRow = $("li#row").last();
 			var newRow = lastRow.clone(true).insertAfter(lastRow);
 			// 新的 row input 全部清空。
-			newRow.find("input").val("");
+			newRow.find("input[type='text']").val("");
+			var weekdays = "";
+			newRow.find("input[name='weekday']:checked").each(function() {
+				weekdays += $(this).val();
+			});
+			newRow.find("input[name='weekdays']").val(weekdays);
+
 			// 新的 row button 重新 hover
 			newRow.find("button").hover();
 			newRow.find("#removeRow").on('click', function(event) {
@@ -65,6 +71,18 @@
 			});
 		});
 
+		$('input[name="weekday"]').change(function() {
+			var row = $(this).closest("#row");
+			var weekdays = "";
+			row.find("input[name='weekday']:checked").each(function() {
+				//alert($(this));
+				weekdays += $(this).val();
+			});
+			//alert(weekdays);
+
+			row.find("input[name='weekdays']").val(weekdays);
+		});
+
 		$("button#removeRow2").click(function() {
 			if ($("li#row2").size() > 1) {
 				$(this).parent().remove();
@@ -79,7 +97,7 @@
 			event.preventDefault();
 			jQuery.ajax({
 				type : "POST",
-				url : "addBatchBookings",
+				url : "BatchBooking.api?action=add",
 				data : $('form#addBatchBookings').serialize(),
 				dataType : "json",
 				async : false,
@@ -93,7 +111,7 @@
 			event.preventDefault();
 			jQuery.ajax({
 				type : "POST",
-				url : "deleteBatchBookings",
+				url : "BatchBooking.api?action=delete",
 				data : $('form#deleteBatchBookings').serialize(),
 				dataType : "json",
 				async : false,
@@ -116,12 +134,13 @@
 				<li id="row">學號：<input name="studentid" />: 座位號碼：<input
 					name="seatid" /><br />固定訂位每週 <input type="checkbox"
 					name="weekday" value="1">日<input type="checkbox"
-					name="weekday" value="2" checked="checked">一 <input
+					name="weekday" value="2" checked="checked">一<input
 					type="checkbox" name="weekday" value="3" checked="checked">二<input
 					type="checkbox" name="weekday" value="4" checked="checked">三<input
 					type="checkbox" name="weekday" value="5" checked="checked">四<input
 					type="checkbox" name="weekday" value="6" checked="checked">五<input
-					type="checkbox" name="weekday" value="7">六 從<input
+					type="checkbox" name="weekday" value="7">六 <input
+					name="weekdays" type="hidden" value="23456" /> 從<input
 					class="datepicker" name="begindate" />日 到 <input
 					class="datepicker" name="enddate" /> 日為止
 					<button id="removeRow" class="closethick"
@@ -136,7 +155,7 @@
 	</fieldset>
 	<p></p>
 	<fieldset>
-		<legend>大量退訂 － 依學號為準</legend>
+		<legend>大量退訂 － 指定學號退訂</legend>
 		<button id="addRow2" style="font-size: 0.8em;">＋增加一列</button>
 		<form id="deleteBatchBookings">
 			<ul>
@@ -153,7 +172,7 @@
 			<input id="deleteBatchBookings" type="submit" value="全部退訂"></input>
 		</div>
 	</fieldset>
-	<p></p>
+	<!-- 	<p></p>
 	<fieldset>
 		<legend>大量退訂 － 依座位為準（未完成！！）</legend>
 		<button id="addRow2" style="font-size: 0.8em;">＋增加一列</button>
@@ -172,6 +191,7 @@
 			<input id="deleteBatchBookings" type="submit" value="全部退訂"></input>
 		</div>
 	</fieldset>
+ -->
 	<div>
 		學號：<input />: 訂位由 ??? 日 到 ??? 日 （在這段時間當中只要有訂位，就取消，沒有訂位就跳過。）
 	</div>

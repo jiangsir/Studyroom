@@ -76,6 +76,12 @@
 						id="SigninIp" value="${appConfig.signinip}" size="50"
 						maxlength="50" /></td>
 				</tr>
+				<tr style="padding: 10px;">
+					<th>首頁說明</th>
+					<td style="padding: 10px;"><textarea
+							style="width: 300px; height: 100px;">${appConfig.announcement}</textarea>
+					</td>
+				</tr>
 			</table>
 		</div>
 		<input type="submit" value="送出" />
