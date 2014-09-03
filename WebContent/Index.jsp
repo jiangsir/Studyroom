@@ -30,7 +30,10 @@
 	<div style="text-align: center;">
 		<h1>
 			<fmt:formatDate value="${date}" pattern="yyyy-MM-dd (E)" />
-			的訂位狀況
+			的訂位狀況(
+			<fmt:formatNumber pattern="#.#"
+				value="${fn:length(bookupMap)/140*100}" />%
+			)
 		</h1>
 		<c:if test="${sessionScope.currentUser.isAdmin}">
 			<div style="margin: 1em;">

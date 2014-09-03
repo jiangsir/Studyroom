@@ -42,15 +42,15 @@ public class HistoryFilter implements Filter {
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response = (HttpServletResponse) resp;
 
-		HttpSession session = request.getSession(false);
-		String servletPath = request.getServletPath();
+		// HttpSession session = request.getSession(false);
+		// String servletPath = request.getServletPath();
 
-		HttpServlet httpServlet = ApplicationScope.getUrlpatterns().get(
-				servletPath);
-		if (httpServlet != null) {
-			new SessionScope(session).setReturnPage(servletPath,
-					request.getQueryString());
-		}
+		// HttpServlet httpServlet = ApplicationScope.getUrlpatterns().get(
+		// servletPath);
+		// if (httpServlet != null) {
+		// new SessionScope(session).setReturnPage(servletPath,
+		// request.getQueryString());
+		// }
 		chain.doFilter(request, response);
 	}
 

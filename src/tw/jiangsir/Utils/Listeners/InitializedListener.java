@@ -1,6 +1,8 @@
 package tw.jiangsir.Utils.Listeners;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -114,7 +116,19 @@ public class InitializedListener implements ServletContextListener {
 	/**
 	 * @see ServletContextListener#contextDestroyed(ServletContextEvent)
 	 */
-	public void contextDestroyed(ServletContextEvent sce) {
+	public void contextDestroyed(ServletContextEvent event) {
+		ServletContext context = event.getServletContext();
+
+		Connection conn = (Connection) context.getAttribute("conn");
+		context.removeAttribute("conn");
+		try {
+			if (conn != null && !conn.isClosed())
+				conn.close();
+			System.out.println("資料庫連結關閉");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 }

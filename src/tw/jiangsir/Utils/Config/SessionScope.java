@@ -8,6 +8,7 @@ import java.util.LinkedHashSet;
 import java.util.Locale;
 
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import tw.jiangsir.Utils.Objects.CurrentUser;
@@ -40,6 +41,10 @@ public class SessionScope implements Serializable {
 			add("/");
 		}
 	};
+
+	public SessionScope(HttpServletRequest request) {
+		this(request.getSession(false));
+	}
 
 	@SuppressWarnings("unchecked")
 	public SessionScope(HttpSession session) {
