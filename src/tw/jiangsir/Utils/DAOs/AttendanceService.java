@@ -45,10 +45,10 @@ public class AttendanceService {
 		return null;
 	}
 
-	public ArrayList<Attendance> getAttendances() {
+	public ArrayList<Attendance> getAttendances(int page) {
 		TreeMap<String, Object> fields = new TreeMap<String, Object>();
 		return new AttendanceDAO().getAttendanceByFields(fields,
-				"timestamp DESC", 0);
+				"timestamp DESC", page);
 	}
 
 	/**

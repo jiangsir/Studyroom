@@ -3,9 +3,11 @@ package tw.jiangsir.Utils.Listeners;
 import java.util.logging.Logger;
 
 import javax.servlet.annotation.WebListener;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 import tw.jiangsir.Utils.Config.ApplicationScope;
+import tw.jiangsir.Utils.Config.SessionScope;
 
 /**
  * Application Lifecycle Listener implementation class MySessionListener
@@ -25,10 +27,12 @@ public class MySessionListener implements HttpSessionListener {
 	/**
 	 * @see HttpSessionListener#sessionCreated(HttpSessionEvent)
 	 */
-	public void sessionCreated(HttpSessionEvent se) {
-		logger.info("新建立 sessionid=" + se.getSession().getId());
-		ApplicationScope.getOnlineSessions().put(se.getSession().getId(),
-				se.getSession());
+	public void sessionCreated(HttpSessionEvent event) {
+		logger.info("新建立 sessionid=" + event.getSession().getId());
+		HttpSession session = event.getSession();
+		SessionScope sessionScope = new SessionScope(session);
+		ApplicationScope.getOnlineSessions().put(event.getSession().getId(),
+				event.getSession());
 	}
 
 	/**

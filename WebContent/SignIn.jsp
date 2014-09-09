@@ -57,7 +57,8 @@ input {
 						location.reload();
 					},
 					error : function(jqXHR, textStatus, errorThrown) {
-						showErrorDialog(jqXHR, textStatus, errorThrown);
+						location.reload();
+						//showErrorDialog(jqXHR, textStatus, errorThrown);
 					}
 				});
 
@@ -81,17 +82,23 @@ input {
 		</div>
 	</div>
 	<hr>
-	<table>
+	<table style="margin: auto; width: 40%;">
 		<tr>
 			<td>日期</td>
 			<td>學號</td>
 			<td>簽到／退</td>
+			<td>時間</td>
 		</tr>
 		<c:forEach var="attendance" items="${attendances }">
 			<tr>
 				<td>${attendance.date}</td>
 				<td>${attendance.studentid}</td>
-				<td>${attendance.status}</td>
+				<td><c:if test="${attendance.status=='SignIn' }">
+						<span style="color: green;">簽到</span>
+					</c:if> <c:if test="${attendance.status=='SignOut' }">
+						<span style="color: red;">簽退</span>
+					</c:if></td>
+				<td>${attendance.timestamp}</td>
 			</tr>
 		</c:forEach>
 	</table>

@@ -11,8 +11,6 @@ import tw.jiangsir.Utils.Config.AppConfig;
 import tw.jiangsir.Utils.Config.ApplicationScope;
 import tw.jiangsir.Utils.DAOs.AttendanceService;
 import tw.jiangsir.Utils.Exceptions.DataException;
-import tw.jiangsir.Utils.Tools.IpTool;
-import tw.jiangsir.Utils.Tools.Ipv4;
 
 /**
  * Servlet implementation class SignUp
@@ -30,7 +28,7 @@ public class SignInServlet extends HttpServlet {
 		AppConfig appConfig = ApplicationScope.getAppConfig();
 		if (request.getRemoteAddr().equals(appConfig.getSigninip())) {
 			request.setAttribute("attendances",
-					new AttendanceService().getAttendances());
+					new AttendanceService().getAttendances(1));
 			request.getRequestDispatcher("SignIn.jsp").forward(request,
 					response);
 			return;
