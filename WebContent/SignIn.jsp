@@ -57,11 +57,18 @@ input {
 						location.reload();
 					},
 					error : function(jqXHR, textStatus, errorThrown) {
-						location.reload();
+						//location.reload();
 						//showErrorDialog(jqXHR, textStatus, errorThrown);
+						var errorjson;
+						if (jqXHR.responseText !== '') {
+							errorjson = jQuery.parseJSON(jqXHR.responseText);
+						} else {
+							errorjson = errorThrown;
+						}
+						$("#errorjson").html(errorjson.title);
+                        $("input#SignIn").val("");
 					}
 				});
-
 			}
 		});
 
@@ -82,6 +89,8 @@ input {
 		</div>
 	</div>
 	<hr>
+	<div id="errorjson"
+		style="text-align: center; color: red; font-size: 2em;"></div>
 	<table style="margin: auto; width: 40%;">
 		<tr>
 			<td>日期</td>

@@ -17,11 +17,11 @@ function showErrorDialog(jqXHR, textStatus, errorThrown) {
 		width : '40%',
 		title : errorjson.type,
 		close : function() {
-			$(this).dialog("destroy");
+			$(this).dialog("close");
 		},
 		buttons : {
 			"返回" : function() {
-				$(this).dialog("destroy");
+				$(this).dialog("close");
 			}
 		}
 	});
