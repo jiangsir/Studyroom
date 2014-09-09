@@ -43,6 +43,9 @@ input {
 </style>
 <script type="text/javascript">
 	$(function() {
+		$(document).click(function() {
+			$("input#SignIn").focus();
+		});
 		$("input#SignIn").keypress(function(e) {
 			code = (e.keyCode ? e.keyCode : e.which);
 			if (code == 13) {
@@ -66,7 +69,7 @@ input {
 							errorjson = errorThrown;
 						}
 						$("#errorjson").html(errorjson.title);
-                        $("input#SignIn").val("");
+						$("input#SignIn").val("");
 					}
 				});
 			}
