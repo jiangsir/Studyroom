@@ -163,7 +163,7 @@ public class SessionScope implements Serializable {
 
 	@SuppressWarnings("unchecked")
 	public ArrayList<String> getReturnPages() {
-		if (session.getAttribute("returnPages") != null) {
+		if (session != null && session.getAttribute("returnPages") != null) {
 			this.returnPages = (ArrayList<String>) session
 					.getAttribute("returnPages");
 		}
@@ -172,6 +172,9 @@ public class SessionScope implements Serializable {
 
 	@SuppressWarnings("unchecked")
 	public void setReturnPages(Object returnPages) {
+		if (session == null) {
+			return;
+		}
 		if (returnPages == null || !(returnPages instanceof ArrayList)) {
 			this.returnPages = new ArrayList<String>();
 			this.returnPages.add("/");
