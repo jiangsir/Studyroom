@@ -48,7 +48,7 @@ public class BookingService {
 		}
 	}
 
-	private void update(Booking booking) throws DataException {
+	public void update(Booking booking) throws DataException {
 		try {
 			new BookingDAO().update(booking);
 		} catch (SQLException e) {

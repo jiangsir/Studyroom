@@ -23,7 +23,7 @@ public class AttendanceTableServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		request.setAttribute("attendances",
-				new AttendanceService().getAttendances());
+				new AttendanceService().getAttendances(1));
 		request.getRequestDispatcher("AttendanceTable.jsp").forward(request,
 				response);
 	}

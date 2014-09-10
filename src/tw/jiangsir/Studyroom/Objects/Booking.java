@@ -7,9 +7,11 @@ import tw.jiangsir.Utils.Annotations.Persistent;
 
 public class Booking {
 	public enum STATUS {
-		occupied, // 訂位。也就是占用中
-		cancel, // 訂位後又取消。
-		release; // 使用後，把位置釋放出來。
+		Booked, // 已經完成訂位。也就是占用中
+		SignIn, // 簽到
+		SignOut, // 簽退
+		Cancel, // 訂位後又取消。未來取消訂位就不直接刪除，就在 status 裏面標記 Cancel
+		Release; // 使用後，把位置釋放出來。尚未開放使用。
 	}
 
 	@Persistent(name = "id")
@@ -23,7 +25,7 @@ public class Booking {
 	@Persistent(name = "date")
 	private Date date = new Date(new java.util.Date().getTime());
 	@Persistent(name = "status")
-	private STATUS status = STATUS.occupied;
+	private STATUS status = STATUS.Booked;
 	@Persistent(name = "timestamp")
 	private Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 

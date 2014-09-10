@@ -23,59 +23,6 @@ import tw.jiangsir.Utils.Interfaces.IAccessFilter;
 public class BookUpServlet extends HttpServlet implements IAccessFilter {
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
-	public BookUpServlet() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession(false);
-		java.sql.Date date;
-		try {
-			date = java.sql.Date.valueOf(request.getParameter("date"));
-		} catch (Exception e) {
-			e.printStackTrace();
-			date = new java.sql.Date(System.currentTimeMillis());
-		}
-
-		int seatid = Integer.parseInt(request.getParameter("seatid"));
-		String studentid = request.getParameter("studentid");
-		String passwd = request.getParameter("passwd");
-
-		try {
-			new PopChecker().isGmailAccount(studentid.trim()
-					+ "@stu.nknush.kh.edu.tw", passwd);
-		} catch (Exception e) {
-			throw new ApiException(e);
-		}
-
-		Booking newBooking = new Booking();
-		newBooking.setSeatid(seatid);
-		newBooking.setStudentid(studentid);
-		newBooking
-				.setUserid(new SessionScope(session).getCurrentUser() == null ? 0
-						: new SessionScope(session).getCurrentUser().getId());
-		newBooking.setDate(date);
-		new BookingService().insert(newBooking);
-	}
-
 	@Override
 	public void AccessFilter(HttpServletRequest request) throws AccessException {
 		java.sql.Date date;
@@ -99,6 +46,59 @@ public class BookUpServlet extends HttpServlet implements IAccessFilter {
 			throw new AccessException("目前不是開放訂位時間，訂位時間為 " + starttime + "到 "
 					+ deadline);
 		}
+	}
+
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public BookUpServlet() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doPost(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		// HttpSession session = request.getSession(false);
+		// java.sql.Date date;
+		// try {
+		// date = java.sql.Date.valueOf(request.getParameter("date"));
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// date = new java.sql.Date(System.currentTimeMillis());
+		// }
+		//
+		// int seatid = Integer.parseInt(request.getParameter("seatid"));
+		// String studentid = request.getParameter("studentid");
+		// String passwd = request.getParameter("passwd");
+		//
+		// try {
+		// new PopChecker().isGmailAccount(studentid.trim()
+		// + "@stu.nknush.kh.edu.tw", passwd);
+		// } catch (Exception e) {
+		// throw new ApiException(e);
+		// }
+		//
+		// Booking newBooking = new Booking();
+		// newBooking.setSeatid(seatid);
+		// newBooking.setStudentid(studentid);
+		// newBooking
+		// .setUserid(new SessionScope(session).getCurrentUser() == null ? 0
+		// : new SessionScope(session).getCurrentUser().getId());
+		// newBooking.setDate(date);
+		// new BookingService().insert(newBooking);
 	}
 
 	// public boolean canBookup(java.sql.Date date) {

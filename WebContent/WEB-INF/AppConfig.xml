@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
-	<comment>應用程式參數</comment>
-	<entry key="Title">高師大附中－晚自習教室訂位系統</entry>
-	<entry key="Header">高師大附中－晚自習教室訂位系統</entry>
-	<entry key="Author">Qixun Jiang</entry>
-	<entry key="PageSize">20</entry>
-	<entry key="DefaultLogin">Login</entry>
-	<entry key="AuthDomains">["stu.nknush.kh.edu.tw","tea.nknush.kh.edu.tw"]</entry>
-	<entry key="client_id">953896450978-u82dc8hgj246t9fva61f0bl21v0ek97n.apps.googleusercontent.com</entry>
-	<entry key="client_secret">g_NdXLE9SvStnaYdpiQXcn8g</entry>
-	<entry key="redirect_uri">http://127.0.0.1:8080/Studyroom/oauth2callback</entry>
-	<entry key="starttime">06:00:00</entry>
-	<entry key="deadline">22:00:00</entry>
-	<entry key="signinip">127.0.0.1</entry>
+<comment>應用程式參數</comment>
+<entry key="redirect_uri">http://127.0.0.1:8080/Studyroom/oauth2callback</entry>
+<entry key="client_secret">g_NdXLE9SvStnaYdpiQXcn8g</entry>
+<entry key="DefaultLogin">Login</entry>
+<entry key="AuthDomains">["stu.nknush.kh.edu.tw","tea.nknush.kh.edu.tw"]</entry>
+<entry key="Author">jiangisr</entry>
+<entry key="client_id">953896450978-u82dc8hgj246t9fva61f0bl21v0ek97n.apps.googleusercontent.com</entry>
+<entry key="PageSize">20</entry>
+<entry key="Title">&amp;#39640;&amp;#24107;&amp;#22823;&amp;#38468;&amp;#20013;&amp;#65293;&amp;#26202;&amp;#33258;&amp;#32722;&amp;#25945;&amp;#23460;&amp;#35330;&amp;#20301;&amp;#31995;&amp;#32113;</entry>
+<entry key="signinip">0:0:0:0:0:0:0:1%0</entry>
+<entry key="Header">&amp;#39640;&amp;#24107;&amp;#22823;&amp;#38468;&amp;#20013;&amp;#65293;&amp;#26202;&amp;#33258;&amp;#32722;&amp;#25945;&amp;#23460;&amp;#35330;&amp;#20301;&amp;#31995;&amp;#32113;</entry>
+<entry key="starttime">06:00:00</entry>
+<entry key="announcement">&amp;#35330;&amp;#20301;&amp;#26178;&amp;#38291;&amp;#28858;&amp;#27599;&amp;#26085; 6:00 ~ 22:00&#13;
+&amp;#35531;&amp;#35352;&amp;#24471;&amp;#25884;&amp;#24118;&amp;#23416;&amp;#29983;&amp;#35657;&amp;#65292;&amp;#36914;&amp;#20837;&amp;#25945;&amp;#23460;&amp;#26178;&amp;#35201;&amp;#21047;&amp;#21345;&amp;#31805;&amp;#21040;&amp;#65292;&amp;#38626;&amp;#38283;&amp;#26178;&amp;#20063;&amp;#35201;&amp;#21047;&amp;#21345;&amp;#31805;&amp;#36864;&amp;#12290;</entry>
+<entry key="deadline">22:00:00</entry>
 </properties>

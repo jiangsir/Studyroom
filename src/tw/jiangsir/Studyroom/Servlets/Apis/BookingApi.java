@@ -1,6 +1,7 @@
 package tw.jiangsir.Studyroom.Servlets.Apis;
 
 import java.io.IOException;
+import java.util.Calendar;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -35,6 +36,7 @@ public class BookingApi extends HttpServlet implements IAccessFilter {
 
 	@Override
 	public void AccessFilter(HttpServletRequest request) throws AccessException {
+		
 	}
 
 	/**
@@ -91,12 +93,14 @@ public class BookingApi extends HttpServlet implements IAccessFilter {
 
 				return;
 			case cancel:
-
 				seatid = Integer.parseInt(request.getParameter("seatid"));
 
 				if (currentUser != null && currentUser.getIsAdmin()) {
 					new BookingService().delete(seatid, date);
 					return;
+				}
+				if (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) >= 18) {
+					throw new DataException("已經超過開館時間囉，不能取消訂位！");
 				}
 
 				studentid = request.getParameter("studentid");
