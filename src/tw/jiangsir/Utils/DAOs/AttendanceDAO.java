@@ -5,6 +5,7 @@
  */
 package tw.jiangsir.Utils.DAOs;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -45,6 +46,15 @@ public class AttendanceDAO extends SuperDAO<Attendance> {
 		result = this.executeUpdate(pstmt);
 		pstmt.close();
 		return result;
+	}
+
+	public int getAttendCount(Date date) {
+		String sql = "SELECT COUNT(*) AS COUNT FROM `attendances` WHERE date='"
+				+ date + "' GROUP BY studentid,date";
+		if (this.executeQueryId(sql).size() == 0) {
+			return 0;
+		}
+		return this.executeQueryId(sql).size();
 	}
 
 	@Override

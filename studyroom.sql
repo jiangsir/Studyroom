@@ -78,3 +78,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 
 INSERT INTO `users` VALUES(1, 'admin', 'ee10c315eba2c75b403ea99136f5b48d', '管理員', 'ADMIN');
+
+
+UPDATE bookings SET status='Booked' WHERE status='occupied';
+

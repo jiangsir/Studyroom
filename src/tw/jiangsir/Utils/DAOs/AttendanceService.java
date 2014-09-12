@@ -3,6 +3,7 @@ package tw.jiangsir.Utils.DAOs;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.TreeMap;
 import tw.jiangsir.Studyroom.Objects.Attendance;
 import tw.jiangsir.Utils.Exceptions.DataException;
@@ -60,7 +61,25 @@ public class AttendanceService {
 	public Attendance getLastAttendanceTodayByStudentid(String studentid) {
 		TreeMap<String, Object> fields = new TreeMap<String, Object>();
 		fields.put("studentid", studentid);
-		fields.put("date", new Date(new java.util.Date().getTime()));
+		fields.put("date", new Date(System.currentTimeMillis()));
+		for (Attendance attendance : new AttendanceDAO().getAttendanceByFields(
+				fields, "timestamp DESC", 0)) {
+			return attendance;
+		}
+		return null;
+	}
+
+	/**
+	 * 取得某學生當日最近一次的簽到退記錄。
+	 * 
+	 * @param studentid
+	 * @return
+	 */
+	public Attendance getLastAttendanceByStudentidDate(String studentid,
+			Date date) {
+		TreeMap<String, Object> fields = new TreeMap<String, Object>();
+		fields.put("studentid", studentid);
+		fields.put("date", date);
 		for (Attendance attendance : new AttendanceDAO().getAttendanceByFields(
 				fields, "timestamp DESC", 0)) {
 			return attendance;
@@ -82,4 +101,14 @@ public class AttendanceService {
 		new AttendanceService().insert(attendance);
 	}
 
+	public HashMap<String, Attendance> getHashAttendance(Date date) {
+		TreeMap<String, Object> fields = new TreeMap<String, Object>();
+		fields.put("date", date);
+		HashMap<String, Attendance> hashAttendances = new HashMap<String, Attendance>();
+		for (Attendance attendance : new AttendanceDAO().getAttendanceByFields(
+				fields, "timestamp DESC", 0)) {
+			
+		}
+		return hashAttendances;
+	}
 }

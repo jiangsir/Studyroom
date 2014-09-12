@@ -1,13 +1,17 @@
 package tw.jiangsir.Studyroom.Servlets;
 
 import java.io.IOException;
+import java.util.HashMap;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import tw.jiangsir.Studyroom.Objects.Booking;
 import tw.jiangsir.Utils.Annotations.RoleSetting;
+import tw.jiangsir.Utils.DAOs.AttendanceDAO;
 import tw.jiangsir.Utils.DAOs.BookingService;
 import tw.jiangsir.Utils.Tools.DateTool;
 
@@ -37,6 +41,10 @@ public class ManageBookingServlet extends HttpServlet {
 		request.setAttribute("prevdate", DateTool.getPrevDate(date));
 		request.setAttribute("bookupMap",
 				new BookingService().getBookupMapByDate(date));
+		request.setAttribute("hashBookings",
+				new BookingService().getHashBookings(date));
+		request.setAttribute("attendCount",
+				new AttendanceDAO().getAttendCount(date));
 		request.getRequestDispatcher("/ManageBooking.jsp").forward(request,
 				response);
 	}

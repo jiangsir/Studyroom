@@ -37,13 +37,27 @@
 <div seatid="${param.seatid}">
 	<c:choose>
 		<c:when test="${!seat:canBookup(date)}">
-			<c:if test="${seat:isOccupied(bookupMap, param.seatid)}">
+			<c:if test="${hashBookings[param.seatid].isBooked}">
 				<div class="unseat">
-					${seat:studentid(bookupMap, param.seatid)}<br />
-					<fmt:formatNumber pattern="000" value="${param.seatid}" />
+					<c:choose>
+						<c:when test="${hashBookings[param.seatid].attendance.isSignIn}">
+							<div style="margin-top: 0.6em; color: #00aa00">
+								${hashBookings[param.seatid].studentid }</div>
+						</c:when>
+						<c:when test="${hashBookings[param.seatid].attendance.isSignOut}">
+							<div style="margin-top: 0.6em; color: red;">
+								${hashBookings[param.seatid].studentid }</div>
+						</c:when>
+						<c:otherwise>
+							<div style="margin-top: 0.6em; color: #666666;">
+								${hashBookings[param.seatid].studentid }</div>
+						</c:otherwise>
+					</c:choose>
+					<span style="font-weight: bold;"> <fmt:formatNumber
+							pattern="000" value="${param.seatid}" /></span>
 				</div>
 			</c:if>
-			<c:if test="${!seat:isOccupied(bookupMap, param.seatid)}">
+			<c:if test="${!hashBookings[param.seatid].isBooked}">
 				<button class="seat">
 					<fmt:formatNumber pattern="000" value="${param.seatid}" />
 				</button>
@@ -51,11 +65,26 @@
 		</c:when>
 		<c:otherwise>
 			<c:choose>
-				<c:when test="${seat:isOccupied(bookupMap, param.seatid)}">
+				<c:when test="${hashBookings[param.seatid].isBooked}">
 					<div id="deleteBooking" class="unseat" seatid=${param.seatid}>
 						<div style="margin-top: 0.6em;">
-							${seat:studentid(bookupMap, param.seatid)}<br />
-							<fmt:formatNumber pattern="000" value="${param.seatid}" />
+							<c:choose>
+								<c:when test="${hashBookings[param.seatid].attendance.isSignIn}">
+									<div style="margin-top: 0.6em; color: #00aa00">
+										${hashBookings[param.seatid].studentid }</div>
+								</c:when>
+								<c:when
+									test="${hashBookings[param.seatid].attendance.isSignOut}">
+									<div style="margin-top: 0.6em; color: red;">
+										${hashBookings[param.seatid].studentid }</div>
+								</c:when>
+								<c:otherwise>
+									<div style="margin-top: 0.6em; color: #666666;">
+										${hashBookings[param.seatid].studentid }</div>
+								</c:otherwise>
+							</c:choose>
+							<span style="font-weight: bold;"> <fmt:formatNumber
+									pattern="000" value="${param.seatid}" /></span>
 						</div>
 					</div>
 				</c:when>

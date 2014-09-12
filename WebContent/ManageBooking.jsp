@@ -158,6 +158,11 @@
 		<h1>
 			訂位管理
 			<fmt:formatDate value="${date}" pattern="yyyy-MM-dd (E)" />
+			(
+			<fmt:formatNumber pattern="#.#"
+				value="${fn:length(hashBookings)/140*100}" />
+			%)
+
 		</h1>
 		<a href="?date=${prevdate }" type="button">前一日</a> <a href="?"
 			type="button">今天</a> <a href="?date=${nextdate}" type="button">後一日</a>
@@ -172,14 +177,37 @@
 						<c:set var="seatid" value="${base+(row-1)*group+col}" />
 						<td>
 							<div seatid="${seatid}">
+								<c:set var="seatidString">${seatid}</c:set>
+								<!-- 把seatid 轉換成 string -->
 								<c:choose>
-									<c:when test="${seat:isOccupied(bookupMap, seatid)}">
+									<c:when test="${hashBookings[seatidString].isBooked}">
 										<div id="deleteBooking" class="unseat" seatid="${seatid }">
-											<div style="margin-top: 0.6em;">
-												${seat:studentid(bookupMap, seatid)} <span
-													style="font-weight: bold;"> <fmt:formatNumber
-														pattern="000" value="${seatid}" /></span>
-											</div>
+											<c:choose>
+												<c:when
+													test="${hashBookings[seatidString].attendance.isSignIn}">
+													<div style="margin-top: 0.6em; color: #00aa00">
+														${hashBookings[seatidString].studentid } <span
+															style="font-weight: bold;"> <fmt:formatNumber
+																pattern="000" value="${seatid}" /></span>
+													</div>
+												</c:when>
+												<c:when
+													test="${hashBookings[seatidString].attendance.isSignOut}">
+													<div style="margin-top: 0.6em; color: red;">
+														${hashBookings[seatidString].studentid } <span
+															style="font-weight: bold;"> <fmt:formatNumber
+																pattern="000" value="${seatid}" /></span>
+													</div>
+												</c:when>
+												<c:otherwise>
+													<div style="margin-top: 0.6em; color: #666666;">
+														${hashBookings[seatidString].studentid } <span
+															style="font-weight: bold;"> <fmt:formatNumber
+																pattern="000" value="${seatid}" /></span>
+													</div>
+
+												</c:otherwise>
+											</c:choose>
 										</div>
 									</c:when>
 									<c:otherwise>
@@ -199,6 +227,9 @@
 			</tr>
 		</c:forEach>
 	</table>
+	<div>總訂位人數：${fn:length(hashBookings)} 人。</div>
+	<div>簽到人數： ${attendCount } 人。</div>
+	<div>未簽到人數：${fn:length(hashBookings)-attendCount }人。</div>
 	<!-- 
 	加入圖片放大的功能。
 	jquery.hoverpulse.js

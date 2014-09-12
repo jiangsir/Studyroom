@@ -66,4 +66,12 @@ public class Attendance {
 		this.timestamp = timestamp;
 	}
 
+	public boolean getIsSignIn() {
+		return this.getStatus() == STATUS.SignIn;
+	}
+
+	public boolean getIsSignOut() {
+		return this.getStatus() == STATUS.SignOut;
+	}
+
 }

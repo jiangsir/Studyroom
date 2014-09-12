@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Hashtable;
 
 import tw.jiangsir.Studyroom.Objects.Booking;
 import tw.jiangsir.Utils.Exceptions.DataException;
@@ -92,6 +93,25 @@ public class BookingService {
 			e.printStackTrace();
 			throw new DataException(e);
 		}
+	}
+
+	/**
+	 * 回傳現在的 bookings 狀態。因為在 JSTL/EL 裏面一律以 long 來處理整數，因此這裡的 HashMap 就必須以 Long 作為
+	 * key<br>
+	 * 才能以 ${hashBookings[seatid]} 這樣的形式存取。
+	 * 
+	 * @return
+	 */
+	public HashMap<String, Booking> getHashBookings(Date date) {
+		HashMap<String, Booking> hashBookings = new HashMap<String, Booking>();
+		try {
+			for (Booking booking : new BookingDAO().getBookingsByDate(date)) {
+				hashBookings.put(String.valueOf(booking.getSeatid()), booking);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return hashBookings;
 	}
 
 	public HashMap<Integer, String> getBookupMapToday() {

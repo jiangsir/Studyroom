@@ -36,7 +36,7 @@ public class BookingApi extends HttpServlet implements IAccessFilter {
 
 	@Override
 	public void AccessFilter(HttpServletRequest request) throws AccessException {
-		
+
 	}
 
 	/**

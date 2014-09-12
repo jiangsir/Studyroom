@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import tw.jiangsir.Utils.Config.SessionScope;
+import tw.jiangsir.Utils.DAOs.AttendanceDAO;
 import tw.jiangsir.Utils.DAOs.BookingService;
 import tw.jiangsir.Utils.Exceptions.AccessException;
 import tw.jiangsir.Utils.Interfaces.IAccessFilter;
@@ -65,6 +66,14 @@ public class IndexServlet extends HttpServlet implements IAccessFilter {
 		request.setAttribute("prevdate", DateTool.getPrevDate(date));
 		request.setAttribute("bookupMap",
 				new BookingService().getBookupMapByDate(date));
+		request.setAttribute("hashBookings",
+				new BookingService().getHashBookings(date));
+		request.setAttribute("hashBookings",
+				new BookingService().getHashBookings(date));
+
+		request.setAttribute("attendCount",
+				new AttendanceDAO().getAttendCount(date));
+
 		request.getRequestDispatcher("/Index.jsp").forward(request, response);
 	}
 

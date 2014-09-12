@@ -32,8 +32,8 @@
 			<fmt:formatDate value="${date}" pattern="yyyy-MM-dd (E)" />
 			的訂位狀況(
 			<fmt:formatNumber pattern="#.#"
-				value="${fn:length(bookupMap)/140*100}" />%
-			)
+				value="${fn:length(hashBookings)/140*100}" />
+			% )
 		</h1>
 		<c:if test="${sessionScope.currentUser.isAdmin}">
 			<div style="margin: 1em;">
@@ -58,30 +58,10 @@
 						<tr>
 							<c:forEach var="col" begin="1" end="${group}" step="1">
 								<c:set var="seatid" value="${base+(row-1)*group+col}" />
-								<td><c:set var="bookupMap" value="${bookupMap}"
+								<td><c:set var="hashBookings" value="${hashBookings}"
 										scope="request" /> <jsp:include page="includes/div/Seat.jsp">
 										<jsp:param name="seatid" value="${seatid }" />
-									</jsp:include> <%-- <c:choose>
-										<c:when test="${!seat:canBookup(date)}">
-											<button class="seat">
-												<fmt:formatNumber pattern="000" value="${seatid}" />
-											</button>
-										</c:when>
-										<c:otherwise>
-											<c:choose>
-												<c:when test="${seat:isOccupied(bookupMap, seatid)}">
-													<div class="deleteBooking">${seat:studentid(bookupMap,
-														seatid)}</div>
-												</c:when>
-												<c:otherwise>
-													<button id="insertBooking" class="seat" seatid=${seatid}>
-														搶
-														<fmt:formatNumber pattern="000" value="${seatid}" />
-													</button>
-												</c:otherwise>
-											</c:choose>
-										</c:otherwise>
-									</c:choose> --%></td>
+									</jsp:include></td>
 							</c:forEach>
 						</tr>
 					</c:forEach>
@@ -99,6 +79,9 @@
 			</div>
 		</c:otherwise>
 	</c:choose>
+	<div>總訂位人數：${fn:length(hashBookings)} 人。</div>
+	<div>簽到人數： ${attendCount } 人。</div>
+	<div>未簽到人數：${fn:length(hashBookings)-attendCount }人。</div>
 
 	<jsp:include page="Footer.jsp" />
 </body>

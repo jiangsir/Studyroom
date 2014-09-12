@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.sql.Timestamp;
 
 import tw.jiangsir.Utils.Annotations.Persistent;
+import tw.jiangsir.Utils.DAOs.AttendanceService;
 
 public class Booking {
 	public enum STATUS {
@@ -87,6 +88,28 @@ public class Booking {
 
 	public void setTimestamp(Timestamp timestamp) {
 		this.timestamp = timestamp;
+	}
+
+	public boolean getIsBooked() {
+		return this.getStatus() == Booking.STATUS.Booked;
+	}
+
+	// public boolean getIsSignIn() {
+	// Attendance attendance = new AttendanceService()
+	// .getLastAttendanceByStudentidDate(studentid, date);
+	// return attendance.getStatus() == Attendance.STATUS.SignIn;
+	// // return this.getStatus() == Booking.STATUS.SignIn;
+	// }
+	//
+	// public boolean getIsSignOut() {
+	// return this.getStatus() == Booking.STATUS.SignOut;
+	// }
+
+	public Attendance getAttendance() {
+		Attendance attendance = new AttendanceService()
+				.getLastAttendanceByStudentidDate(studentid, date);
+		System.out.println(attendance);
+		return attendance;
 	}
 
 }
