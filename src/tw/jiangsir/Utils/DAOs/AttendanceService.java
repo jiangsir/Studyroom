@@ -87,6 +87,15 @@ public class AttendanceService {
 		return null;
 	}
 
+	public ArrayList<Attendance> getAttendancesByStudentidDate(
+			String studentid, Date date) {
+		TreeMap<String, Object> fields = new TreeMap<String, Object>();
+		fields.put("studentid", studentid);
+		fields.put("date", date);
+		return new AttendanceDAO().getAttendanceByFields(fields,
+				"timestamp DESC", 0);
+	}
+
 	public void doSignIn(String studentid) {
 		Attendance attendance = new Attendance();
 		attendance.setStudentid(studentid);
@@ -107,7 +116,7 @@ public class AttendanceService {
 		HashMap<String, Attendance> hashAttendances = new HashMap<String, Attendance>();
 		for (Attendance attendance : new AttendanceDAO().getAttendanceByFields(
 				fields, "timestamp DESC", 0)) {
-			
+
 		}
 		return hashAttendances;
 	}

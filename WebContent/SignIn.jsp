@@ -46,34 +46,56 @@ input {
 		$(document).click(function() {
 			$("input#SignIn").focus();
 		});
-		$("input#SignIn").keypress(function(e) {
-			code = (e.keyCode ? e.keyCode : e.which);
-			if (code == 13) {
-				//targetForm是表單的ID
-				jQuery.ajax({
-					type : "POST",
-					url : "SignIn.api",
-					data : "id=" + $(this).val(),
-					async : false,
-					timeout : 5000,
-					success : function(result) {
-						location.reload();
-					},
-					error : function(jqXHR, textStatus, errorThrown) {
-						//location.reload();
-						//showErrorDialog(jqXHR, textStatus, errorThrown);
-						var errorjson;
-						if (jqXHR.responseText !== '') {
-							errorjson = jQuery.parseJSON(jqXHR.responseText);
-						} else {
-							errorjson = errorThrown;
-						}
-						$("#errorjson").html(errorjson.title);
-						$("input#SignIn").val("");
-					}
-				});
-			}
-		});
+
+		var time = 0;
+		var prev_now = 0;
+		$("input#SignIn")
+				.keypress(
+						function(e) {
+							if (prev_now == 0) {
+								prev_now = $.now();
+							}
+							time += $.now() - prev_now;
+
+							code = (e.keyCode ? e.keyCode : e.which);
+							if (code == 13) {
+								if (time > 3000) {
+									$("#errorjson").html("請勿使用鍵盤輸入！");
+									$("input#SignIn").val("");
+									location.reload();
+								} else {
+									time = 0;
+									prev_now = 0;
+									//targetForm是表單的ID
+									jQuery
+											.ajax({
+												type : "POST",
+												url : "SignIn.api",
+												data : "id=" + $(this).val(),
+												async : false,
+												timeout : 5000,
+												success : function(result) {
+													location.reload();
+												},
+												error : function(jqXHR,
+														textStatus, errorThrown) {
+													//location.reload();
+													//showErrorDialog(jqXHR, textStatus, errorThrown);
+													var errorjson;
+													if (jqXHR.responseText !== '') {
+														errorjson = jQuery
+																.parseJSON(jqXHR.responseText);
+													} else {
+														errorjson = errorThrown;
+													}
+													$("#errorjson").html(
+															errorjson.title);
+													$("input#SignIn").val("");
+												}
+											});
+								}
+							}
+						});
 
 	});
 </script>

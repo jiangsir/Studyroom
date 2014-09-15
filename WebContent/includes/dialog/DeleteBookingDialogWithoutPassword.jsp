@@ -12,6 +12,7 @@
 		<legend>
 			確定要取消 <span id="seatid"></span> 號的位置？
 		</legend>
-
+		<img src="/images/ajax-loader.gif" id="loader">
+		<div id="attendance"></div>
 	</fieldset>
 </div>

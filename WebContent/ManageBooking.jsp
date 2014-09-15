@@ -12,110 +12,8 @@
 <jsp:include page="CommonHead.jsp" />
 <script type="text/javascript"
 	src="jscripts/functions/showErrorDialog.js"></script>
+<script type="text/javascript" src="ManageBooking.js"></script>
 
-<script>
-	$(function() {
-		$.urlParam = function(name) {
-			var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
-			if (results == null) {
-				return null;
-			} else {
-				return results[1] || 0;
-			}
-		}
-		$("button#insertBooking").each(function() {
-			$(this).click(function() {
-				var seatid = $(this).attr("seatid");
-				$("div#insertBookingDialogWithoutPassword span#seatid").html(seatid);
-				$("#insertBookingDialogWithoutPassword").dialog("open");
-			});
-		});
-		$("#insertBookingDialogWithoutPassword").dialog({
-			autoOpen : false,
-			modal : true,
-			width : 350,
-			modal : true,
-			buttons : {
-				"訂位" : function() {
-					var studentid = $(this).find("input[name='studentid']").val();
-					var seatid = $(this).find("span[id='seatid']").text();
-					var date = jQuery.urlParam("date");
-
-					jQuery.ajax({
-						type : "POST",
-						url : "Booking.api",
-						data : "action=booked&studentid=" + studentid + "&seatid=" + seatid + "&date=" + date,
-						async : false,
-						timeout : 5000,
-						success : function(result) {
-							location.reload();
-						},
-						error : function(jqXHR, textStatus, errorThrown) {
-							showErrorDialog(jqXHR, textStatus, errorThrown);
-						}
-					});
-					$(this).dialog("close");
-				},
-				"取消" : function() {
-					$(this).dialog("close");
-				}
-			}
-		});
-
-		$("div#deleteBooking").each(function() {
-			$(this).click(function() {
-				var seatid = $(this).attr("seatid");
-				$("div#deleteBookingDialogWithoutPassword span#seatid").html(seatid);
-				$("#deleteBookingDialogWithoutPassword").dialog("open");
-			});
-		});
-		$("#deleteBookingDialogWithoutPassword").dialog({
-			autoOpen : false,
-			width : 350,
-			modal : true,
-			buttons : {
-				"取消訂位" : function() {
-					var seatid = $(this).find("span[id='seatid']").text();
-					var date = jQuery.urlParam("date");
-					jQuery.ajax({
-						type : "POST",
-						url : "Booking.api",
-						data : "action=cancel&seatid=" + seatid + "&date=" + date,
-						async : false,
-						timeout : 5000,
-						beforeSend : function() {
-						},
-						success : function(result) {
-							location.reload();
-						},
-						error : function(jqXHR, textStatus, errorThrown) {
-							showErrorDialog(jqXHR, textStatus, errorThrown);
-						}
-					});
-					$(this).dialog("close");
-				},
-				"取消" : function() {
-					$(this).dialog("close");
-				}
-
-			}
-		});
-
-		$("button[id='icon01']").button({
-			icons : {
-				primary : "ui-icon-closethick"
-			},
-			text : false
-		});
-		$("button[id='icon02']").button({
-			icons : {
-				primary : "ui-icon-check"
-			},
-			text : false
-		});
-
-	});
-</script>
 <style type="text/css">
 .seat {
 	font-size: 0.8em;
@@ -143,6 +41,16 @@
     display: table-cell;
     */
 }
+
+#demotip {
+	display: none;
+	/*background: transparent url(images/black_arrow.png);*/
+	font-size: 12px;
+	height: 70px;
+	width: 160px;
+	padding: 25px;
+	color: #fff;
+}
 </style>
 </head>
 <body>
@@ -151,7 +59,6 @@
 		page="includes/dialog/InsertBookingDialogWithoutPassword.jsp" />
 	<jsp:include
 		page="includes/dialog/DeleteBookingDialogWithoutPassword.jsp" />
-
 	<jsp:include page="Header.jsp" />
 	<jsp:useBean id="now" class="java.util.Date"></jsp:useBean>
 	<div style="text-align: center; margin: 1em;">
@@ -181,7 +88,9 @@
 								<!-- 把seatid 轉換成 string -->
 								<c:choose>
 									<c:when test="${hashBookings[seatidString].isBooked}">
-										<div id="deleteBooking" class="unseat" seatid="${seatid }">
+										<div id="deleteBooking" class="unseat" seatid="${seatid }"
+											studentid="${hashBookings[seatidString].studentid}" date="${param.date}">
+											<div id="demotip">&nbsp;</div>
 											<c:choose>
 												<c:when
 													test="${hashBookings[seatidString].attendance.isSignIn}">
@@ -227,9 +136,14 @@
 			</tr>
 		</c:forEach>
 	</table>
+
+	<div>
+		<span style="color: green;">綠色代表已簽到</span>，<span style="color: red;">紅色代表已簽退</span>，黑色代表已訂位但未簽到
+	</div>
 	<div>總訂位人數：${fn:length(hashBookings)} 人。</div>
 	<div>簽到人數： ${attendCount } 人。</div>
 	<div>未簽到人數：${fn:length(hashBookings)-attendCount }人。</div>
+
 	<!-- 
 	加入圖片放大的功能。
 	jquery.hoverpulse.js
