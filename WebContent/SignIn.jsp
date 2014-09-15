@@ -49,53 +49,47 @@ input {
 
 		var time = 0;
 		var prev_now = 0;
-		$("input#SignIn")
-				.keypress(
-						function(e) {
-							if (prev_now == 0) {
-								prev_now = $.now();
-							}
-							time += $.now() - prev_now;
+		$("input#SignIn").keypress(function(e) {
+			if (prev_now == 0) {
+				prev_now = $.now();
+			}
+			time += $.now() - prev_now;
 
-							code = (e.keyCode ? e.keyCode : e.which);
-							if (code == 13) {
-								if (time > 3000) {
-									$("#errorjson").html("請勿使用鍵盤輸入！");
-									$("input#SignIn").val("");
-									location.reload();
-								} else {
-									time = 0;
-									prev_now = 0;
-									//targetForm是表單的ID
-									jQuery
-											.ajax({
-												type : "POST",
-												url : "SignIn.api",
-												data : "id=" + $(this).val(),
-												async : false,
-												timeout : 5000,
-												success : function(result) {
-													location.reload();
-												},
-												error : function(jqXHR,
-														textStatus, errorThrown) {
-													//location.reload();
-													//showErrorDialog(jqXHR, textStatus, errorThrown);
-													var errorjson;
-													if (jqXHR.responseText !== '') {
-														errorjson = jQuery
-																.parseJSON(jqXHR.responseText);
-													} else {
-														errorjson = errorThrown;
-													}
-													$("#errorjson").html(
-															errorjson.title);
-													$("input#SignIn").val("");
-												}
-											});
-								}
+			code = (e.keyCode ? e.keyCode : e.which);
+			if (code == 13) {
+				if (time > 1000) {
+					$("#errorjson").html("請勿使用鍵盤輸入！");
+					$("input#SignIn").val("");
+					location.reload();
+				} else {
+					time = 0;
+					prev_now = 0;
+					//targetForm是表單的ID
+					jQuery.ajax({
+						type : "POST",
+						url : "SignIn.api",
+						data : "id=" + $(this).val(),
+						async : false,
+						timeout : 5000,
+						success : function(result) {
+							location.reload();
+						},
+						error : function(jqXHR, textStatus, errorThrown) {
+							//location.reload();
+							//showErrorDialog(jqXHR, textStatus, errorThrown);
+							var errorjson;
+							if (jqXHR.responseText !== '') {
+								errorjson = jQuery.parseJSON(jqXHR.responseText);
+							} else {
+								errorjson = errorThrown;
 							}
-						});
+							$("#errorjson").html(errorjson.title);
+							$("input#SignIn").val("");
+						}
+					});
+				}
+			}
+		});
 
 	});
 </script>
@@ -118,15 +112,15 @@ input {
 		style="text-align: center; color: red; font-size: 2em;"></div>
 	<table style="margin: auto; width: 40%;">
 		<tr>
-			<td>日期</td>
 			<td>學號</td>
+			<td>座位</td>
 			<td>簽到／退</td>
 			<td>時間</td>
 		</tr>
 		<c:forEach var="attendance" items="${attendances }">
 			<tr>
-				<td>${attendance.date}</td>
 				<td>${attendance.studentid}</td>
+				<td>${attendance.seatid}</td>
 				<td><c:if test="${attendance.status=='SignIn' }">
 						<span style="color: green;">簽到</span>
 					</c:if> <c:if test="${attendance.status=='SignOut' }">

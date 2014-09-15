@@ -3,6 +3,7 @@ package tw.jiangsir.Studyroom.Objects;
 import java.sql.Date;
 import java.sql.Timestamp;
 import tw.jiangsir.Utils.Annotations.Persistent;
+import tw.jiangsir.Utils.DAOs.BookingService;
 
 public class Attendance {
 	@Persistent(name = "id")
@@ -72,6 +73,11 @@ public class Attendance {
 
 	public boolean getIsSignOut() {
 		return this.getStatus() == STATUS.SignOut;
+	}
+
+	public int getSeatid() {
+		return new BookingService().getBookingByStudentidDate(this.getDate(),
+				this.getStudentid()).getSeatid();
 	}
 
 }

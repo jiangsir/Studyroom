@@ -149,6 +149,11 @@ public class SessionScope implements Serializable {
 		this.currentUser = currentUser;
 	}
 
+	public void doLogout() {
+		this.currentUser = null;
+		session.removeAttribute("currentUser");
+	}
+
 	public Date getLastsubmission() {
 		return lastsubmission;
 	}

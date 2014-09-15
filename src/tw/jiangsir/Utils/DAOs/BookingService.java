@@ -149,6 +149,16 @@ public class BookingService {
 		}
 	}
 
+	public Booking getBookingByStudentidDate(Date date, String studentid) {
+		try {
+			return new BookingDAO().getBookingByStudentidDate(studentid, date);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+
+	}
+
 	// /**
 	// * 一次新增多筆預約
 	// *
