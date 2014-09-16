@@ -46,7 +46,11 @@ input {
 		$(document).click(function() {
 			$("input#SignIn").focus();
 		});
-
+		$(document).keydown(function(event) {
+			if ((event.ctrlKey && event.which == 67) || (event.ctrlKey && event.which == 86)) {
+				return false;
+			}
+		});
 		var time = 0;
 		var prev_now = 0;
 		$("input#SignIn").keypress(function(e) {

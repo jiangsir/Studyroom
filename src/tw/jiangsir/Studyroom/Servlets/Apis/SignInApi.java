@@ -1,6 +1,8 @@
 package tw.jiangsir.Studyroom.Servlets.Apis;
 
 import java.io.IOException;
+import java.sql.Time;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -49,6 +51,15 @@ public class SignInApi extends HttpServlet implements IAccessFilter {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		String studentid = request.getParameter("id");
+
+		Time begintime = Time.valueOf("18:00:00");
+		Time endtime = Time.valueOf("22:00:00");
+		Time now = new Time(System.currentTimeMillis());
+		if (now.before(begintime) || now.after(endtime)) {
+			throw new ApiException("簽到／退時間為 " + begintime + " 到 " + endtime
+					+ "，請在時間內進行簽到／退。");
+		}
+		;
 		Booking booking = new BookingService()
 				.getBookingTodayByStudentid(studentid);
 		if (booking == null) {
