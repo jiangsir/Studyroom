@@ -9,8 +9,6 @@ import tw.jiangsir.Utils.DAOs.AttendanceService;
 public class Booking {
 	public enum STATUS {
 		Booked, // 已經完成訂位。也就是占用中
-		SignIn, // 簽到
-		SignOut, // 簽退
 		Cancel, // 訂位後又取消。未來取消訂位就不直接刪除，就在 status 裏面標記 Cancel
 		Release; // 使用後，把位置釋放出來。尚未開放使用。
 	}

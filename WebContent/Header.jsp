@@ -35,7 +35,10 @@
 
 			</c:if></li>
 		<li><a href="${pageContext.request.contextPath}/SignIn">簽到／退</a></li>
-		<li><a href="${pageContext.request.contextPath}/">訂位</a></li>
+		<c:if
+			test="${pageContext.request.remoteAddr != applicationScope.appConfig.signinip || sessionScope.currentUser.isAdmin}">
+			<li><a href="${pageContext.request.contextPath}/">訂位</a></li>
+		</c:if>
 		<!-- 		<li><a href="#">Item 1</a></li>
 		<li><a href="#">Item 2</a></li>
 		<li><a href="#">Item 3</a>

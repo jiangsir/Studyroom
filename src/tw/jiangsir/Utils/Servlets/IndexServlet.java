@@ -8,7 +8,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import tw.jiangsir.Studyroom.Servlets.SignInServlet;
+import tw.jiangsir.Utils.Config.AppConfig;
 import tw.jiangsir.Utils.Config.SessionScope;
+import tw.jiangsir.Utils.DAOs.AppConfigService;
 import tw.jiangsir.Utils.DAOs.AttendanceDAO;
 import tw.jiangsir.Utils.DAOs.BookingService;
 import tw.jiangsir.Utils.Exceptions.AccessException;
@@ -50,6 +53,17 @@ public class IndexServlet extends HttpServlet implements IAccessFilter {
 			HttpServletResponse response) throws ServletException, IOException {
 		CurrentUser currentUser = new SessionScope(request.getSession(false))
 				.getCurrentUser();
+		AppConfig appConfig = new AppConfigService().getAppConfig();
+		System.out.println("appConfig.getSigninip()=" + appConfig.getSigninip()
+				+ ", request.getRemoteAddr()=" + request.getRemoteAddr()
+				+ ", currentUser=" + currentUser);
+		if (request.getRemoteAddr().equals(appConfig.getSigninip())
+				&& (currentUser == null || !currentUser.getIsAdmin())) {
+			response.sendRedirect(request.getContextPath()
+					+ SignInServlet.class.getAnnotation(WebServlet.class)
+							.urlPatterns()[0]);
+			return;
+		}
 		java.sql.Date date;
 		if (currentUser != null && currentUser.getIsAdmin()) {
 			try {
