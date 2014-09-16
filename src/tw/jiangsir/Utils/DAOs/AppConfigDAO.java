@@ -23,7 +23,7 @@ public class AppConfigDAO extends SuperDAO<AppConfig> {
 	protected synchronized int insert(AppConfig appConfig) throws SQLException {
 		String sql = "INSERT INTO appconfigs(title, header, author, pagesize, defaultlogin, authdomains, "
 				+ "client_id, client_secret, redirect_uri, starttime, deadline, signinip, announcement, "
-				+ "timestamp) VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?);";
+				+ "timestamp) VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,now());";
 		PreparedStatement pstmt = this.getConnection().prepareStatement(sql,
 				Statement.RETURN_GENERATED_KEYS);
 		pstmt.setString(1, appConfig.getTitle());
@@ -39,7 +39,6 @@ public class AppConfigDAO extends SuperDAO<AppConfig> {
 		pstmt.setTime(11, appConfig.getDeadline());
 		pstmt.setString(12, appConfig.getSigninip());
 		pstmt.setString(13, appConfig.getAnnouncement());
-		pstmt.setTimestamp(14, appConfig.getTimestamp());
 		return this.executeInsert(pstmt);
 	}
 

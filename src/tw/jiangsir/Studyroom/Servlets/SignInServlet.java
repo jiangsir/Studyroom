@@ -29,8 +29,8 @@ public class SignInServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		CurrentUser currentUser = new SessionScope(request).getCurrentUser();
 		AppConfig appConfig = ApplicationScope.getAppConfig();
-		if (currentUser.getIsAdmin()
-				|| request.getRemoteAddr().equals(appConfig.getSigninip())) {
+		if (request.getRemoteAddr().equals(appConfig.getSigninip())
+				|| (currentUser != null && currentUser.getIsAdmin())) {
 			request.setAttribute("attendances",
 					new AttendanceService().getAttendances(1));
 			request.getRequestDispatcher("SignIn.jsp").forward(request,
