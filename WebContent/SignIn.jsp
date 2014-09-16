@@ -64,7 +64,9 @@ input {
 				if (time > 1000) {
 					$("#errorjson").html("請勿使用鍵盤輸入！");
 					$("input#SignIn").val("");
-					location.reload();
+					setTimeout(function() {
+						location.reload();
+					}, 500);
 				} else {
 					time = 0;
 					prev_now = 0;

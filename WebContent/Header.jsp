@@ -34,7 +34,10 @@
 					</ul></li>
 
 			</c:if></li>
-		<li><a href="${pageContext.request.contextPath}/SignIn">簽到／退</a></li>
+		<c:if
+			test="${pageContext.request.remoteAddr == applicationScope.appConfig.signinip || sessionScope.currentUser.isAdmin}">
+			<li><a href="${pageContext.request.contextPath}/SignIn">簽到／退</a></li>
+		</c:if>
 		<c:if
 			test="${pageContext.request.remoteAddr != applicationScope.appConfig.signinip || sessionScope.currentUser.isAdmin}">
 			<li><a href="${pageContext.request.contextPath}/">訂位</a></li>
