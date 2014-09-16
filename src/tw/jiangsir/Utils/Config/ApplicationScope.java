@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpSession;
 
 import tw.jiangsir.Studyroom.Servlets.BookUpServlet;
+import tw.jiangsir.Utils.DAOs.AppConfigService;
 import tw.jiangsir.Utils.Objects.User;
 
 public class ApplicationScope {
@@ -28,7 +29,8 @@ public class ApplicationScope {
 		ApplicationScope.setOnlineSessions(onlineSessions);
 		ApplicationScope.setOnlineUsers(onlineUsers);
 		ApplicationScope.setUrlpatterns(urlpatterns);
-		ApplicationScope.setAppConfig(ConfigHandler.getAppConfig());
+		// ApplicationScope.setAppConfig(ConfigHandler.getAppConfig());
+		ApplicationScope.setAppConfig(new AppConfigService().getAppConfig());
 		ApplicationScope.setCanBookup();
 	}
 

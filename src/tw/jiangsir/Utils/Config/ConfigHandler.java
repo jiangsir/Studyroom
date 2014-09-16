@@ -52,12 +52,13 @@ public class ConfigHandler {
 	 * 
 	 * @return
 	 */
-	public static AppConfig getAppConfig() {
-		if (appConfig == null) {
-			appConfig = ConfigHandler.readAppConfig(AppConfigFile);
-		}
-		return appConfig;
-	}
+	// 20140915
+	// public static AppConfig getAppConfig() {
+	// if (appConfig == null) {
+	// appConfig = ConfigHandler.readAppConfig(AppConfigFile);
+	// }
+	// return appConfig;
+	// }
 
 	/**
 	 * 取得某個 class 內某個 Persistent name 的 Field

@@ -46,19 +46,20 @@
 				<tr style="padding: 10px;">
 					<th>clientid</th>
 					<td style="padding: 10px;"><input name="client_id" type="text"
-						id="Title" value="${appConfig.client_id}" size="50" maxlength="50" /></td>
+						id="Title" value="${appConfig.client_id}" size="50"
+						maxlength="255" /></td>
 				</tr>
 				<tr style="padding: 10px;">
 					<th>client_secret</th>
 					<td style="padding: 10px;"><input name="client_secret"
 						type="text" id="Title" value="${appConfig.client_secret}"
-						size="50" maxlength="50" /></td>
+						size="50" maxlength="255" /></td>
 				</tr>
 				<tr style="padding: 10px;">
 					<th>redirect_uri</th>
 					<td style="padding: 10px;"><input name="redirect_uri"
 						type="text" id="Title" value="${appConfig.redirect_uri}" size="50"
-						maxlength="50" /></td>
+						maxlength="255" /></td>
 				</tr>
 				<tr style="padding: 10px;">
 					<th>訂位開始時間</th>

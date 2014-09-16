@@ -5,8 +5,10 @@
  */
 package tw.jiangsir.Utils.Config;
 
+import java.sql.Timestamp;
 import java.util.TreeSet;
 
+import tw.jiangsir.Utils.Annotations.Persistent;
 import tw.jiangsir.Utils.Annotations.Property;
 import tw.jiangsir.Utils.Tools.StringTool;
 
@@ -33,32 +35,57 @@ public class AppConfig {
 	// <entry key="deadline">22:00:00</entry>
 	// <entry key="signinip">127.0.0.1</entry>
 
+	@Persistent(name = "id")
+	private Long id = 0L;
 	@Property(key = "Title")
+	@Persistent(name = "title")
 	private String Title = "A Title for Your Site";
 	@Property(key = "Header")
+	@Persistent(name = "header")
 	private String Header = "Header";
 	@Property(key = "Author")
+	@Persistent(name = "author")
 	private String Author = "Qixun Jiang";
 	@Property(key = "PageSize")
+	@Persistent(name = "pagesize")
 	private int PageSize = 20;
 	@Property(key = "DefaultLogin")
+	@Persistent(name = "defaultlogin")
 	private String DefaultLogin = "Login";
 	@Property(key = "AuthDomains")
+	@Persistent(name = "authdomains")
 	private TreeSet<String> AuthDomains = new TreeSet<String>();
 	@Property(key = "client_id")
+	@Persistent(name = "client_id")
 	private String client_id = "";
 	@Property(key = "client_secret")
+	@Persistent(name = "client_secret")
 	private String client_secret = "";
 	@Property(key = "redirect_uri")
+	@Persistent(name = "redirect_url")
 	private String redirect_uri = "";
 	@Property(key = "starttime")
+	@Persistent(name = "starttime")
 	private java.sql.Time starttime = java.sql.Time.valueOf("06:00:00");
 	@Property(key = "deadline")
+	@Persistent(name = "deadline")
 	private java.sql.Time deadline = java.sql.Time.valueOf("22:00:00");
 	@Property(key = "signinip")
+	@Persistent(name = "signinip")
 	private String signinip = "127.0.0.1";
 	@Property(key = "announcement")
+	@Persistent(name = "announcement")
 	private String announcement = "";
+	@Persistent(name = "timestamp")
+	private Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public String getTitle() {
 		return Title;
@@ -187,6 +214,14 @@ public class AppConfig {
 			return;
 		}
 		this.announcement = announcement.trim();
+	}
+
+	public Timestamp getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(Timestamp timestamp) {
+		this.timestamp = timestamp;
 	}
 
 }

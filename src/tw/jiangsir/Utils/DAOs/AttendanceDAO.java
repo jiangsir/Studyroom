@@ -82,7 +82,6 @@ public class AttendanceDAO extends SuperDAO<Attendance> {
 			e.printStackTrace();
 			throw new DataException(e);
 		}
-
 	}
 
 }

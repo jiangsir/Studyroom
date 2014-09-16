@@ -20,7 +20,7 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import tw.jiangsir.Utils.Annotations.Persistent;
-import tw.jiangsir.Utils.Config.ConfigHandler;
+import tw.jiangsir.Utils.Config.ApplicationScope;
 
 abstract public class SuperDAO<T> {
 	private static Connection conn = null;
@@ -34,7 +34,7 @@ abstract public class SuperDAO<T> {
 
 	Logger logger = Logger.getLogger(this.getClass().getName());
 	HashMap<String, Field> fields = new HashMap<String, Field>();
-	int PAGESIZE = ConfigHandler.getAppConfig().getPageSize();
+	int PAGESIZE = 20;
 
 	public Connection getConnection() {
 		try {

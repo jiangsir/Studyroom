@@ -9,8 +9,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import tw.jiangsir.Utils.Config.AppConfig;
 import tw.jiangsir.Utils.Config.ApplicationScope;
+import tw.jiangsir.Utils.Config.SessionScope;
 import tw.jiangsir.Utils.DAOs.AttendanceService;
 import tw.jiangsir.Utils.Exceptions.DataException;
+import tw.jiangsir.Utils.Objects.CurrentUser;
 
 /**
  * Servlet implementation class SignUp
@@ -25,8 +27,10 @@ public class SignInServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+		CurrentUser currentUser = new SessionScope(request).getCurrentUser();
 		AppConfig appConfig = ApplicationScope.getAppConfig();
-		if (request.getRemoteAddr().equals(appConfig.getSigninip())) {
+		if (currentUser.getIsAdmin()
+				|| request.getRemoteAddr().equals(appConfig.getSigninip())) {
 			request.setAttribute("attendances",
 					new AttendanceService().getAttendances(1));
 			request.getRequestDispatcher("SignIn.jsp").forward(request,
