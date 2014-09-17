@@ -37,9 +37,9 @@ public class BookUpServlet extends HttpServlet implements IAccessFilter {
 
 	public void AccessFilter(java.sql.Date date) {
 		java.sql.Timestamp starttime = java.sql.Timestamp.valueOf(date + " "
-				+ ApplicationScope.getAppConfig().getStarttime().toString());
+				+ ApplicationScope.getAppConfig().getBookingbegin().toString());
 		java.sql.Timestamp deadline = java.sql.Timestamp.valueOf(date + " "
-				+ ApplicationScope.getAppConfig().getDeadline().toString());
+				+ ApplicationScope.getAppConfig().getBookingend().toString());
 		java.sql.Timestamp thedate = new java.sql.Timestamp(
 				System.currentTimeMillis());
 		if (thedate.before(starttime) || thedate.after(deadline)) {

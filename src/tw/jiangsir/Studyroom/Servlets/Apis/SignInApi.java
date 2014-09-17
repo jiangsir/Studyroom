@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import tw.jiangsir.Studyroom.Objects.Attendance;
 import tw.jiangsir.Studyroom.Objects.Booking;
+import tw.jiangsir.Utils.Config.AppConfig;
+import tw.jiangsir.Utils.Config.ApplicationScope;
 import tw.jiangsir.Utils.DAOs.AttendanceService;
 import tw.jiangsir.Utils.DAOs.BookingService;
 import tw.jiangsir.Utils.Exceptions.AccessException;
@@ -53,17 +55,13 @@ public class SignInApi extends HttpServlet implements IAccessFilter {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		String studentid = request.getParameter("id");
-		Time begintime = Time.valueOf("18:00:00");
-		Time endtime = Time.valueOf("22:00:00");
-		Time now = Time.valueOf(new SimpleDateFormat("HH:MM:SS")
+		Time now = Time.valueOf(new SimpleDateFormat("HH:mm:ss")
 				.format(new Time(System.currentTimeMillis())));
-		System.out.println("begintime=" + begintime + ", endtime=" + endtime
-				+ ", now=" + now + ", now.after(begintime)="
-				+ now.after(begintime) + ", now.before(endtime)="
-				+ now.before(endtime));
-		if (!(now.after(begintime) && now.before(endtime))) {
-			throw new ApiException("簽到／退時間為 " + begintime + " 到 " + endtime
-					+ "，請在時間內進行簽到／退。");
+		AppConfig appConfig = ApplicationScope.getAppConfig();
+		if (!(now.after(appConfig.getSigninbegin()) && now.before(appConfig
+				.getSigninend()))) {
+			throw new ApiException("簽到／退時間為 " + appConfig.getSigninbegin()
+					+ " 到 " + appConfig.getSigninend() + "，請在時間內進行簽到／退。");
 		}
 		Booking booking = new BookingService()
 				.getBookingTodayByStudentid(studentid);

@@ -63,13 +63,27 @@
 				</tr>
 				<tr style="padding: 10px;">
 					<th>訂位開始時間</th>
-					<td style="padding: 10px;"><input name="starttime" type="text"
-						id="Title" value="${appConfig.starttime}" size="50" maxlength="50" /></td>
+					<td style="padding: 10px;"><input name="bookingbegin"
+						type="text" id="bookingbegin" value="${appConfig.bookingbegin}"
+						size="50" maxlength="50" /></td>
 				</tr>
 				<tr style="padding: 10px;">
 					<th>訂位截止時間</th>
-					<td style="padding: 10px;"><input name="deadline" type="text"
-						id="Title" value="${appConfig.deadline}" size="50" maxlength="50" /></td>
+					<td style="padding: 10px;"><input name="bookingend"
+						type="text" id="bookingend" value="${appConfig.bookingend}"
+						size="50" maxlength="50" /></td>
+				</tr>
+				<tr style="padding: 10px;">
+					<th>簽到／退開始時間</th>
+					<td style="padding: 10px;"><input name="signinbegin"
+						type="text" id="signinbegin" value="${appConfig.signinbegin}"
+						size="50" maxlength="50" /></td>
+				</tr>
+				<tr style="padding: 10px;">
+					<th>簽到／退截止時間</th>
+					<td style="padding: 10px;"><input name="signinend" type="text"
+						id="signinend" value="${appConfig.signinend}" size="50"
+						maxlength="50" /></td>
 				</tr>
 				<tr style="padding: 10px;">
 					<th>可以進行簽到／退的 ip</th>

@@ -5,6 +5,7 @@
  */
 package tw.jiangsir.Utils.Config;
 
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.TreeSet;
 
@@ -64,12 +65,17 @@ public class AppConfig {
 	@Property(key = "redirect_uri")
 	@Persistent(name = "redirect_url")
 	private String redirect_uri = "";
-	@Property(key = "starttime")
-	@Persistent(name = "starttime")
-	private java.sql.Time starttime = java.sql.Time.valueOf("06:00:00");
-	@Property(key = "deadline")
-	@Persistent(name = "deadline")
-	private java.sql.Time deadline = java.sql.Time.valueOf("22:00:00");
+
+	@Persistent(name = "bookingbegin")
+	private java.sql.Time bookingbegin = java.sql.Time.valueOf("06:00:00");
+	@Persistent(name = "bookingend")
+	private java.sql.Time bookingend = java.sql.Time.valueOf("22:00:00");
+
+	@Persistent(name = "signinbegin")
+	private java.sql.Time signinbegin = java.sql.Time.valueOf("18:00:00");
+	@Persistent(name = "signinend")
+	private java.sql.Time signinend = java.sql.Time.valueOf("22:00:00");
+
 	@Property(key = "signinip")
 	@Persistent(name = "signinip")
 	private String signinip = "127.0.0.1";
@@ -170,30 +176,6 @@ public class AppConfig {
 		this.redirect_uri = redirect_uri;
 	}
 
-	public java.sql.Time getStarttime() {
-		return starttime;
-	}
-
-	public void setStarttime(java.sql.Time starttime) {
-		this.starttime = starttime;
-	}
-
-	public void setStarttime(String starttime) {
-		this.setStarttime(java.sql.Time.valueOf(starttime));
-	}
-
-	public java.sql.Time getDeadline() {
-		return deadline;
-	}
-
-	public void setDeadline(java.sql.Time deadline) {
-		this.deadline = deadline;
-	}
-
-	public void setDeadline(String deadline) {
-		this.setDeadline(java.sql.Time.valueOf(deadline));
-	}
-
 	public String getSigninip() {
 		return signinip;
 	}
@@ -222,6 +204,54 @@ public class AppConfig {
 
 	public void setTimestamp(Timestamp timestamp) {
 		this.timestamp = timestamp;
+	}
+
+	public java.sql.Time getSigninbegin() {
+		return signinbegin;
+	}
+
+	public void setSigninbegin(String signinbegin) {
+		this.setSigninbegin(Time.valueOf(signinbegin));
+	}
+
+	public void setSigninbegin(java.sql.Time signinbegin) {
+		this.signinbegin = signinbegin;
+	}
+
+	public java.sql.Time getSigninend() {
+		return signinend;
+	}
+
+	public void setSigninend(java.sql.Time signinend) {
+		this.signinend = signinend;
+	}
+
+	public void setSigninend(String signinend) {
+		this.setSigninend(Time.valueOf(signinend));
+	}
+
+	public java.sql.Time getBookingbegin() {
+		return bookingbegin;
+	}
+
+	public void setBookingbegin(String bookingbegin) {
+		this.setBookingbegin(Time.valueOf(bookingbegin));
+	}
+
+	public void setBookingbegin(java.sql.Time bookingbegin) {
+		this.bookingbegin = bookingbegin;
+	}
+
+	public java.sql.Time getBookingend() {
+		return bookingend;
+	}
+
+	public void setBookingend(String bookingend) {
+		this.setBookingend(Time.valueOf(bookingend));
+	}
+
+	public void setBookingend(java.sql.Time bookingend) {
+		this.bookingend = bookingend;
 	}
 
 }

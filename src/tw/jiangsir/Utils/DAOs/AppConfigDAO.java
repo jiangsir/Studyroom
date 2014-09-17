@@ -22,8 +22,8 @@ public class AppConfigDAO extends SuperDAO<AppConfig> {
 	@Override
 	protected synchronized int insert(AppConfig appConfig) throws SQLException {
 		String sql = "INSERT INTO appconfigs(title, header, author, pagesize, defaultlogin, authdomains, "
-				+ "client_id, client_secret, redirect_uri, starttime, deadline, signinip, announcement, "
-				+ "timestamp) VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,now());";
+				+ "client_id, client_secret, redirect_uri, bookingbegin, bookingend, signinbegin, signinend, "
+				+ "signinip, announcement, timestamp) VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, now());";
 		PreparedStatement pstmt = this.getConnection().prepareStatement(sql,
 				Statement.RETURN_GENERATED_KEYS);
 		pstmt.setString(1, appConfig.getTitle());
@@ -35,17 +35,19 @@ public class AppConfigDAO extends SuperDAO<AppConfig> {
 		pstmt.setString(7, appConfig.getClient_id());
 		pstmt.setString(8, appConfig.getClient_secret());
 		pstmt.setString(9, appConfig.getRedirect_uri());
-		pstmt.setTime(10, appConfig.getStarttime());
-		pstmt.setTime(11, appConfig.getDeadline());
-		pstmt.setString(12, appConfig.getSigninip());
-		pstmt.setString(13, appConfig.getAnnouncement());
+		pstmt.setTime(10, appConfig.getBookingbegin());
+		pstmt.setTime(11, appConfig.getBookingend());
+		pstmt.setTime(12, appConfig.getSigninbegin());
+		pstmt.setTime(13, appConfig.getSigninend());
+		pstmt.setString(14, appConfig.getSigninip());
+		pstmt.setString(15, appConfig.getAnnouncement());
 		return this.executeInsert(pstmt);
 	}
 
 	protected synchronized int update(AppConfig appConfig) throws SQLException {
 		String sql = "UPDATE appconfigs SET title=?, header=?, author=?, pagesize=?, defaultlogin=?, "
-				+ "authdomains=?, client_id=?, client_secret=?, redirect_uri=?, starttime=?, deadline=?, "
-				+ "signinip=?, announcement=? WHERE id=?";
+				+ "authdomains=?, client_id=?, client_secret=?, redirect_uri=?, bookingbegin=?, bookingend=?, "
+				+ "signinbegin=?, signinend=?, signinip=?, announcement=? WHERE id=?";
 		int result = -1;
 		PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
 		pstmt.setString(1, appConfig.getTitle());
@@ -57,11 +59,13 @@ public class AppConfigDAO extends SuperDAO<AppConfig> {
 		pstmt.setString(7, appConfig.getClient_id());
 		pstmt.setString(8, appConfig.getClient_secret());
 		pstmt.setString(9, appConfig.getRedirect_uri());
-		pstmt.setTime(10, appConfig.getStarttime());
-		pstmt.setTime(11, appConfig.getDeadline());
-		pstmt.setString(12, appConfig.getSigninip());
-		pstmt.setString(13, appConfig.getAnnouncement());
-		pstmt.setLong(14, appConfig.getId());
+		pstmt.setTime(10, appConfig.getBookingbegin());
+		pstmt.setTime(11, appConfig.getBookingend());
+		pstmt.setTime(12, appConfig.getSigninbegin());
+		pstmt.setTime(13, appConfig.getSigninend());
+		pstmt.setString(14, appConfig.getSigninip());
+		pstmt.setString(15, appConfig.getAnnouncement());
+		pstmt.setLong(16, appConfig.getId());
 		result = this.executeUpdate(pstmt);
 		pstmt.close();
 		return result;
