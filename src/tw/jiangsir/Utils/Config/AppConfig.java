@@ -66,6 +66,16 @@ public class AppConfig {
 	@Persistent(name = "redirect_url")
 	private String redirect_uri = "";
 
+	@Persistent(name = "checkhost")
+	private String checkhost = "127.0.0.1";
+
+	public enum CHECKTYPE {
+		POP;
+	}
+
+	@Persistent(name = "checktype")
+	private CHECKTYPE checktype = CHECKTYPE.POP;
+
 	@Persistent(name = "bookingbegin")
 	private java.sql.Time bookingbegin = java.sql.Time.valueOf("06:00:00");
 	@Persistent(name = "bookingend")
@@ -252,6 +262,35 @@ public class AppConfig {
 
 	public void setBookingend(java.sql.Time bookingend) {
 		this.bookingend = bookingend;
+	}
+
+	public String getCheckhost() {
+		return checkhost;
+	}
+
+	public void setCheckhost(String checkhost) {
+		if (checkhost == null) {
+			return;
+		}
+		this.checkhost = checkhost.trim();
+	}
+
+	public CHECKTYPE getChecktype() {
+		return checktype;
+	}
+
+	public void setChecktype(CHECKTYPE checktype) {
+		if (checktype == null) {
+			return;
+		}
+		this.checktype = checktype;
+	}
+
+	public void setChecktype(String checktype) {
+		if (checktype == null) {
+			return;
+		}
+		this.setChecktype(CHECKTYPE.valueOf(checktype));
 	}
 
 }

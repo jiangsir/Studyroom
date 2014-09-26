@@ -9,6 +9,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import com.apple.eawt.Application;
+
+import tw.jiangsir.Utils.Config.ApplicationScope;
 import tw.jiangsir.Utils.Config.SessionScope;
 import tw.jiangsir.Utils.Exceptions.ApiException;
 import tw.jiangsir.Utils.Objects.CurrentUser;
@@ -51,8 +55,8 @@ public class GooglePopLoginServlet extends HttpServlet {
 		String passwd = request.getParameter("passwd");
 
 		try {
-			new PopChecker().isGmailAccount(account + "@stu.nknush.kh.edu.tw",
-					passwd);
+			new PopChecker().isGmailAccount(account + "@"
+					+ ApplicationScope.getAppConfig().getCheckhost(), passwd);
 			CurrentUser currentUser = new CurrentUser();
 			currentUser.setAccount(account);
 			currentUser.setPasswd(passwd);

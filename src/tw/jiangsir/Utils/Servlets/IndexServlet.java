@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import tw.jiangsir.Studyroom.Servlets.SignInServlet;
 import tw.jiangsir.Utils.Config.AppConfig;
+import tw.jiangsir.Utils.Config.ApplicationScope;
 import tw.jiangsir.Utils.Config.SessionScope;
 import tw.jiangsir.Utils.DAOs.AppConfigService;
 import tw.jiangsir.Utils.DAOs.AttendanceDAO;
@@ -53,7 +54,7 @@ public class IndexServlet extends HttpServlet implements IAccessFilter {
 			HttpServletResponse response) throws ServletException, IOException {
 		CurrentUser currentUser = new SessionScope(request.getSession(false))
 				.getCurrentUser();
-		AppConfig appConfig = new AppConfigService().getAppConfig();
+		AppConfig appConfig = ApplicationScope.getAppConfig();
 		System.out.println("appConfig.getSigninip()=" + appConfig.getSigninip()
 				+ ", request.getRemoteAddr()=" + request.getRemoteAddr()
 				+ ", currentUser=" + currentUser);

@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import tw.jiangsir.Studyroom.Objects.Booking;
+import tw.jiangsir.Utils.Config.AppConfig;
+import tw.jiangsir.Utils.Config.ApplicationScope;
 import tw.jiangsir.Utils.Config.SessionScope;
 import tw.jiangsir.Utils.DAOs.BookingService;
 import tw.jiangsir.Utils.Exceptions.AccessException;
@@ -59,6 +61,7 @@ public class BookingApi extends HttpServlet implements IAccessFilter {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
+		AppConfig appConfig = ApplicationScope.getAppConfig();
 		CurrentUser currentUser = new SessionScope(session).getCurrentUser();
 		try {
 			java.sql.Date date;
@@ -86,8 +89,8 @@ public class BookingApi extends HttpServlet implements IAccessFilter {
 
 				if (currentUser != null && currentUser.getIsAdmin()) {
 				} else {
-					new PopChecker().isGmailAccount(studentid.trim()
-							+ "@stu.nknush.kh.edu.tw", passwd);
+					new PopChecker().isGmailAccount(studentid.trim() + "@"
+							+ appConfig.getCheckhost(), passwd);
 				}
 				new BookingService().insert(newBooking);
 
@@ -106,8 +109,8 @@ public class BookingApi extends HttpServlet implements IAccessFilter {
 				studentid = request.getParameter("studentid");
 				passwd = request.getParameter("passwd");
 
-				new PopChecker().isGmailAccount(studentid.trim()
-						+ "@stu.nknush.kh.edu.tw", passwd);
+				new PopChecker().isGmailAccount(studentid.trim() + "@"
+						+ appConfig.getCheckhost(), passwd);
 
 				Booking booking = new BookingService()
 						.getBookingTodayByStudentid(studentid);

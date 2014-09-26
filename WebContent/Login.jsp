@@ -10,9 +10,10 @@
 	<jsp:include page="Header.jsp" />
 
 	<form method="post" action="${defaultLogin}">
-		帳號：<input name="account" /><br /> 密碼：<input type="password"
-			name="passwd" /><br /> <input type="hidden" name="returnPage"
-			value="${returnPage}" /> <input type="submit" value="送出" />
+		帳號：<input name="account" type="password" /><br /> 密碼：<input
+			type="password" name="passwd" /><br /> <input type="hidden"
+			name="returnPage" value="${returnPage}" /> <input type="submit"
+			value="送出" />
 
 	</form>
 	<jsp:include page="Footer.jsp" />

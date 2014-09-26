@@ -117,3 +117,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `account` (`account`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+
+ALTER TABLE  `appconfigs` ADD  `checkhost` VARCHAR( 50 ) NOT NULL AFTER  `authdomains`;
+ALTER TABLE  `appconfigs` ADD  `checktype` VARCHAR( 50 ) NOT NULL AFTER  `authdomains`;
