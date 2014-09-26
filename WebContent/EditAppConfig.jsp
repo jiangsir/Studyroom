@@ -44,7 +44,7 @@
 						size="50" maxlength="50" /></td>
 				</tr>
 				<tr style="padding: 10px;">
-					<th>POP 認證主機</th>
+					<th>Google apps POP 認證主機</th>
 					<td style="padding: 10px;"><input name="checkhost" type="text"
 						id="checkhost" value="${appConfig.checkhost}" size="50"
 						maxlength="255" /></td>

@@ -18,7 +18,7 @@
 					<ul>
 						<li><a
 							href="${pageContext.request.contextPath}/ManageBooking">管理每日訂位</a></li>
-						<li><a href="${pageContext.request.contextPath}/BatchBooking">進行長期訂位</a></li>
+						<li><a href="${pageContext.request.contextPath}/BatchBooking">進行固定劃位</a></li>
 						<li><a
 							href="${pageContext.request.contextPath}/ManageRoomstatus">管理開館、閉館日期</a></li>
 						<li><a href="#">統計違規紀錄</a></li>

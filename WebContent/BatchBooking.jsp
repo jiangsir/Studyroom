@@ -127,7 +127,7 @@
 <body>
 	<jsp:include page="Header.jsp" />
 	<fieldset>
-		<legend>長期訂位</legend>
+		<legend>固定劃位</legend>
 		<button id="addRow" style="font-size: 0.8em;">＋增加一列</button>
 		<form id="addBatchBookings">
 			<ul>

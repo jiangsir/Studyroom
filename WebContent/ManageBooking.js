@@ -50,6 +50,7 @@ jQuery(document).ready(function() {
 	var deleteWithoutPassword = $("#deleteBookingDialogWithoutPassword");
 	$("div#deleteBooking").each(function() {
 		$(this).click(function() {
+			$("img#loader").show();
 			var seatid = $(this).attr("seatid");
 			deleteWithoutPassword.find("span#seatid").html(seatid);
 			var studentid = $(this).attr("studentid");
@@ -62,6 +63,7 @@ jQuery(document).ready(function() {
 				timeout : 5000,
 				success : function(result) {
 					// alert(result);
+					$("img#loader").hide();
 					deleteWithoutPassword.find("#attendance").html(result);
 				}
 			});
