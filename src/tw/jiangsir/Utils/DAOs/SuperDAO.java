@@ -20,7 +20,7 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import tw.jiangsir.Utils.Annotations.Persistent;
-import tw.jiangsir.Utils.Config.ApplicationScope;
+import tw.jiangsir.Utils.Scopes.ApplicationScope;
 
 abstract public class SuperDAO<T> {
 	private static Connection conn = null;

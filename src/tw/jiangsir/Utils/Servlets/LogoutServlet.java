@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import tw.jiangsir.Utils.Config.SessionScope;
+import tw.jiangsir.Utils.Scopes.SessionScope;
 
 /**
  * Servlet implementation class LoginServlet

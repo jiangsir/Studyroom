@@ -12,13 +12,13 @@ import javax.servlet.http.HttpSession;
 import tw.jiangsir.Studyroom.Objects.Attendance;
 import tw.jiangsir.Studyroom.Objects.Attendance.STATUS;
 import tw.jiangsir.Utils.Annotations.RoleSetting;
-import tw.jiangsir.Utils.Config.SessionScope;
 import tw.jiangsir.Utils.DAOs.AttendanceService;
 import tw.jiangsir.Utils.Exceptions.AccessException;
 import tw.jiangsir.Utils.Exceptions.ApiException;
 import tw.jiangsir.Utils.Interfaces.IAccessFilter;
 import tw.jiangsir.Utils.Objects.CurrentUser;
 import tw.jiangsir.Utils.Objects.User.ROLE;
+import tw.jiangsir.Utils.Scopes.SessionScope;
 
 /**
  * Servlet implementation class BookUp

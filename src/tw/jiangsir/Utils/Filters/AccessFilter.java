@@ -16,8 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import tw.jiangsir.Utils.Annotations.RoleSetting;
-import tw.jiangsir.Utils.Config.ApplicationScope;
-import tw.jiangsir.Utils.Config.SessionScope;
 import tw.jiangsir.Utils.DAOs.UserService;
 import tw.jiangsir.Utils.Exceptions.AccessException;
 import tw.jiangsir.Utils.Exceptions.Cause;
@@ -25,6 +23,8 @@ import tw.jiangsir.Utils.Exceptions.RoleException;
 import tw.jiangsir.Utils.Interfaces.IAccessFilter;
 import tw.jiangsir.Utils.Objects.CurrentUser;
 import tw.jiangsir.Utils.Objects.User;
+import tw.jiangsir.Utils.Scopes.ApplicationScope;
+import tw.jiangsir.Utils.Scopes.SessionScope;
 
 /**
  * Servlet Filter implementation class RoleFilter

@@ -13,8 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import tw.jiangsir.Utils.Config.ApplicationScope;
-import tw.jiangsir.Utils.Config.SessionScope;
+import tw.jiangsir.Utils.Scopes.ApplicationScope;
+import tw.jiangsir.Utils.Scopes.SessionScope;
 
 /**
  * Servlet Filter implementation class EncodingFilter

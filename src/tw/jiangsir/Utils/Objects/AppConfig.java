@@ -3,7 +3,7 @@
  * 2008/2/19 下午 04:32:20
  * jiangsir
  */
-package tw.jiangsir.Utils.Config;
+package tw.jiangsir.Utils.Objects;
 
 import java.sql.Time;
 import java.sql.Timestamp;

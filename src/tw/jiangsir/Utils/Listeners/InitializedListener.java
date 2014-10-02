@@ -16,7 +16,7 @@ import javax.servlet.annotation.WebListener;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 
-import tw.jiangsir.Utils.Config.ApplicationScope;
+import tw.jiangsir.Utils.Scopes.ApplicationScope;
 
 /**
  * Application Lifecycle Listener implementation class InitializedListener

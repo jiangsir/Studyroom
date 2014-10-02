@@ -3,8 +3,8 @@ package tw.jiangsir.Utils.DAOs;
 import java.sql.SQLException;
 import java.util.TreeMap;
 
-import tw.jiangsir.Utils.Config.AppConfig;
 import tw.jiangsir.Utils.Exceptions.DataException;
+import tw.jiangsir.Utils.Objects.AppConfig;
 
 public class AppConfigService {
 

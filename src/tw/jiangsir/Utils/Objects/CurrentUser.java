@@ -6,7 +6,7 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionBindingListener;
 
-import tw.jiangsir.Utils.Config.ApplicationScope;
+import tw.jiangsir.Utils.Scopes.ApplicationScope;
 
 public class CurrentUser extends User implements HttpSessionBindingListener,
 		Serializable {

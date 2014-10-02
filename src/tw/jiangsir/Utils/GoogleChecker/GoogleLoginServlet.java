@@ -7,8 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import tw.jiangsir.Utils.Config.AppConfig;
-import tw.jiangsir.Utils.Config.ApplicationScope;
+import tw.jiangsir.Utils.Objects.AppConfig;
+import tw.jiangsir.Utils.Scopes.ApplicationScope;
 
 @WebServlet(urlPatterns = { "/GoogleLogin" })
 public class GoogleLoginServlet extends HttpServlet {

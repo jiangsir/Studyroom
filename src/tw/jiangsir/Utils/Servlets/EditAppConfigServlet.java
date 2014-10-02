@@ -9,10 +9,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import tw.jiangsir.Utils.Annotations.RoleSetting;
-import tw.jiangsir.Utils.Config.AppConfig;
-import tw.jiangsir.Utils.Config.ApplicationScope;
-import tw.jiangsir.Utils.Config.SessionScope;
 import tw.jiangsir.Utils.DAOs.AppConfigService;
+import tw.jiangsir.Utils.Objects.AppConfig;
+import tw.jiangsir.Utils.Scopes.ApplicationScope;
+import tw.jiangsir.Utils.Scopes.SessionScope;
 
 /**
  * Servlet implementation class EditAppConfigServlet
@@ -48,9 +48,8 @@ public class EditAppConfigServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		AppConfig appConfig = ApplicationScope.getAppConfig();
 		for (String name : request.getParameterMap().keySet()) {
-			Method method;
 			try {
-				method = appConfig.getClass().getMethod(
+				Method method = appConfig.getClass().getMethod(
 						"set" + name.toUpperCase().substring(0, 1)
 								+ name.substring(1), String.class);
 				method.invoke(appConfig,

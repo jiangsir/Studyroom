@@ -14,13 +14,13 @@ import javax.servlet.http.HttpSession;
 import org.apache.catalina.tribes.util.Arrays;
 
 import tw.jiangsir.Studyroom.Objects.Booking;
-import tw.jiangsir.Utils.Config.SessionScope;
 import tw.jiangsir.Utils.DAOs.BookingService;
 import tw.jiangsir.Utils.Exceptions.AccessException;
 import tw.jiangsir.Utils.Exceptions.ApiException;
 import tw.jiangsir.Utils.Exceptions.DataException;
 import tw.jiangsir.Utils.Interfaces.IAccessFilter;
 import tw.jiangsir.Utils.Objects.CurrentUser;
+import tw.jiangsir.Utils.Scopes.SessionScope;
 import tw.jiangsir.Utils.Tools.DateTool;
 
 /**

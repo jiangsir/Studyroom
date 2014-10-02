@@ -1,4 +1,4 @@
-package tw.jiangsir.Utils.Config;
+package tw.jiangsir.Utils.Scopes;
 
 import java.io.Serializable;
 import java.util.ArrayList;

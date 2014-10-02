@@ -17,12 +17,12 @@ import org.scribe.model.Verb;
 import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
 
-import tw.jiangsir.Utils.Config.AppConfig;
-import tw.jiangsir.Utils.Config.ApplicationScope;
-import tw.jiangsir.Utils.Config.SessionScope;
 import tw.jiangsir.Utils.Exceptions.DataException;
+import tw.jiangsir.Utils.Objects.AppConfig;
 import tw.jiangsir.Utils.Objects.CurrentUser;
 import tw.jiangsir.Utils.Objects.User;
+import tw.jiangsir.Utils.Scopes.ApplicationScope;
+import tw.jiangsir.Utils.Scopes.SessionScope;
 
 /**
  * Servlet implementation class OAuth2CallbackServlet

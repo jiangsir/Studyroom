@@ -10,8 +10,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.TreeMap;
-import tw.jiangsir.Utils.Config.AppConfig;
 import tw.jiangsir.Utils.Exceptions.DataException;
+import tw.jiangsir.Utils.Objects.AppConfig;
 
 /**
  * @author jiangsir

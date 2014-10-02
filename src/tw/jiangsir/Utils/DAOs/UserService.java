@@ -5,10 +5,10 @@ import java.util.ArrayList;
 
 import javax.servlet.http.HttpSession;
 
-import tw.jiangsir.Utils.Config.SessionScope;
 import tw.jiangsir.Utils.Exceptions.DataException;
 import tw.jiangsir.Utils.Objects.CurrentUser;
 import tw.jiangsir.Utils.Objects.User;
+import tw.jiangsir.Utils.Scopes.SessionScope;
 
 public class UserService {
 

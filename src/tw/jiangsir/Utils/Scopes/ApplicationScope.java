@@ -1,4 +1,4 @@
-package tw.jiangsir.Utils.Config;
+package tw.jiangsir.Utils.Scopes;
 
 import java.io.File;
 import java.sql.Date;
@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 
 import tw.jiangsir.Studyroom.Servlets.BookUpServlet;
 import tw.jiangsir.Utils.DAOs.AppConfigService;
+import tw.jiangsir.Utils.Objects.AppConfig;
 import tw.jiangsir.Utils.Objects.User;
 
 public class ApplicationScope {

@@ -18,10 +18,10 @@ import javax.servlet.http.HttpSession;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
-import tw.jiangsir.Utils.Config.SessionScope;
 import tw.jiangsir.Utils.Exceptions.Alert;
 import tw.jiangsir.Utils.Exceptions.Cause;
 import tw.jiangsir.Utils.Exceptions.ApiException;
+import tw.jiangsir.Utils.Scopes.SessionScope;
 
 /**
  * Servlet Filter implementation class EncodingFilter

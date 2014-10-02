@@ -80,11 +80,11 @@
 		</c:otherwise>
 	</c:choose>
 	<div>
-		<span style="color: green;">綠色代表已簽到</span>，<span style="color: red;">紅色代表已簽退</span>，黑色代表已訂位但未簽到
+		<span style="color: green;">綠色代表已簽到</span>，<span style="color: red;">紅色代表已簽退</span>，黑色代表已訂位但未簽到(即缺席)
 	</div>
 	<div>總訂位人數：${fn:length(hashBookings)} 人。</div>
 	<div>簽到人數： ${attendCount } 人。</div>
-	<div>未簽到人數：${fn:length(hashBookings)-attendCount }人。</div>
+	<div>缺席人數：${fn:length(hashBookings)-attendCount }人。</div>
 
 	<jsp:include page="Footer.jsp" />
 </body>

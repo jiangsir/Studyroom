@@ -1,4 +1,4 @@
-package tw.jiangsir.Utils.Config;
+package tw.jiangsir.Utils.Scopes;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -18,9 +18,9 @@ import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import tw.jiangsir.Utils.Annotations.Property;
-import tw.jiangsir.Utils.Config.ApplicationScope;
 import tw.jiangsir.Utils.Exceptions.Cause;
 import tw.jiangsir.Utils.Exceptions.DataException;
+import tw.jiangsir.Utils.Scopes.ApplicationScope;
 
 public class ConfigHandler {
 	// private static File appRoot;

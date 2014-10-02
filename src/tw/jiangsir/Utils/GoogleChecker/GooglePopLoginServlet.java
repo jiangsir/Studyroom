@@ -12,11 +12,11 @@ import javax.servlet.http.HttpSession;
 
 import com.apple.eawt.Application;
 
-import tw.jiangsir.Utils.Config.ApplicationScope;
-import tw.jiangsir.Utils.Config.SessionScope;
 import tw.jiangsir.Utils.Exceptions.ApiException;
 import tw.jiangsir.Utils.Objects.CurrentUser;
 import tw.jiangsir.Utils.Objects.User;
+import tw.jiangsir.Utils.Scopes.ApplicationScope;
+import tw.jiangsir.Utils.Scopes.SessionScope;
 
 /**
  * Servlet implementation class LoginServlet

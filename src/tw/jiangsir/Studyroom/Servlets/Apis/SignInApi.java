@@ -13,13 +13,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import tw.jiangsir.Studyroom.Objects.Attendance;
 import tw.jiangsir.Studyroom.Objects.Booking;
-import tw.jiangsir.Utils.Config.AppConfig;
-import tw.jiangsir.Utils.Config.ApplicationScope;
 import tw.jiangsir.Utils.DAOs.AttendanceService;
 import tw.jiangsir.Utils.DAOs.BookingService;
 import tw.jiangsir.Utils.Exceptions.AccessException;
 import tw.jiangsir.Utils.Exceptions.ApiException;
 import tw.jiangsir.Utils.Interfaces.IAccessFilter;
+import tw.jiangsir.Utils.Objects.AppConfig;
+import tw.jiangsir.Utils.Scopes.ApplicationScope;
 
 /**
  * Servlet implementation class BookUp
