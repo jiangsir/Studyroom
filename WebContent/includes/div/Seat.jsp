@@ -34,7 +34,7 @@
 }
 </style>
 
-<div seatid="${param.seatid}">
+<div seatid="${param.seatid}" id="seat">
 	<c:choose>
 		<c:when test="${!seat:canBookup(date)}">
 			<c:if test="${hashBookings[param.seatid].isBooked}">
