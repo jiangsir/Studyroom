@@ -114,10 +114,10 @@ jQuery(document).ready(function() {
 		text : false
 	});
 
-	$("div[id='seat']").mouseenter(function() {
-		$("span#mouseover").text($(this).attr("seatid") + " over");
-	}).mouseleave(function() {
-		$("span#mouseover").text($(this).attr("seatid") + " leave");
-	});
+	// $("div[id='seat']").mouseenter(function() {
+	// $("span#mouseover").text($(this).attr("seatid") + " over");
+	// }).mouseleave(function() {
+	// $("span#mouseover").text($(this).attr("seatid") + " leave");
+	// });
 
 });

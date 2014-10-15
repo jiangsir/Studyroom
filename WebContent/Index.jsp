@@ -30,7 +30,6 @@
 	<c:choose>
 		<c:when test="${room:isOpen(date) }">
 			<div style="text-align: center;">
-				<span id="mouseover"></span>
 				<h1>
 					<fmt:formatDate value="${date}" pattern="yyyy-MM-dd (E)" />
 					的訂位狀況(
@@ -83,7 +82,11 @@
 		</c:when>
 		<c:otherwise>
 			<div style="text-align: center;">
-				<h1>今日不開放訂位哦！</h1>
+				<h1>
+					今日
+					<fmt:formatDate value="${date}" pattern="yyyy-MM-dd (E)" />
+					不開放訂位哦！
+				</h1>
 			</div>
 		</c:otherwise>
 	</c:choose>
