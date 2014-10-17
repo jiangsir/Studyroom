@@ -1,18 +1,14 @@
 package tw.jiangsir.Studyroom.Servlets;
 
 import java.io.IOException;
-import java.util.HashMap;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import tw.jiangsir.Studyroom.Objects.Booking;
+import tw.jiangsir.Studyroom.DAOs.AttendanceDAO;
+import tw.jiangsir.Studyroom.DAOs.BookingService;
 import tw.jiangsir.Utils.Annotations.RoleSetting;
-import tw.jiangsir.Utils.DAOs.AttendanceDAO;
-import tw.jiangsir.Utils.DAOs.BookingService;
 import tw.jiangsir.Utils.Tools.DateTool;
 
 /**

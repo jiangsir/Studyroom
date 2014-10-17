@@ -9,8 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import tw.jiangsir.Studyroom.DAOs.BookingService;
+import tw.jiangsir.Studyroom.DAOs.ViolationService;
 import tw.jiangsir.Studyroom.Objects.Booking;
-import tw.jiangsir.Utils.DAOs.BookingService;
 import tw.jiangsir.Utils.Exceptions.AccessException;
 import tw.jiangsir.Utils.Exceptions.ApiException;
 import tw.jiangsir.Utils.Exceptions.DataException;
@@ -49,7 +50,7 @@ public class BookingApi extends HttpServlet implements IAccessFilter {
 			HttpServletResponse response) throws ServletException, IOException {
 	}
 
-	public enum ACTION {
+	public enum POSTACTION {
 		booked, // 訂位
 		cancel;// 取消
 	}
@@ -71,7 +72,7 @@ public class BookingApi extends HttpServlet implements IAccessFilter {
 				date = new java.sql.Date(System.currentTimeMillis());
 			}
 
-			switch (ACTION.valueOf(request.getParameter("action"))) {
+			switch (POSTACTION.valueOf(request.getParameter("action"))) {
 			case booked:
 				int seatid = Integer.parseInt(request.getParameter("seatid"));
 				String studentid = request.getParameter("studentid");
@@ -89,9 +90,13 @@ public class BookingApi extends HttpServlet implements IAccessFilter {
 
 				if (currentUser != null && currentUser.getIsAdmin()) {
 				} else {
-					new PopChecker().isGmailAccount(studentid.trim() + "@"
-							+ appConfig.getCheckhost(), passwd);
+					new PopChecker().isGmailAccount(newBooking.getStudentid()
+							+ "@" + appConfig.getCheckhost(), passwd);
 				}
+
+				new ViolationService().checkViolationsByStudentid(newBooking
+						.getStudentid());
+
 				new BookingService().insert(newBooking);
 
 				return;

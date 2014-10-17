@@ -34,7 +34,8 @@
 }
 </style>
 
-<div seatid="${param.seatid}" id="seat">
+<div seatid="${param.seatid}"
+	studentid="${hashBookings[param.seatid].studentid }" id="seat">
 	<c:choose>
 		<c:when test="${!seat:canBookup(date)}">
 			<c:if test="${hashBookings[param.seatid].isBooked}">
@@ -66,7 +67,8 @@
 		<c:otherwise>
 			<c:choose>
 				<c:when test="${hashBookings[param.seatid].isBooked}">
-					<div id="deleteBooking" class="unseat" seatid=${param.seatid}>
+					<div id="deleteBooking" class="unseat" seatid="${param.seatid}"
+						studentid="${hashBookings[param.seatid].studentid }">
 						<div style="margin-top: 0.6em;">
 							<c:choose>
 								<c:when test="${hashBookings[param.seatid].attendance.isSignIn}">

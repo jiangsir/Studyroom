@@ -3,8 +3,8 @@ package tw.jiangsir.Studyroom.Objects;
 import java.sql.Date;
 import java.sql.Timestamp;
 
+import tw.jiangsir.Studyroom.DAOs.AttendanceService;
 import tw.jiangsir.Utils.Annotations.Persistent;
-import tw.jiangsir.Utils.DAOs.AttendanceService;
 
 public class Booking {
 	public enum STATUS {
@@ -49,7 +49,10 @@ public class Booking {
 	}
 
 	public void setStudentid(String studentid) {
-		this.studentid = studentid;
+		if (studentid == null) {
+			return;
+		}
+		this.studentid = studentid.trim();
 	}
 
 	public int getSeatid() {
@@ -103,10 +106,15 @@ public class Booking {
 	// return this.getStatus() == Booking.STATUS.SignOut;
 	// }
 
+	/**
+	 * 取得這個預約學生最後一個簽到記錄。
+	 * 
+	 * @return
+	 */
 	public Attendance getAttendance() {
 		Attendance attendance = new AttendanceService()
 				.getLastAttendanceByStudentidDate(studentid, date);
-		System.out.println(attendance);
+		// System.out.println(attendance);
 		return attendance;
 	}
 

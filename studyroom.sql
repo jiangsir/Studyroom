@@ -27,6 +27,8 @@ CREATE TABLE IF NOT EXISTS `appconfigs` (
   `pagesize` int(11) NOT NULL,
   `defaultlogin` varchar(100) NOT NULL,
   `authdomains` varchar(255) NOT NULL,
+  `checktype` varchar(50) NOT NULL,
+  `checkhost` varchar(50) NOT NULL,
   `client_id` varchar(255) NOT NULL,
   `client_secret` varchar(255) NOT NULL,
   `redirect_uri` varchar(255) NOT NULL,
@@ -119,5 +121,6 @@ CREATE TABLE IF NOT EXISTS `users` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 
-ALTER TABLE  `appconfigs` ADD  `checkhost` VARCHAR( 50 ) NOT NULL AFTER  `authdomains`;
-ALTER TABLE  `appconfigs` ADD  `checktype` VARCHAR( 50 ) NOT NULL AFTER  `authdomains`;
+
+UPDATE bookings SET `status`='Booked' WHERE `status`='occupied';
+ALTER TABLE  `violations` CHANGE  `status`  `status` VARCHAR( 20 ) NOT NULL;

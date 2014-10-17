@@ -8,6 +8,8 @@
 <%@ page isELIgnored="false"%>
 
 <div id="StudentAttendance" studentid="${studentid}">
+	<jsp:include page="../div/Violations.jsp" />
+	<hr>
 	<c:set var="sec" value="${(ms-ms%1000)/1000}" />
 	<c:set var="min" value="${(sec-sec%60)/60}" />
 	<c:set var="hour" value="${(min-min%60)/60}" />

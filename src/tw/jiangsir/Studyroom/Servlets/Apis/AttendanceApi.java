@@ -9,10 +9,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import tw.jiangsir.Studyroom.DAOs.AttendanceService;
+import tw.jiangsir.Studyroom.DAOs.ViolationService;
 import tw.jiangsir.Studyroom.Objects.Attendance;
 import tw.jiangsir.Studyroom.Objects.Attendance.STATUS;
 import tw.jiangsir.Utils.Annotations.RoleSetting;
-import tw.jiangsir.Utils.DAOs.AttendanceService;
 import tw.jiangsir.Utils.Exceptions.AccessException;
 import tw.jiangsir.Utils.Exceptions.ApiException;
 import tw.jiangsir.Utils.Interfaces.IAccessFilter;
@@ -96,6 +98,8 @@ public class AttendanceApi extends HttpServlet implements IAccessFilter {
 			request.setAttribute("ms", ms);
 			request.setAttribute("studentid", studentid);
 			request.setAttribute("attendances", attendances);
+			request.setAttribute("violations",
+					new ViolationService().getViolationsByStudentid(studentid));
 			request.getRequestDispatcher("includes/div/StudentAttendance.jsp")
 					.forward(request, response);
 		} catch (Exception e) {

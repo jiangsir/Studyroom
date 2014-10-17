@@ -3,7 +3,7 @@
  * 2008/4/29 下午 05:46:51
  * jiangsir
  */
-package tw.jiangsir.Utils.DAOs;
+package tw.jiangsir.Studyroom.DAOs;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -11,6 +11,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.TreeMap;
 import tw.jiangsir.Studyroom.Objects.Roomstatus;
+import tw.jiangsir.Utils.DAOs.SuperDAO;
 import tw.jiangsir.Utils.Exceptions.DataException;
 
 /**

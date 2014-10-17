@@ -58,18 +58,23 @@ jQuery(document).ready(function() {
 		}
 	});
 
-	$("div#deleteBooking").each(function() {
-		$(this).click(function() {
-			var seatid = $(this).attr("seatid");
-			$("div#deleteBookingDialog span#seatid").html(seatid);
-			$("#deleteBookingDialog").find("input").val("");
-			$("#deleteBookingDialog").dialog("open");
-		});
+	var deleteBookingDialog = jQuery("div#deleteBookingDialog");
+	$("div#deleteBooking").click(function() {
+		// $(this).click(function() {
+		var seatid = $(this).attr("seatid");
+		var studentid = $(this).attr("studentid");
+		// alert(studentid);
+		getViolationsByStudentid(deleteBookingDialog, studentid);
+		deleteBookingDialog.find("#seatid").html(seatid);
+		deleteBookingDialog.find("input").val("");
+
+		deleteBookingDialog.dialog("open");
+		// });
 	});
-	$("#deleteBookingDialog").dialog({
+	deleteBookingDialog.dialog({
 		autoOpen : false,
 		height : 400,
-		width : 350,
+		width : '40%',
 		modal : true,
 		buttons : {
 			"取消訂位" : function() {
@@ -114,10 +119,42 @@ jQuery(document).ready(function() {
 		text : false
 	});
 
-	// $("div[id='seat']").mouseenter(function() {
-	// $("span#mouseover").text($(this).attr("seatid") + " over");
+	var message_dialog = jQuery("div#message_dialog");
+	message_dialog.dialog({
+		autoOpen : false,
+		width : 600,
+		modal : true,
+		buttons : {
+			"返回" : function() {
+				$(this).dialog("close");
+			}
+
+		}
+	});
+
+	// $("div[id='seat']").mouseover(function() {
+	// var studentid = $(this).attr("studentid");
+	// getViolationsByStudentid(message_dialog, studentid);
+	// // $("span#mouseover").text($(this).attr("seatid") + " over");
 	// }).mouseleave(function() {
-	// $("span#mouseover").text($(this).attr("seatid") + " leave");
+	// // $("span#mouseover").text($(this).attr("seatid") + " leave");
+	// jQuery("div#message_dialog").dialog("close");
 	// });
 
 });
+
+function getViolationsByStudentid(deleteBookingDialog, studentid) {
+	jQuery.ajax({
+		type : "GET",
+		url : "Violation.api",
+		data : "action=getViolationsByStudentid&studentid=" + studentid,
+		async : false,
+		timeout : 5000,
+		beforeSend : function() {
+		},
+		success : function(result) {
+			deleteBookingDialog.find("#violations").html(result);
+		}
+	});
+
+}

@@ -89,7 +89,8 @@
 								<c:choose>
 									<c:when test="${hashBookings[seatidString].isBooked}">
 										<div id="deleteBooking" class="unseat" seatid="${seatid }"
-											studentid="${hashBookings[seatidString].studentid}" date="${param.date}">
+											studentid="${hashBookings[seatidString].studentid}"
+											date="${param.date}">
 											<div id="demotip">&nbsp;</div>
 											<c:choose>
 												<c:when
@@ -143,6 +144,10 @@
 	<div>總訂位人數：${fn:length(hashBookings)} 人。</div>
 	<div>簽到人數： ${attendCount } 人。</div>
 	<div>未簽到人數：${fn:length(hashBookings)-attendCount }人。</div>
+	<form action="Violation.api?action=rebuiltViolationsByDate" method="post">
+		<input name="date" value=${date } />
+		<button id="rebuiltViolationsByDate">立即計算違規狀態</button>
+	</form>
 
 	<!-- 
 	加入圖片放大的功能。

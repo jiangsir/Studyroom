@@ -23,6 +23,7 @@
 	<jsp:include page="includes/dialog/Loading.jsp" />
 	<jsp:include page="includes/dialog/InsertBookingDialog.jsp" />
 	<jsp:include page="includes/dialog/DeleteBookingDialog.jsp" />
+	<jsp:include page="includes/dialog/MessageDialog.jsp" />
 
 	<jsp:include page="Header.jsp" />
 

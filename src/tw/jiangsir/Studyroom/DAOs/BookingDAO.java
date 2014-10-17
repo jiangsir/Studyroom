@@ -3,7 +3,7 @@
  * 2008/4/29 下午 05:46:51
  * jiangsir
  */
-package tw.jiangsir.Utils.DAOs;
+package tw.jiangsir.Studyroom.DAOs;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import tw.jiangsir.Studyroom.Objects.Booking;
+import tw.jiangsir.Utils.DAOs.SuperDAO;
 
 /**
  * @author jiangsir

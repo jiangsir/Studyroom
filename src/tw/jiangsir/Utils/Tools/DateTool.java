@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import tw.jiangsir.Studyroom.DAOs.BookingService;
 import tw.jiangsir.Studyroom.Objects.Booking;
-import tw.jiangsir.Utils.DAOs.BookingService;
 
 public class DateTool {
 
@@ -74,9 +74,9 @@ public class DateTool {
 		// java.text.SimpleDateFormat format = new
 		// java.text.SimpleDateFormat("E");
 		// return format.format(date2);
-		System.out.println(currentCal);
-		System.out.println(currentCal.getTime());
-		System.out.println(currentCal.get(Calendar.DAY_OF_WEEK));
+		// System.out.println(currentCal);
+		// System.out.println(currentCal.getTime());
+		// System.out.println(currentCal.get(Calendar.DAY_OF_WEEK));
 		return currentCal.get(Calendar.DAY_OF_WEEK);
 	}
 

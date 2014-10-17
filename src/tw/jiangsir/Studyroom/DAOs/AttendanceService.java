@@ -1,9 +1,8 @@
-package tw.jiangsir.Utils.DAOs;
+package tw.jiangsir.Studyroom.DAOs;
 
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.TreeMap;
 import tw.jiangsir.Studyroom.Objects.Attendance;
 import tw.jiangsir.Utils.Exceptions.DataException;
@@ -110,14 +109,10 @@ public class AttendanceService {
 		new AttendanceService().insert(attendance);
 	}
 
-	public HashMap<String, Attendance> getHashAttendance(Date date) {
+	public ArrayList<Attendance> getAttendancesByDate(Date date) {
 		TreeMap<String, Object> fields = new TreeMap<String, Object>();
 		fields.put("date", date);
-		HashMap<String, Attendance> hashAttendances = new HashMap<String, Attendance>();
-		for (Attendance attendance : new AttendanceDAO().getAttendanceByFields(
-				fields, "timestamp DESC", 0)) {
-
-		}
-		return hashAttendances;
+		return new AttendanceDAO().getAttendanceByFields(fields,
+				"timestamp DESC", 0);
 	}
 }

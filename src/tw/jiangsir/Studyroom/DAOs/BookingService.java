@@ -1,4 +1,4 @@
-package tw.jiangsir.Utils.DAOs;
+package tw.jiangsir.Studyroom.DAOs;
 
 import java.sql.Date;
 import java.sql.SQLException;
@@ -92,6 +92,15 @@ public class BookingService {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new DataException(e);
+		}
+	}
+
+	public ArrayList<Booking> getBookingsByDate(Date date) {
+		try {
+			return new BookingDAO().getBookingsByDate(date);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return new ArrayList<Booking>();
 		}
 	}
 

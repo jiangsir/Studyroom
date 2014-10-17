@@ -102,6 +102,9 @@ jQuery(document).ready(function() {
 
 		}
 	});
+	jQuery("button#rebuiltViolationsByDate").click(function() {
+		$(this).closest("form").submit();
+	});
 
 	$("button[id='icon01']").button({
 		icons : {

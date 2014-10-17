@@ -378,7 +378,7 @@ abstract public class SuperDAO<T> {
 			sql.append(" LIMIT " + ((page > 1 ? page : 1) - 1) * PAGESIZE + ","
 					+ PAGESIZE);
 		}
-		System.out.println("makeFields=" + sql.toString());
+		// System.out.println("makeFields=" + sql.toString());
 		return sql.toString();
 	}
 

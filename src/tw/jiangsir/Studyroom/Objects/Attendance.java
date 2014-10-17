@@ -2,8 +2,9 @@ package tw.jiangsir.Studyroom.Objects;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+
+import tw.jiangsir.Studyroom.DAOs.BookingService;
 import tw.jiangsir.Utils.Annotations.Persistent;
-import tw.jiangsir.Utils.DAOs.BookingService;
 
 public class Attendance {
 	@Persistent(name = "id")
@@ -56,7 +57,7 @@ public class Attendance {
 	}
 
 	public void setStatus(Integer status) {
-		this.status = STATUS.values()[status];
+		this.setStatus(STATUS.values()[status]);
 	}
 
 	public Timestamp getTimestamp() {
