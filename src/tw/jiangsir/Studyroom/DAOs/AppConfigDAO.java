@@ -25,16 +25,16 @@ public class AppConfigDAO extends SuperDAO<AppConfig> {
 	protected synchronized int insert(AppConfig appConfig) throws SQLException {
 		String sql = "INSERT INTO appconfigs(title, header, author, pagesize, defaultlogin, authdomains, "
 				+ "checktype, checkhost, client_id, client_secret, redirect_uri, bookingbegin, bookingend, "
-				+ "signinbegin, signinend, signinip, announcement, timestamp) VALUES "
-				+ "(?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,now());";
+				+ "signinbegin, signinend, signinip, workingstudents, announcement, timestamp) VALUES "
+				+ "(?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,now());";
 		PreparedStatement pstmt = this.getConnection().prepareStatement(sql,
 				Statement.RETURN_GENERATED_KEYS);
 		pstmt.setString(1, appConfig.getTitle());
 		pstmt.setString(2, appConfig.getHeader());
 		pstmt.setString(3, appConfig.getAuthor());
-		pstmt.setInt(4, appConfig.getPageSize());
-		pstmt.setString(5, appConfig.getDefaultLogin());
-		pstmt.setString(6, appConfig.getAuthDomains().toString());
+		pstmt.setInt(4, appConfig.getPagesize());
+		pstmt.setString(5, appConfig.getDefaultlogin());
+		pstmt.setString(6, appConfig.getAuthdomains().toString());
 		pstmt.setString(7, appConfig.getChecktype().toString());
 		pstmt.setString(8, appConfig.getCheckhost());
 		pstmt.setString(9, appConfig.getClient_id());
@@ -45,7 +45,8 @@ public class AppConfigDAO extends SuperDAO<AppConfig> {
 		pstmt.setTime(14, appConfig.getSigninbegin());
 		pstmt.setTime(15, appConfig.getSigninend());
 		pstmt.setString(16, appConfig.getSigninip());
-		pstmt.setString(17, appConfig.getAnnouncement());
+		pstmt.setString(17, appConfig.getWorkingstudents().toString());
+		pstmt.setString(18, appConfig.getAnnouncement());
 		return this.executeInsert(pstmt);
 	}
 
@@ -59,9 +60,9 @@ public class AppConfigDAO extends SuperDAO<AppConfig> {
 		pstmt.setString(1, appConfig.getTitle());
 		pstmt.setString(2, appConfig.getHeader());
 		pstmt.setString(3, appConfig.getAuthor());
-		pstmt.setInt(4, appConfig.getPageSize());
-		pstmt.setString(5, appConfig.getDefaultLogin());
-		pstmt.setString(6, appConfig.getAuthDomains().toString());
+		pstmt.setInt(4, appConfig.getPagesize());
+		pstmt.setString(5, appConfig.getDefaultlogin());
+		pstmt.setString(6, appConfig.getAuthdomains().toString());
 		pstmt.setString(7, appConfig.getChecktype().toString());
 		pstmt.setString(8, appConfig.getCheckhost());
 		pstmt.setString(9, appConfig.getClient_id());
@@ -103,6 +104,15 @@ public class AppConfigDAO extends SuperDAO<AppConfig> {
 			e.printStackTrace();
 			throw new DataException(e);
 		}
+	}
+
+	/**
+	 * 清空 appconfig
+	 * 
+	 * @return
+	 */
+	protected boolean truncate() {
+		return this.execute("TRUNCATE TABLE `appconfigs`");
 	}
 
 }

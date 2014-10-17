@@ -68,7 +68,7 @@ public class AccessFilter implements Filter {
 		UserService userService = new UserService();
 		if (!userService.isUserOnline(session)) {
 			request.setAttribute("defaultLogin", ApplicationScope
-					.getAppConfig().getDefaultLogin());
+					.getAppConfig().getDefaultlogin());
 			request.getRequestDispatcher("/Login.jsp").forward(request,
 					response);
 			return;

@@ -40,16 +40,17 @@ public class EncodingFilter implements Filter {
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse resp = (HttpServletResponse) response;
 
-		if ("GET".equals(req.getMethod())) {
-			req = new EncodingWrapper(req, ENCODING);
-		} else {
-			req.setCharacterEncoding(ENCODING);
-		}
 		req.setCharacterEncoding(ENCODING);
-
 		// resp 也要設定好 ENCODING 否則直接 response.writer 輸出會亂碼。
 		resp.setContentType("text/html;charset=" + ENCODING);
+		// resp 也要設定好 ENCODING 否則直接 response.writer 輸出會亂碼。
+		resp.setCharacterEncoding(ENCODING);
 
+		// if ("GET".equals(req.getMethod())) {
+		// req = new EncodingWrapper(req, ENCODING);
+		// }
+		System.out.println(req.getMethod() + ": ENCODING=" + ENCODING
+				+ ", uri=" + req.getRequestURI() + "?" + req.getQueryString());
 		chain.doFilter(req, resp);
 	}
 

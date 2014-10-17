@@ -120,7 +120,20 @@ CREATE TABLE IF NOT EXISTS `users` (
   UNIQUE KEY `account` (`account`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
+CREATE TABLE IF NOT EXISTS `violations` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `date` date NOT NULL,
+  `studentid` varchar(20) NOT NULL,
+  `reason` varchar(20) NOT NULL,
+  `comment` varchar(255) NOT NULL,
+  `status` varchar(20) NOT NULL,
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 
-UPDATE bookings SET `status`='Booked' WHERE `status`='occupied';
-ALTER TABLE  `violations` CHANGE  `status`  `status` VARCHAR( 20 ) NOT NULL;
+
+ALTER TABLE  `studyroom`.`bookings` DROP INDEX  `studentid` ,
+ADD UNIQUE  `seatid_date_status` (  `seatid` ,  `date` ,  `status` )
+
+ALTER TABLE  `appconfigs` ADD  `workingstudents` VARCHAR( 200 ) NOT NULL AFTER  `signinip`;

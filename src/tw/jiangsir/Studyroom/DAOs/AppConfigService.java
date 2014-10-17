@@ -9,6 +9,7 @@ import tw.jiangsir.Utils.Objects.AppConfig;
 public class AppConfigService {
 
 	public int insert(AppConfig appConfig) throws DataException {
+		new AppConfigDAO().truncate();
 		try {
 			return new AppConfigDAO().insert(appConfig);
 		} catch (SQLException e) {

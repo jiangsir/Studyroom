@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -253,8 +254,8 @@ abstract public class SuperDAO<T> {
 				Long id = rs.getLong(idname);
 				list.add(id);
 			}
-			logger.info("PSTMT_SQL=" + pstmt.toString() + " 共耗時 "
-					+ (System.currentTimeMillis() - starttime) + " ms");
+			// logger.info("PSTMT_SQL=" + pstmt.toString() + " 共耗時 "
+			// + (System.currentTimeMillis() - starttime) + " ms");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -413,6 +414,35 @@ abstract public class SuperDAO<T> {
 			return -1;
 		}
 		return count;
+	}
+
+	/**
+	 * 執行 SQL 指令
+	 * 
+	 * @param sql
+	 * @return
+	 * @throws Exception
+	 */
+	public boolean execute(String sql) {
+		long starttime = System.currentTimeMillis();
+		boolean result = false;
+		Connection conn = this.getConnection();
+		Statement stmt = null;
+		try {
+			stmt = conn.createStatement();
+			result = stmt.execute(sql);
+			System.out.println("PSTMT_SQL=" + stmt.toString() + " 共耗時 "
+					+ (System.currentTimeMillis() - starttime) + " ms");
+			// logger.info("PSTMT_SQL=" + stmt.toString() + " 共耗時 "
+			// + (System.currentTimeMillis() - starttime) + " ms");
+			stmt.close();
+			// conn.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return result;
 	}
 
 }

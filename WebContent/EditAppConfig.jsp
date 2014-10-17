@@ -25,23 +25,23 @@
 				<tr style="padding: 10px;">
 					<th>Header</th>
 					<td style="padding: 10px;"><input name="Header" type="text"
-						id="Header" value="${appConfig.header}" size="50" maxlength="50" /></td>
+						value="${appConfig.header}" size="50" maxlength="50" /></td>
 				</tr>
 				<tr style="padding: 10px;">
 					<th>Author</th>
 					<td style="padding: 10px;"><input name="Author" type="text"
-						id="Author" value="${appConfig.author}" size="50" maxlength="50" /></td>
+						value="${appConfig.author}" size="50" maxlength="50" /></td>
 				</tr>
 				<tr style="padding: 10px;">
 					<th>Page Size</th>
-					<td style="padding: 10px;"><input name="PageSize" type="text"
-						id="Title" value="${appConfig.pageSize}" size="50" maxlength="50" /></td>
+					<td style="padding: 10px;"><input name="Pagesize" type="text"
+						value="${appConfig.pagesize}" size="50" maxlength="50" /></td>
 				</tr>
 				<tr style="padding: 10px;">
 					<th>預設 Login 的路徑</th>
-					<td style="padding: 10px;"><input name="DefaultLogin"
-						type="text" id="DefaultLogin" value="${appConfig.defaultLogin}"
-						size="50" maxlength="50" /></td>
+					<td style="padding: 10px;"><input name="Defaultlogin"
+						type="text" value="${appConfig.defaultlogin}" size="50"
+						maxlength="50" /></td>
 				</tr>
 				<tr style="padding: 10px;">
 					<th>Google apps POP 認證主機</th>
@@ -52,8 +52,7 @@
 				<tr style="padding: 10px;">
 					<th>clientid</th>
 					<td style="padding: 10px;"><input name="client_id" type="text"
-						id="Title" value="${appConfig.client_id}" size="50"
-						maxlength="255" /></td>
+						value="${appConfig.client_id}" size="50" maxlength="255" /></td>
 				</tr>
 				<tr style="padding: 10px;">
 					<th>client_secret</th>
@@ -96,6 +95,11 @@
 					<td style="padding: 10px;"><input name="signinip" type="text"
 						id="SigninIp" value="${appConfig.signinip}" size="50"
 						maxlength="50" /></td>
+				</tr>
+				<tr style="padding: 10px;">
+					<th>工讀生列表</th>
+					<td style="padding: 10px;"><input name="workingstudents"
+						type="text" value="${appConfig.workingstudents}" size="100" /></td>
 				</tr>
 				<tr style="padding: 10px;">
 					<th>首頁說明</th>

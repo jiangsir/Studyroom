@@ -72,7 +72,7 @@ public class OAuth2CallbackServlet extends HttpServlet {
 		System.out.println(_sBody);
 		GoogleUser googleUser = mapper.readValue(_sBody, GoogleUser.class);
 		String domain = googleUser.getEmail().split("@")[1];
-		if (!ApplicationScope.getAppConfig().getAuthDomains().contains(domain)) {
+		if (!ApplicationScope.getAppConfig().getAuthdomains().contains(domain)) {
 			throw new DataException("您所登入的 domain(" + googleUser.getEmail()
 					+ ") 並沒有在允許的範圍內。");
 		}

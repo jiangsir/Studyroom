@@ -83,8 +83,6 @@ public class IndexServlet extends HttpServlet implements IAccessFilter {
 				new BookingService().getBookupMapByDate(date));
 		request.setAttribute("hashBookings",
 				new BookingService().getHashBookings(date));
-		request.setAttribute("hashBookings",
-				new BookingService().getHashBookings(date));
 
 		request.setAttribute("attendCount",
 				new AttendanceDAO().getAttendCount(date));

@@ -2,8 +2,12 @@ package tw.jiangsir.Studyroom.DAOs;
 
 import java.sql.Date;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.TreeMap;
 import tw.jiangsir.Studyroom.Objects.Booking;
 import tw.jiangsir.Studyroom.Objects.Violation;
@@ -78,6 +82,13 @@ public class ViolationService {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		Date today = Date
+				.valueOf(df.format(new Date(System.currentTimeMillis())));
+
+		if (!date.before(today)) {
+			return;
+		}
 		if (!new RoomstatusService().isOpen(date)) {
 			return;
 		}
@@ -94,29 +105,47 @@ public class ViolationService {
 	}
 
 	/**
+	 * 判斷是否已經達到違規上限。
+	 * 
+	 * @param studentid
+	 * @return
+	 */
+	public boolean getIsPunishByStudentid(String studentid) {
+		ArrayList<Violation> violations = this
+				.getViolationsByStudentid(studentid);
+		if (violations.size() >= 3) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
 	 * 進行違規停權
 	 */
 	public void doPunishment(Date date) {
 		// 1. 已經固定劃位的人，要取消兩週內的劃位。
 		// 2. 要進行劃位的人，兩周內無法訂位。
 		for (Booking booking : new BookingService().getBookingsByDate(date)) {
-			ArrayList<Violation> violations = this
-					.getViolationsByStudentid(booking.getStudentid());
-			if (violations.size() >= 3) {
+			if (this.getIsPunishByStudentid(booking.getStudentid())) {
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime(date);
 				for (int i = 1; i <= 14; i++) {
-					Calendar calendar = Calendar.getInstance();
-					calendar.setTime(date);
 					calendar.add(Calendar.DATE, 1);
+					// 這裡是把 booking.status 設定為 "Punish"
+					// new BookingService().doPunishByStudentidDate(booking
+					// .getStudentid(), new Date(calendar.getTime()
+					// .getTime()));
+
+					// 這裡是直接將 booking 刪除。
 					new BookingService().deleteByStudentidDate(booking
 							.getStudentid(), new Date(calendar.getTime()
 							.getTime()));
 				}
-
-			}
-			try {
-				new ViolationDAO().updatePunished(booking.getStudentid());
-			} catch (SQLException e) {
-				e.printStackTrace();
+				try {
+					new ViolationDAO().updatePunished(booking.getStudentid());
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
@@ -158,7 +187,10 @@ public class ViolationService {
 		if (violations.size() >= 3) {
 			throw new DataException("您已經累計 3 次的違規囉，暫停訂位中。");
 		}
+	}
 
+	public LinkedHashMap<String, Integer> getStudentidsByCount() {
+		return new ViolationDAO().getStudentidsByCount();
 	}
 
 }

@@ -35,7 +35,7 @@ public class BookingService {
 						+ (DateTool.isSameday(booking.getDate(),
 								new java.util.Date()) ? "今天"
 								: booking.getDate()) + " "
-						+ booking.getSeatid() + "號位置了已經被預定了，您("
+						+ booking.getSeatid() + "號位置已經被預定了，您("
 						+ booking.getStudentid() + ") 無法再訂這個位置了。");
 			}
 			return bookingDao.insert(booking);
@@ -82,6 +82,14 @@ public class BookingService {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new DataException(e);
+		}
+	}
+
+	public void doPunishByStudentidDate(String studentid, Date date) {
+		try {
+			new BookingDAO().updatePunishByStudentidDate(studentid, date);
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 	}
 

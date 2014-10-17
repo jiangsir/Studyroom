@@ -7,10 +7,15 @@ package tw.jiangsir.Studyroom.DAOs;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.TreeMap;
+
+import tw.jiangsir.Studyroom.Objects.Booking;
 import tw.jiangsir.Studyroom.Objects.Violation;
 import tw.jiangsir.Utils.DAOs.SuperDAO;
 import tw.jiangsir.Utils.Exceptions.DataException;
@@ -114,4 +119,31 @@ public class ViolationDAO extends SuperDAO<Violation> {
 		}
 	}
 
+	/**
+	 * 統計有違規的所有學生資料。
+	 * 
+	 * @return
+	 */
+	protected LinkedHashMap<String, Integer> getStudentidsByCount() {
+		// SELECT COUNT(studentid) AS count,studentid FROM `violations` WHERE
+		// status="enable" GROUP BY studentid ORDER BY count DESC;
+		LinkedHashMap<String, Integer> studentids = new LinkedHashMap<String, Integer>();
+		String sql = "SELECT COUNT(studentid) AS count,studentid FROM `violations` WHERE status='"
+				+ Violation.STATUS.enable
+				+ "' GROUP BY studentid ORDER BY count DESC;";
+		try {
+			PreparedStatement pstmt = this.getConnection()
+					.prepareStatement(sql);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				studentids.put(rs.getString("studentid"), rs.getInt("count"));
+			}
+			rs.close();
+			pstmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return studentids;
+
+	}
 }

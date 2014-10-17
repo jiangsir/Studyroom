@@ -9,7 +9,8 @@ import tw.jiangsir.Utils.Annotations.Persistent;
 public class Booking {
 	public enum STATUS {
 		Booked, // 已經完成訂位。也就是占用中
-		Cancel, // 訂位後又取消。未來取消訂位就不直接刪除，就在 status 裏面標記 Cancel
+		Punish, // 因為違規被取消訂位狀況。
+		Cancel, // 訂位後又取消。未來取消訂位就不直接刪除，就在 status 裏面標記 Cancel 尚未使用。！
 		Release; // 使用後，把位置釋放出來。尚未開放使用。
 	}
 

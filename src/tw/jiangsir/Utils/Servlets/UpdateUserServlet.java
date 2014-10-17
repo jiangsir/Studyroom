@@ -61,6 +61,7 @@ public class UpdateUserServlet extends HttpServlet {
 		user.setPasswd(request.getParameter("passwd1"),
 				request.getParameter("passwd2"));
 		user.setName(request.getParameter("name"));
+		System.out.println("user.name=" + user.getName());
 		user.setRole(request.getParameter("role"));
 		new UserService().update(user);
 		response.sendRedirect(request.getContextPath()

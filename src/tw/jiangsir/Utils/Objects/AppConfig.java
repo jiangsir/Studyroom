@@ -49,13 +49,13 @@ public class AppConfig {
 	private String Author = "Qixun Jiang";
 	@Property(key = "PageSize")
 	@Persistent(name = "pagesize")
-	private int PageSize = 20;
+	private int pagesize = 20;
 	@Property(key = "DefaultLogin")
 	@Persistent(name = "defaultlogin")
-	private String DefaultLogin = "Login";
+	private String defaultlogin = "Login";
 	@Property(key = "AuthDomains")
 	@Persistent(name = "authdomains")
-	private TreeSet<String> AuthDomains = new TreeSet<String>();
+	private TreeSet<String> authdomains = new TreeSet<String>();
 	@Property(key = "client_id")
 	@Persistent(name = "client_id")
 	private String client_id = "";
@@ -75,6 +75,8 @@ public class AppConfig {
 
 	@Persistent(name = "checktype")
 	private CHECKTYPE checktype = CHECKTYPE.POP;
+	@Persistent(name = "workingstudents")
+	private TreeSet<String> workingstudents = new TreeSet<String>();
 
 	@Persistent(name = "bookingbegin")
 	private java.sql.Time bookingbegin = java.sql.Time.valueOf("06:00:00");
@@ -127,39 +129,54 @@ public class AppConfig {
 		Author = author;
 	}
 
-	public int getPageSize() {
-		return PageSize;
+	public int getPagesize() {
+		return pagesize;
 	}
 
-	public void setPageSize(int pageSize) {
-		PageSize = pageSize;
+	public void setPagesize(Integer pageSize) {
+		pagesize = pageSize;
 	}
 
-	public void setPageSize(String pageSize) {
-		this.setPageSize(Integer.parseInt(pageSize));
+	public void setPagesize(String pageSize) {
+		this.setPagesize(Integer.parseInt(pageSize));
 	}
 
-	public String getDefaultLogin() {
-		return DefaultLogin;
+	public String getDefaultlogin() {
+		return defaultlogin;
 	}
 
-	public void setDefaultLogin(String defaultLogin) {
-		DefaultLogin = defaultLogin;
+	public void setDefaultlogin(String defaultLogin) {
+		defaultlogin = defaultLogin;
 	}
 
-	public TreeSet<String> getAuthDomains() {
-		return AuthDomains;
+	public TreeSet<String> getAuthdomains() {
+		return authdomains;
 	}
 
-	public void setAuthDomains(TreeSet<String> authDomains) {
-		AuthDomains = authDomains;
+	public void setAuthdomains(TreeSet<String> authDomains) {
+		authdomains = authDomains;
 	}
 
-	public void setAuthDomains(String authDomains) {
+	public void setAuthdomains(String authDomains) {
 		if (authDomains == null || "".equals(authDomains)) {
 			return;
 		}
-		this.setAuthDomains(StringTool.String2TreeSet(authDomains));
+		this.setAuthdomains(StringTool.String2TreeSet(authDomains));
+	}
+
+	public TreeSet<String> getWorkingstudents() {
+		return workingstudents;
+	}
+
+	public void setWorkingstudents(TreeSet<String> workingstudents) {
+		this.workingstudents = workingstudents;
+	}
+
+	public void setWorkingstudents(String workingstudents) {
+		if (workingstudents == null || "".equals(workingstudents.trim())) {
+			return;
+		}
+		this.setWorkingstudents(StringTool.String2TreeSet(workingstudents));
 	}
 
 	public String getClient_id() {
