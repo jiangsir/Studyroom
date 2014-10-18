@@ -6,12 +6,13 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.TreeMap;
 import tw.jiangsir.Studyroom.Objects.Booking;
 import tw.jiangsir.Studyroom.Objects.Violation;
 import tw.jiangsir.Utils.Exceptions.DataException;
+import tw.jiangsir.Utils.Objects.AppConfig;
+import tw.jiangsir.Utils.Scopes.ApplicationScope;
 
 public class ViolationService {
 
@@ -92,8 +93,15 @@ public class ViolationService {
 		if (!new RoomstatusService().isOpen(date)) {
 			return;
 		}
+		AppConfig appConfig = ApplicationScope.getAppConfig();
 		for (Booking booking : new BookingService().getBookingsByDate(date)) {
-			if (booking.getAttendance() == null) {
+			System.out.println("appConfig.getWorkingstudents()="
+					+ appConfig.getWorkingstudents() + " studentid="
+					+ booking.getStudentid());
+			if (booking.getAttendance() == null
+					&& !appConfig.getWorkingstudents().contains(
+							booking.getStudentid())) {
+				// 沒有出席記錄， 且不是工讀生。
 				Violation violation = new Violation();
 				violation.setDate(date);
 				violation.setStudentid(booking.getStudentid());
@@ -189,8 +197,19 @@ public class ViolationService {
 		}
 	}
 
-	public LinkedHashMap<String, Integer> getStudentidsByCount() {
-		return new ViolationDAO().getStudentidsByCount();
+	/**
+	 * 取得所有違規學生清單。
+	 * 
+	 * @return
+	 */
+	public LinkedHashMap<String, ArrayList<Violation>> getStudentidsViolations() {
+		LinkedHashMap<String, ArrayList<Violation>> violationMap = new LinkedHashMap<String, ArrayList<Violation>>();
+		for (String studentid : new ViolationDAO().getStudentidsByCount()
+				.keySet()) {
+			violationMap.put(studentid,
+					this.getViolationsByStudentid(studentid));
+		}
+		return violationMap;
 	}
 
 }

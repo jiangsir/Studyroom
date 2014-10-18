@@ -19,11 +19,12 @@
 
 	<table>
 		<c:forEach var="studentid" items="${studentids }">
-			<tr>
-				<td id="violationsDialog" studentid="${studentid.key}"><a
-					href="#">${studentid.key}</a></td>
-				<td>違規次數:${studentid.value } 次</td>
-			</tr>
+	${studentid.key}, 違規次數:${fn:length(studentid.value)} 次<br />
+			<ul>
+				<c:forEach var="violation" items="${studentid.value}">
+					<li>${violation.date}: ${violation.reason }</li>
+				</c:forEach>
+			</ul>
 		</c:forEach>
 	</table>
 	<jsp:include page="Footer.jsp" />

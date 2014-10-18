@@ -27,7 +27,7 @@ public class ManageViolationsServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		request.setAttribute("studentids",
-				new ViolationService().getStudentidsByCount());
+				new ViolationService().getStudentidsViolations());
 
 		request.getRequestDispatcher("/ManageViolations.jsp").forward(request,
 				response);
