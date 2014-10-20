@@ -137,6 +137,10 @@ ALTER TABLE  `studyroom`.`bookings` DROP INDEX  `studentid` ,
 ADD UNIQUE  `seatid_date_status` (  `seatid` ,  `date` ,  `status` )
 */
 
-ALTER TABLE  `appconfigs` ADD  `workingstudents` VARCHAR( 200 ) NOT NULL AFTER  `signinip`;
+ALTER TABLE  `appconfigs` ADD  `workingseatids` VARCHAR( 200 ) NOT NULL AFTER  `signinip`;
 ALTER TABLE  `appconfigs` ADD  `punishingthreshold` INT NOT NULL AFTER  `signinend`;
 ALTER TABLE  `appconfigs` ADD  `punishingdays` INT NOT NULL AFTER  `punishingthreshold`;
+
+
+ALTER TABLE  `appconfigs` CHANGE  `workingstudents`  `workingseatids` VARCHAR( 200 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;
+

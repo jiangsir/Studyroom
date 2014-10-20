@@ -25,7 +25,7 @@ public class AppConfigDAO extends SuperDAO<AppConfig> {
 	protected synchronized int insert(AppConfig appConfig) throws SQLException {
 		String sql = "INSERT INTO appconfigs(title, header, author, pagesize, defaultlogin, authdomains, "
 				+ "checktype, checkhost, client_id, client_secret, redirect_uri, bookingbegin, bookingend, "
-				+ "signinbegin, signinend, punishingthreshold, punishingdays, signinip, workingstudents, "
+				+ "signinbegin, signinend, punishingthreshold, punishingdays, signinip, workingseatids, "
 				+ "announcement, timestamp) VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?,now());";
 		PreparedStatement pstmt = this.getConnection().prepareStatement(sql,
 				Statement.RETURN_GENERATED_KEYS);
@@ -47,7 +47,7 @@ public class AppConfigDAO extends SuperDAO<AppConfig> {
 		pstmt.setInt(16, appConfig.getPunishingthreshold());
 		pstmt.setInt(17, appConfig.getPunishingdays());
 		pstmt.setString(18, appConfig.getSigninip());
-		pstmt.setString(19, appConfig.getWorkingstudents().toString());
+		pstmt.setString(19, appConfig.getWorkingseatids().toString());
 		pstmt.setString(20, appConfig.getAnnouncement());
 		return this.executeInsert(pstmt);
 	}

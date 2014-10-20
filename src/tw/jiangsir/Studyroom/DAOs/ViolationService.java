@@ -2,6 +2,7 @@ package tw.jiangsir.Studyroom.DAOs;
 
 import java.sql.Date;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -86,24 +87,32 @@ public class ViolationService {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-		Date today = Date
-				.valueOf(df.format(new Date(System.currentTimeMillis())));
+		// DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		// Date today = Date
+		// .valueOf(df.format(new Date(System.currentTimeMillis())));
 
-		if (!date.before(today)) {
+		// if (!date.before(today)) {
+		// return;
+		// }
+		AppConfig appConfig = ApplicationScope.getAppConfig();
+		Timestamp signinend = Timestamp.valueOf(date.toString() + " "
+				+ appConfig.getSigninend());
+		Timestamp now = new Timestamp(System.currentTimeMillis());
+		System.out.println("signinend=" + signinend);
+		System.out.println("now=" + now);
+		if (!signinend.before(now)) {
 			return;
 		}
 		if (!new RoomstatusService().isOpen(date)) {
 			return;
 		}
-		AppConfig appConfig = ApplicationScope.getAppConfig();
 		for (Booking booking : new BookingService().getBookingsByDate(date)) {
-			System.out.println("appConfig.getWorkingstudents()="
-					+ appConfig.getWorkingstudents() + " studentid="
-					+ booking.getStudentid());
+			System.out.println("appConfig.getWorkingseatids()="
+					+ appConfig.getWorkingseatids() + " seatid="
+					+ booking.getSeatid());
 			if (booking.getAttendance() == null
-					&& !appConfig.getWorkingstudents().contains(
-							booking.getStudentid())) {
+					&& !appConfig.getWorkingseatids().contains(
+							booking.getSeatid())) {
 				// 沒有出席記錄， 且不是工讀生。
 				Violation violation = new Violation();
 				violation.setDate(date);

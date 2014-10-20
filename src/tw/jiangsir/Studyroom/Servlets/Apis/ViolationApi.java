@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import tw.jiangsir.Studyroom.DAOs.ViolationService;
+import tw.jiangsir.Studyroom.Objects.Violation;
 import tw.jiangsir.Utils.Exceptions.AccessException;
 import tw.jiangsir.Utils.Interfaces.IAccessFilter;
 import tw.jiangsir.Utils.Objects.CurrentUser;
@@ -47,6 +48,7 @@ public class ViolationApi extends HttpServlet implements IAccessFilter {
 		switch (GETACTION.valueOf(action)) {
 		case getViolationsByStudentid:
 			String studentid = request.getParameter("studentid");
+			request.setAttribute("studentid", studentid);
 			request.setAttribute("violations", new ViolationService()
 					.getEnableViolationsByStudentid(studentid));
 			request.getRequestDispatcher("includes/div/Violations.jsp")
@@ -62,6 +64,7 @@ public class ViolationApi extends HttpServlet implements IAccessFilter {
 		rebuiltViolationsByDate, // 依據「日期」進行違規事件計算
 		doPunishingByDeleteBooking, // 刪除未來 14 天的訂位資料。
 		doPunished, // 針對某個日期將已經 punishing 14 天的人恢復權限。
+		cancelViolation, // 取消某一個 violation.
 	}
 
 	/**
@@ -96,6 +99,14 @@ public class ViolationApi extends HttpServlet implements IAccessFilter {
 			}
 			response.sendRedirect("."
 					+ new SessionScope(request).getCurrentPage());
+			break;
+		case cancelViolation:
+			int violationid = Integer.parseInt(request
+					.getParameter("violationid"));
+			Violation violation = new ViolationService()
+					.getViolationById(violationid);
+			violation.setStatus(Violation.STATUS.cancel);
+			new ViolationService().update(violation);
 			break;
 		default:
 			break;

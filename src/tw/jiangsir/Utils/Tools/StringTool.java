@@ -24,6 +24,26 @@ public class StringTool {
 	}
 
 	/**
+	 * 將 set 自動轉出的字串轉回 TreeSet。字串格式如下：[1, 2, 334]
+	 * 
+	 * @param setstring
+	 * @return
+	 */
+	public static TreeSet<Integer> String2Integer(String setstring) {
+		setstring = setstring.replaceAll("\\[", "");
+		setstring = setstring.replaceAll("\\]", "");
+		setstring = setstring.replaceAll("\"", "").trim();
+		TreeSet<Integer> set = new TreeSet<Integer>();
+		if (setstring.equals("")) {
+			return set;
+		}
+		for (String s : setstring.split(",")) {
+			set.add(Integer.parseInt(s.trim()));
+		}
+		return set;
+	}
+
+	/**
 	 *  還原 Arrays.toString 自動轉出的字串 String[]。字串格式如下：[aa, bb, cc]
 	 * 
 	 * @param setstring

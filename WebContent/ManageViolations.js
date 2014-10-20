@@ -30,4 +30,21 @@ jQuery(document).ready(function() {
 		violationsDialog.dialog("open");
 	});
 
+	jQuery("button#cancelViolation").click(function() {
+		var violationid = $(this).attr("violationid");
+		jQuery.ajax({
+			type : "POST",
+			url : "Violation.api",
+			data : "action=cancelViolation&violationid=" + violationid,
+			async : false,
+			timeout : 5000,
+			beforeSend : function() {
+			},
+			success : function(result) {
+				location.reload();
+			}
+		});
+
+	});
+
 });

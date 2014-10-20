@@ -75,8 +75,8 @@ public class AppConfig {
 
 	@Persistent(name = "checktype")
 	private CHECKTYPE checktype = CHECKTYPE.POP;
-	@Persistent(name = "workingstudents")
-	private TreeSet<String> workingstudents = new TreeSet<String>();
+	@Persistent(name = "workingseatids")
+	private TreeSet<Integer> workingseatids = new TreeSet<Integer>();
 
 	@Persistent(name = "bookingbegin")
 	private java.sql.Time bookingbegin = java.sql.Time.valueOf("06:00:00");
@@ -169,19 +169,19 @@ public class AppConfig {
 		this.setAuthdomains(StringTool.String2TreeSet(authDomains));
 	}
 
-	public TreeSet<String> getWorkingstudents() {
-		return workingstudents;
+	public TreeSet<Integer> getWorkingseatids() {
+		return workingseatids;
 	}
 
-	public void setWorkingstudents(TreeSet<String> workingstudents) {
-		this.workingstudents = workingstudents;
+	public void setWorkingseatids(TreeSet<Integer> workingseatids) {
+		this.workingseatids = workingseatids;
 	}
 
-	public void setWorkingstudents(String workingstudents) {
-		if (workingstudents == null || "".equals(workingstudents.trim())) {
+	public void setWorkingseatids(String workingseatids) {
+		if (workingseatids == null || "".equals(workingseatids.trim())) {
 			return;
 		}
-		this.setWorkingstudents(StringTool.String2TreeSet(workingstudents));
+		this.setWorkingseatids(StringTool.String2Integer(workingseatids));
 	}
 
 	public String getClient_id() {
@@ -246,7 +246,7 @@ public class AppConfig {
 		return punishingthreshold;
 	}
 
-	public void setPunishingthreshold(int punishingthreshold) {
+	public void setPunishingthreshold(Integer punishingthreshold) {
 		this.punishingthreshold = punishingthreshold;
 	}
 
@@ -254,14 +254,14 @@ public class AppConfig {
 		if (punishingthreshold == null) {
 			return;
 		}
-		this.setPunishingthreshold(String.valueOf(punishingthreshold));
+		this.setPunishingthreshold(Integer.valueOf(punishingthreshold));
 	}
 
 	public int getPunishingdays() {
 		return punishingdays;
 	}
 
-	public void setPunishingdays(int punishingdays) {
+	public void setPunishingdays(Integer punishingdays) {
 		this.punishingdays = punishingdays;
 	}
 

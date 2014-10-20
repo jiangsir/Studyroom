@@ -73,7 +73,7 @@ jQuery(document).ready(function() {
 	});
 	deleteBookingDialog.dialog({
 		autoOpen : false,
-		height : 400,
+		height : 450,
 		width : '40%',
 		modal : true,
 		buttons : {

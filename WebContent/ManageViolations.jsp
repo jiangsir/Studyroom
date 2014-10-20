@@ -20,23 +20,19 @@
 	<h1>目前有違規記錄的使用者</h1>
 	<table>
 		<c:forEach var="studentid" items="${studentids }">
-	${studentid.key}, 違規次數:${fn:length(studentid.value)} 次<br />
+	${studentid.key}, 違規次數:${fn:length(studentid.value)} 次
 			<c:if
 				test="${fn:length(studentid.value)>=applicationScope.appConfig.punishingthreshold}">
-				<ul style="color: red;">
-					<c:forEach var="violation" items="${studentid.value}">
-						<li>${violation.date}: ${violation.reason }</li>
-					</c:forEach>
-				</ul>
+				<span style="color: red;"> --已停權！！</span>
 			</c:if>
-			<c:if
-				test="${fn:length(studentid.value)<applicationScope.appConfig.punishingthreshold}">
-				<ul>
-					<c:forEach var="violation" items="${studentid.value}">
-						<li>${violation.date}: ${violation.reason }</li>
-					</c:forEach>
-				</ul>
-			</c:if>
+			<ul>
+				<c:forEach var="violation" items="${studentid.value}">
+					<li>${violation.date}: ${violation.reason.value } －
+						<button type="button" id="cancelViolation"
+							violationid="${violation.id }">取消這個違規記錄</button>
+					</li>
+				</c:forEach>
+			</ul>
 		</c:forEach>
 	</table>
 	<jsp:include page="Footer.jsp" />

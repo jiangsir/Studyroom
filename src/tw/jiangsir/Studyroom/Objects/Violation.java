@@ -13,8 +13,17 @@ public class Violation {
 	private String studentid = "";
 
 	public enum REASON {
-		abuse, // 濫用、早退、或未簽退
-		absent; // 缺席
+		abuse("遲到、早退、未達規定時間"), // 濫用、早退、或未簽退
+		absent("缺席"); // 缺席
+		private final String value;
+
+		private REASON(String value) {
+			this.value = value;
+		}
+
+		public String getValue() {
+			return value;
+		}
 	}
 
 	@Persistent(name = "reason")
@@ -24,7 +33,7 @@ public class Violation {
 		punished, // 已經處罰完畢。也就是恢復正常使用。
 		// punishing, // 正在停權中。也就是取消未來兩週的訂位。
 		outdated, // 設定為過期，也就是未來可能出現還新學期，就要全部歸零的狀況。
-		disable, // 手動取消該違規。
+		cancel, // 手動取消該違規。
 		enable;// 有效的違規
 	}
 

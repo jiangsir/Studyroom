@@ -7,13 +7,18 @@
 
 <%@ page isELIgnored="false"%>
 <div id="violations" style="color: red;">
-	<c:if test="${sessionScope.currentUser.isAdmin==true }">
-		<c:if test="${fn:length(violations)>0}">
-			<div>您(${violations[0].studentid})目前總共有
-				${fn:length(violations)} 次違規記錄</div>
+	<c:if test="${fn:length(violations)==0}">
+		<div>恭喜您(${studentid})，目前沒有任何違規記錄。</div>
+	</c:if>
+	<c:if test="${fn:length(violations)>0}">
+		<div>您(${studentid})目前總共有 ${fn:length(violations)} 次違規記錄</div>
+		<ul>
 			<c:forEach var="violation" items="${violations }">
-    ${violation.date}: ${violation.studentid} : ${violation.reason}: ${violation.status}<br />
+				<li>${violation.date}: ${violation.studentid} :
+					${violation.reason.value}</li>
 			</c:forEach>
-		</c:if>
+		</ul>
+		<div>請注意，違規 ${applicationScope.appConfig.punishingthreshold }
+			次，將會被停權 ${applicationScope.appConfig.punishingdays } 天</div>
 	</c:if>
 </div>
