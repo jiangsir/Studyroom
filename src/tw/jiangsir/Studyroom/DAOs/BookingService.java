@@ -4,8 +4,6 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Hashtable;
-
 import tw.jiangsir.Studyroom.Objects.Booking;
 import tw.jiangsir.Utils.Exceptions.DataException;
 import tw.jiangsir.Utils.Tools.DateTool;
@@ -85,13 +83,13 @@ public class BookingService {
 		}
 	}
 
-	public void doPunishByStudentidDate(String studentid, Date date) {
-		try {
-			new BookingDAO().updatePunishByStudentidDate(studentid, date);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
+	// public void doPunishByStudentidDate(String studentid, Date date) {
+	// try {
+	// new BookingDAO().updatePunishByStudentidDate(studentid, date);
+	// } catch (SQLException e) {
+	// e.printStackTrace();
+	// }
+	// }
 
 	public ArrayList<Booking> getBookingsToday() {
 		try {

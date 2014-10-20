@@ -51,18 +51,19 @@ public class BookingDAO extends SuperDAO<Booking> {
 		return result;
 	}
 
-	protected synchronized int updatePunishByStudentidDate(String studentid,
-			Date date) throws SQLException {
-		String sql = "UPDATE bookings SET `status`=? WHERE studentid=? AND `date`=?";
-		int result = -1;
-		PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
-		pstmt.setString(1, Booking.STATUS.Punish.toString());
-		pstmt.setString(2, studentid);
-		pstmt.setDate(3, date);
-		result = this.executeUpdate(pstmt);
-		pstmt.close();
-		return result;
-	}
+	// protected synchronized int updatePunishByStudentidDate(String studentid,
+	// Date date) throws SQLException {
+	// String sql =
+	// "UPDATE bookings SET `status`=? WHERE studentid=? AND `date`=?";
+	// int result = -1;
+	// PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
+	// pstmt.setString(1, Booking.STATUS.Punish.toString());
+	// pstmt.setString(2, studentid);
+	// pstmt.setDate(3, date);
+	// result = this.executeUpdate(pstmt);
+	// pstmt.close();
+	// return result;
+	// }
 
 	protected Booking getBookingById(long bookingid) throws SQLException {
 		String sql = "SELECT * FROM bookings WHERE id=?";

@@ -91,6 +91,18 @@
 						maxlength="50" /></td>
 				</tr>
 				<tr style="padding: 10px;">
+					<th>違規次數門檻</th>
+					<td style="padding: 10px;"><input name="punishingthreshold"
+						type="text" value="${appConfig.punishingthreshold}" size="50"
+						maxlength="50" /></td>
+				</tr>
+				<tr style="padding: 10px;">
+					<th>停權天數</th>
+					<td style="padding: 10px;"><input name="punishingdays"
+						type="text" value="${appConfig.punishingdays}" size="50"
+						maxlength="50" /></td>
+				</tr>
+				<tr style="padding: 10px;">
 					<th>可以進行簽到／退的 ip</th>
 					<td style="padding: 10px;"><input name="signinip" type="text"
 						id="SigninIp" value="${appConfig.signinip}" size="50"

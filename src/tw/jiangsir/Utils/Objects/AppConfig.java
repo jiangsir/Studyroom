@@ -88,6 +88,11 @@ public class AppConfig {
 	@Persistent(name = "signinend")
 	private java.sql.Time signinend = java.sql.Time.valueOf("22:00:00");
 
+	@Persistent(name = "punishingthreshold")
+	private int punishingthreshold = 3;
+	@Persistent(name = "punishingdays")
+	private int punishingdays = 14;
+
 	@Property(key = "signinip")
 	@Persistent(name = "signinip")
 	private String signinip = "127.0.0.1";
@@ -235,6 +240,36 @@ public class AppConfig {
 
 	public java.sql.Time getSigninbegin() {
 		return signinbegin;
+	}
+
+	public int getPunishingthreshold() {
+		return punishingthreshold;
+	}
+
+	public void setPunishingthreshold(int punishingthreshold) {
+		this.punishingthreshold = punishingthreshold;
+	}
+
+	public void setPunishingthreshold(String punishingthreshold) {
+		if (punishingthreshold == null) {
+			return;
+		}
+		this.setPunishingthreshold(String.valueOf(punishingthreshold));
+	}
+
+	public int getPunishingdays() {
+		return punishingdays;
+	}
+
+	public void setPunishingdays(int punishingdays) {
+		this.punishingdays = punishingdays;
+	}
+
+	public void setPunishingdays(String punishingdays) {
+		if (punishingdays == null) {
+			return;
+		}
+		this.setPunishingdays(Integer.parseInt(punishingdays));
 	}
 
 	public void setSigninbegin(String signinbegin) {

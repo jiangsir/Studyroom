@@ -8,11 +8,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.TreeMap;
+import java.util.TreeSet;
+
 import tw.jiangsir.Studyroom.Objects.Booking;
 import tw.jiangsir.Studyroom.Objects.Violation;
 import tw.jiangsir.Utils.Exceptions.DataException;
 import tw.jiangsir.Utils.Objects.AppConfig;
 import tw.jiangsir.Utils.Scopes.ApplicationScope;
+import tw.jiangsir.Utils.Tools.DateTool;
 
 public class ViolationService {
 
@@ -54,8 +57,8 @@ public class ViolationService {
 
 	public ArrayList<Violation> getViolations(int page) {
 		TreeMap<String, Object> fields = new TreeMap<String, Object>();
-		return new ViolationDAO().getViolationsByFields(fields,
-				"timestamp DESC", page);
+		return new ViolationDAO().getViolationsByFields(fields, "date DESC",
+				page);
 	}
 
 	/**
@@ -73,7 +76,7 @@ public class ViolationService {
 	}
 
 	/**
-	 * 計算 某個日期的 violations
+	 * 建立 某個日期的 violations
 	 * 
 	 * @param date
 	 */
@@ -118,9 +121,9 @@ public class ViolationService {
 	 * @param studentid
 	 * @return
 	 */
-	public boolean getIsPunishByStudentid(String studentid) {
+	public boolean getIsReachPunishingByStudentid(String studentid) {
 		ArrayList<Violation> violations = this
-				.getViolationsByStudentid(studentid);
+				.getEnableViolationsByStudentid(studentid);
 		if (violations.size() >= 3) {
 			return true;
 		}
@@ -128,16 +131,33 @@ public class ViolationService {
 	}
 
 	/**
-	 * 進行違規停權
+	 * 判斷某人是否在停權期間？
+	 * 
+	 * @param studentid
+	 * @return
 	 */
-	public void doPunishment(Date date) {
+	public boolean getIsInPunishing(String studentid, Date date) {
+		try {
+			this.checkIsInPunishing(studentid, date);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	/**
+	 * 進行違規停權，把未來 14 天內該使用者的所有訂位刪除。
+	 */
+	public void doPunishingByDeleteBooking(Date date) {
 		// 1. 已經固定劃位的人，要取消兩週內的劃位。
 		// 2. 要進行劃位的人，兩周內無法訂位。
+		AppConfig appConfig = ApplicationScope.getAppConfig();
 		for (Booking booking : new BookingService().getBookingsByDate(date)) {
-			if (this.getIsPunishByStudentid(booking.getStudentid())) {
+			if (this.getIsReachPunishingByStudentid(booking.getStudentid())) {
 				Calendar calendar = Calendar.getInstance();
 				calendar.setTime(date);
-				for (int i = 1; i <= 14; i++) {
+				for (int i = 1; i <= appConfig.getPunishingdays(); i++) {
 					calendar.add(Calendar.DATE, 1);
 					// 這裡是把 booking.status 設定為 "Punish"
 					// new BookingService().doPunishByStudentidDate(booking
@@ -149,8 +169,52 @@ public class ViolationService {
 							.getStudentid(), new Date(calendar.getTime()
 							.getTime()));
 				}
+				// try {
+				// new ViolationDAO().updatePunishing(booking.getStudentid());
+				// } catch (SQLException e) {
+				// e.printStackTrace();
+				// }
+			}
+		}
+	}
+
+	/**
+	 * 取得目前處在 punishing 的 studentid
+	 * 
+	 * @return
+	 */
+	private TreeSet<String> getOverPunishingThresholdStudentids(Date date) {
+		AppConfig appConfig = ApplicationScope.getAppConfig();
+		TreeSet<String> studentids = new TreeSet<String>();
+		LinkedHashMap<String, Integer> ss = new ViolationDAO()
+				.getHashMapOfStudentidCountByEnableViolations();
+		for (String studentid : ss.keySet()) {
+			if (ss.get(studentid).intValue() >= appConfig
+					.getPunishingthreshold()) {
+				studentids.add(studentid);
+			}
+		}
+		return studentids;
+		// TreeSet<String> studentids = new TreeSet<String>();
+		// TreeMap<String, Object> fields = new TreeMap<String, Object>();
+		// fields.put("status", Violation.STATUS.punishing.name());
+		// for (Violation violation : new ViolationDAO().getViolationsByFields(
+		// fields, "date DESC", 0)) {
+		// studentids.add(violation.getStudentid());
+		// }
+		// return studentids;
+	}
+
+	/**
+	 * 將某人設定為停權完畢！也就恢復這個人的訂位權利。
+	 * 
+	 * @param date
+	 */
+	public void doPunished(Date date) {
+		for (String studentid : this.getOverPunishingThresholdStudentids(date)) {
+			if (!this.getIsInPunishing(studentid, date)) {
 				try {
-					new ViolationDAO().updatePunished(booking.getStudentid());
+					new ViolationDAO().updatePunished(studentid);
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
@@ -164,16 +228,55 @@ public class ViolationService {
 	 * @param studentid
 	 * @return
 	 */
-	public ArrayList<Violation> getViolationsByStudentid(String studentid) {
+	public ArrayList<Violation> getEnableViolationsByStudentid(String studentid) {
 		TreeMap<String, Object> fields = new TreeMap<String, Object>();
 		fields.put("studentid", studentid);
 		fields.put("status", Violation.STATUS.enable.name());
-		return new ViolationDAO().getViolationsByFields(fields,
-				"timestamp DESC", 0);
+		return new ViolationDAO().getViolationsByFields(fields, "date DESC", 0);
+	}
+
+	// /**
+	// * 取得某一學生“停權”的 violations
+	// *
+	// * @param studentid
+	// * @return
+	// */
+	// public ArrayList<Violation> getPunishingViolationsByStudentid(
+	// String studentid) {
+	// TreeMap<String, Object> fields = new TreeMap<String, Object>();
+	// fields.put("studentid", studentid);
+	// fields.put("status", Violation.STATUS.punishing.name());
+	// return new ViolationDAO().getViolationsByFields(fields, "date DESC", 0);
+	// }
+
+	/**
+	 * 取得某一學生『最後一筆』違規記錄。可用來計算處罰開始的日期。
+	 * 
+	 * @param studentid
+	 * @return
+	 */
+	public Violation getLastPunishingViolationByStudentid(String studentid) {
+		// TreeMap<String, Object> fields = new TreeMap<String, Object>();
+		// fields.put("studentid", studentid);
+		// fields.put("status", Violation.STATUS.punishing.name());
+		// for (Violation violation : new ViolationDAO().getViolationsByFields(
+		// fields, "date DESC", 0)) {
+		// return violation;
+		// }
+		// return null;
+
+		if (this.getIsReachPunishingByStudentid(studentid)) {
+			for (Violation violation : this
+					.getEnableViolationsByStudentid(studentid)) {
+				return violation;
+			}
+
+		}
+		return null;
 	}
 
 	/**
-	 * 取得某學生當日最近一次的簽到退記錄。
+	 * 取得某學生某日有效的違規記錄。
 	 * 
 	 * @param studentid
 	 * @return
@@ -184,16 +287,38 @@ public class ViolationService {
 		fields.put("date", date);
 		fields.put("studentid", studentid);
 		fields.put("status", Violation.STATUS.enable.name());
-		return new ViolationDAO().getViolationsByFields(fields,
-				"timestamp DESC", 0);
+		return new ViolationDAO().getViolationsByFields(fields, "date DESC", 0);
 	}
 
-	public void checkViolationsByStudentid(String studentid) {
-		ArrayList<Violation> violations = this
-				.getViolationsByStudentid(studentid);
+	/**
+	 * 判斷某個人是否可以在 14天處罰期間。若是，就不能訂位。
+	 * 
+	 * @param studentid
+	 */
+	public void checkIsInPunishing(String studentid, Date date) {
 
-		if (violations.size() >= 3) {
-			throw new DataException("您已經累計 3 次的違規囉，暫停訂位中。");
+		// DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		// Date today = Date
+		// .valueOf(df.format(new Date(System.currentTimeMillis())));
+
+		Violation violation = this
+				.getLastPunishingViolationByStudentid(studentid);
+		if (violation == null) {
+			return;
+		}
+		Calendar punishingstart = Calendar.getInstance();
+		punishingstart.setTime(violation.getDate());
+		punishingstart.add(Calendar.DATE, 1);
+		AppConfig appConfig = ApplicationScope.getAppConfig();
+		if (DateTool.getDayCountBetween(
+				new Date(punishingstart.getTimeInMillis()), date) <= appConfig
+				.getPunishingdays()) {
+			Calendar punishingend = Calendar.getInstance();
+			punishingend.setTime(violation.getDate());
+			punishingend.add(Calendar.DATE, appConfig.getPunishingdays());
+			throw new DataException("您目前仍在停權中。您的停權時間為 "
+					+ new Date(punishingstart.getTimeInMillis()) + " 到"
+					+ new Date(punishingend.getTimeInMillis()));
 		}
 	}
 
@@ -202,14 +327,30 @@ public class ViolationService {
 	 * 
 	 * @return
 	 */
-	public LinkedHashMap<String, ArrayList<Violation>> getStudentidsViolations() {
+	public LinkedHashMap<String, ArrayList<Violation>> getHashMapOfStudentidViolations() {
 		LinkedHashMap<String, ArrayList<Violation>> violationMap = new LinkedHashMap<String, ArrayList<Violation>>();
-		for (String studentid : new ViolationDAO().getStudentidsByCount()
-				.keySet()) {
+		for (String studentid : new ViolationDAO()
+				.getHashMapOfStudentidCountByEnableViolations().keySet()) {
 			violationMap.put(studentid,
-					this.getViolationsByStudentid(studentid));
+					this.getEnableViolationsByStudentid(studentid));
 		}
 		return violationMap;
 	}
+
+	// /**
+	// * 取得所有正在“停權” punishing 的學生名單以及 violations
+	// *
+	// * @return
+	// */
+	// public LinkedHashMap<String, ArrayList<Violation>>
+	// getPunishingStudentidsViolations() {
+	// LinkedHashMap<String, ArrayList<Violation>> violationMap = new
+	// LinkedHashMap<String, ArrayList<Violation>>();
+	// for (String studentid : this.getPunishingStudentids()) {
+	// violationMap.put(studentid,
+	// this.getPunishingViolationsByStudentid(studentid));
+	// }
+	// return violationMap;
+	// }
 
 }

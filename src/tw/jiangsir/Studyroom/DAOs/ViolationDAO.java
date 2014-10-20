@@ -66,8 +66,28 @@ public class ViolationDAO extends SuperDAO<Violation> {
 		return this.executeDelete(pstmt);
 	}
 
+	// /**
+	// * 將某學生設定為處罰中，停權中。
+	// *
+	// * @param studentid
+	// * @return
+	// * @throws SQLException
+	// */
+	// protected synchronized int updatePunishing(String studentid)
+	// throws SQLException {
+	// String sql = "UPDATE violations SET `status`='"
+	// + Violation.STATUS.punishing.name() + "' WHERE `status`='"
+	// + Violation.STATUS.enable.name() + "' AND `studentid`=?";
+	// int result = -1;
+	// PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
+	// pstmt.setString(1, studentid);
+	// result = this.executeUpdate(pstmt);
+	// pstmt.close();
+	// return result;
+	// }
+
 	/**
-	 * 將某學生設定為已懲罰。
+	 * 將某學生設定為已經處罰完畢。也就是 14 天已過。
 	 * 
 	 * @param studentid
 	 * @return
@@ -124,12 +144,12 @@ public class ViolationDAO extends SuperDAO<Violation> {
 	 * 
 	 * @return
 	 */
-	protected LinkedHashMap<String, Integer> getStudentidsByCount() {
+	protected LinkedHashMap<String, Integer> getHashMapOfStudentidCountByEnableViolations() {
 		// SELECT COUNT(studentid) AS count,studentid FROM `violations` WHERE
 		// status="enable" GROUP BY studentid ORDER BY count DESC;
 		LinkedHashMap<String, Integer> studentids = new LinkedHashMap<String, Integer>();
 		String sql = "SELECT COUNT(studentid) AS count,studentid FROM `violations` WHERE status='"
-				+ Violation.STATUS.enable
+				+ Violation.STATUS.enable.name()
 				+ "' GROUP BY studentid ORDER BY count DESC;";
 		try {
 			PreparedStatement pstmt = this.getConnection()
@@ -144,6 +164,6 @@ public class ViolationDAO extends SuperDAO<Violation> {
 			e.printStackTrace();
 		}
 		return studentids;
-
 	}
+
 }

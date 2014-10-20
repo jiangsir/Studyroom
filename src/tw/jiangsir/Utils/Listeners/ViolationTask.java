@@ -4,7 +4,6 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.TimerTask;
 import java.util.logging.Logger;
-
 import tw.jiangsir.Studyroom.DAOs.ViolationService;
 
 public class ViolationTask extends TimerTask {
@@ -16,8 +15,9 @@ public class ViolationTask extends TimerTask {
 				+ new Timestamp(System.currentTimeMillis()));
 		new ViolationService().builtViolationsByDate(new Date(System
 				.currentTimeMillis()));
-		new ViolationService()
-				.doPunishment(new Date(System.currentTimeMillis()));
+		new ViolationService().doPunishingByDeleteBooking(new Date(System
+				.currentTimeMillis()));
+		new ViolationService().doPunished(new Date(System.currentTimeMillis()));
 	}
 
 }

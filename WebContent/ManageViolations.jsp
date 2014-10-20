@@ -16,15 +16,27 @@
 <body>
 	<jsp:include page="Header.jsp" />
 	<jsp:include page="includes/dialog/ViolationsDialog.jsp" />
-
+	<hr>
+	<h1>目前有違規記錄的使用者</h1>
 	<table>
 		<c:forEach var="studentid" items="${studentids }">
 	${studentid.key}, 違規次數:${fn:length(studentid.value)} 次<br />
-			<ul>
-				<c:forEach var="violation" items="${studentid.value}">
-					<li>${violation.date}: ${violation.reason }</li>
-				</c:forEach>
-			</ul>
+			<c:if
+				test="${fn:length(studentid.value)>=applicationScope.appConfig.punishingthreshold}">
+				<ul style="color: red;">
+					<c:forEach var="violation" items="${studentid.value}">
+						<li>${violation.date}: ${violation.reason }</li>
+					</c:forEach>
+				</ul>
+			</c:if>
+			<c:if
+				test="${fn:length(studentid.value)<applicationScope.appConfig.punishingthreshold}">
+				<ul>
+					<c:forEach var="violation" items="${studentid.value}">
+						<li>${violation.date}: ${violation.reason }</li>
+					</c:forEach>
+				</ul>
+			</c:if>
 		</c:forEach>
 	</table>
 	<jsp:include page="Footer.jsp" />

@@ -99,7 +99,7 @@ public class AttendanceApi extends HttpServlet implements IAccessFilter {
 			request.setAttribute("studentid", studentid);
 			request.setAttribute("attendances", attendances);
 			request.setAttribute("violations",
-					new ViolationService().getViolationsByStudentid(studentid));
+					new ViolationService().getEnableViolationsByStudentid(studentid));
 			request.getRequestDispatcher("includes/div/StudentAttendance.jsp")
 					.forward(request, response);
 		} catch (Exception e) {

@@ -47,8 +47,8 @@ public class ViolationApi extends HttpServlet implements IAccessFilter {
 		switch (GETACTION.valueOf(action)) {
 		case getViolationsByStudentid:
 			String studentid = request.getParameter("studentid");
-			request.setAttribute("violations",
-					new ViolationService().getViolationsByStudentid(studentid));
+			request.setAttribute("violations", new ViolationService()
+					.getEnableViolationsByStudentid(studentid));
 			request.getRequestDispatcher("includes/div/Violations.jsp")
 					.forward(request, response);
 			return;
@@ -60,6 +60,8 @@ public class ViolationApi extends HttpServlet implements IAccessFilter {
 
 	public enum POSTACTION {
 		rebuiltViolationsByDate, // 依據「日期」進行違規事件計算
+		doPunishingByDeleteBooking, // 刪除未來 14 天的訂位資料。
+		doPunished, // 針對某個日期將已經 punishing 14 天的人恢復權限。
 	}
 
 	/**
@@ -75,7 +77,22 @@ public class ViolationApi extends HttpServlet implements IAccessFilter {
 			if (currentUser != null && currentUser.getIsAdmin()) {
 				Date date = Date.valueOf(request.getParameter("date"));
 				new ViolationService().builtViolationsByDate(date);
-				// new ViolationService().doPunishment(date);
+			}
+			response.sendRedirect("."
+					+ new SessionScope(request).getCurrentPage());
+			break;
+		case doPunishingByDeleteBooking:
+			if (currentUser != null && currentUser.getIsAdmin()) {
+				Date date = Date.valueOf(request.getParameter("date"));
+				new ViolationService().doPunishingByDeleteBooking(date);
+			}
+			response.sendRedirect("."
+					+ new SessionScope(request).getCurrentPage());
+			break;
+		case doPunished:
+			if (currentUser != null && currentUser.getIsAdmin()) {
+				Date date = Date.valueOf(request.getParameter("date"));
+				new ViolationService().doPunished(date);
 			}
 			response.sendRedirect("."
 					+ new SessionScope(request).getCurrentPage());

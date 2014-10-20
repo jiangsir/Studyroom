@@ -222,8 +222,8 @@ abstract public class SuperDAO<T> {
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		} finally {
-			logger.info("PSTMT_SQL=" + pstmt.toString() + " 共耗時 "
-					+ (System.currentTimeMillis() - starttime) + " ms");
+			// logger.info("PSTMT_SQL=" + pstmt.toString() + " 共耗時 "
+			// + (System.currentTimeMillis() - starttime) + " ms");
 			try {
 				rs.close();
 				pstmt.close();

@@ -21,7 +21,8 @@ public class Violation {
 	private REASON reason = REASON.absent;
 
 	public enum STATUS {
-		punished, // 已經取消未來兩週的訂位。
+		punished, // 已經處罰完畢。也就是恢復正常使用。
+		// punishing, // 正在停權中。也就是取消未來兩週的訂位。
 		outdated, // 設定為過期，也就是未來可能出現還新學期，就要全部歸零的狀況。
 		disable, // 手動取消該違規。
 		enable;// 有效的違規

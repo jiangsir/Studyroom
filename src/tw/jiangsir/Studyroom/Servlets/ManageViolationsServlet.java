@@ -6,11 +6,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import tw.jiangsir.Studyroom.DAOs.AttendanceDAO;
-import tw.jiangsir.Studyroom.DAOs.BookingService;
 import tw.jiangsir.Studyroom.DAOs.ViolationService;
 import tw.jiangsir.Utils.Annotations.RoleSetting;
-import tw.jiangsir.Utils.Tools.DateTool;
 
 /**
  * Servlet implementation class SignUp
@@ -27,7 +24,10 @@ public class ManageViolationsServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		request.setAttribute("studentids",
-				new ViolationService().getStudentidsViolations());
+				new ViolationService().getHashMapOfStudentidViolations());
+
+		// request.setAttribute("punishingStudentids",
+		// new ViolationService().getPunishingStudentidsViolations());
 
 		request.getRequestDispatcher("/ManageViolations.jsp").forward(request,
 				response);

@@ -25,8 +25,8 @@ public class AppConfigDAO extends SuperDAO<AppConfig> {
 	protected synchronized int insert(AppConfig appConfig) throws SQLException {
 		String sql = "INSERT INTO appconfigs(title, header, author, pagesize, defaultlogin, authdomains, "
 				+ "checktype, checkhost, client_id, client_secret, redirect_uri, bookingbegin, bookingend, "
-				+ "signinbegin, signinend, signinip, workingstudents, announcement, timestamp) VALUES "
-				+ "(?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,now());";
+				+ "signinbegin, signinend, punishingthreshold, punishingdays, signinip, workingstudents, "
+				+ "announcement, timestamp) VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?,now());";
 		PreparedStatement pstmt = this.getConnection().prepareStatement(sql,
 				Statement.RETURN_GENERATED_KEYS);
 		pstmt.setString(1, appConfig.getTitle());
@@ -44,17 +44,19 @@ public class AppConfigDAO extends SuperDAO<AppConfig> {
 		pstmt.setTime(13, appConfig.getBookingend());
 		pstmt.setTime(14, appConfig.getSigninbegin());
 		pstmt.setTime(15, appConfig.getSigninend());
-		pstmt.setString(16, appConfig.getSigninip());
-		pstmt.setString(17, appConfig.getWorkingstudents().toString());
-		pstmt.setString(18, appConfig.getAnnouncement());
+		pstmt.setInt(16, appConfig.getPunishingthreshold());
+		pstmt.setInt(17, appConfig.getPunishingdays());
+		pstmt.setString(18, appConfig.getSigninip());
+		pstmt.setString(19, appConfig.getWorkingstudents().toString());
+		pstmt.setString(20, appConfig.getAnnouncement());
 		return this.executeInsert(pstmt);
 	}
 
 	protected synchronized int update(AppConfig appConfig) throws SQLException {
 		String sql = "UPDATE appconfigs SET title=?, header=?, author=?, pagesize=?, defaultlogin=?, "
 				+ "authdomains=?, checktype=?, checkhost=?, client_id=?, client_secret=?, redirect_uri=?, "
-				+ "bookingbegin=?, bookingend=?, signinbegin=?, signinend=?, signinip=?, announcement=? "
-				+ "WHERE id=?";
+				+ "bookingbegin=?, bookingend=?, signinbegin=?, signinend=?, punishingthreshold=?, "
+				+ "punishingdays=?, signinip=?, announcement=? WHERE id=?";
 		int result = -1;
 		PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
 		pstmt.setString(1, appConfig.getTitle());
@@ -72,9 +74,11 @@ public class AppConfigDAO extends SuperDAO<AppConfig> {
 		pstmt.setTime(13, appConfig.getBookingend());
 		pstmt.setTime(14, appConfig.getSigninbegin());
 		pstmt.setTime(15, appConfig.getSigninend());
-		pstmt.setString(16, appConfig.getSigninip());
-		pstmt.setString(17, appConfig.getAnnouncement());
-		pstmt.setLong(18, appConfig.getId());
+		pstmt.setInt(16, appConfig.getPunishingthreshold());
+		pstmt.setInt(17, appConfig.getPunishingdays());
+		pstmt.setString(18, appConfig.getSigninip());
+		pstmt.setString(19, appConfig.getAnnouncement());
+		pstmt.setLong(20, appConfig.getId());
 		result = this.executeUpdate(pstmt);
 		pstmt.close();
 		return result;
