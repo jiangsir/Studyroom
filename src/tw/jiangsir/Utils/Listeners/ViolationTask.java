@@ -17,7 +17,7 @@ public class ViolationTask extends TimerTask {
 				.currentTimeMillis()));
 		new ViolationService().doPunishingByDeleteBooking(new Date(System
 				.currentTimeMillis()));
-		new ViolationService().doPunished(new Date(System.currentTimeMillis()));
+		new ViolationService().doResume(new Date(System.currentTimeMillis()));
 	}
 
 }

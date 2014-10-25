@@ -105,6 +105,13 @@ jQuery(document).ready(function() {
 	jQuery("button#rebuiltViolationsByDate").click(function() {
 		$(this).closest("form").submit();
 	});
+	jQuery("button#doPunishingByDeleteBooking").click(function() {
+		$(this).closest("form").submit();
+	});
+	jQuery("button#doPunished").click(function() {
+		//alert("doPunished");
+		$(this).closest("form").submit();
+	});
 
 	$("button[id='icon01']").button({
 		icons : {

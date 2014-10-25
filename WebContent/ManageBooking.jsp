@@ -144,11 +144,21 @@
 	<div>總訂位人數：${fn:length(hashBookings)} 人。</div>
 	<div>簽到人數： ${attendCount } 人。</div>
 	<div>未簽到人數：${fn:length(hashBookings)-attendCount }人。</div>
-	<form action="Violation.api?action=rebuiltViolationsByDate" method="post">
+	<form action="Violation.api?action=rebuiltViolationsByDate"
+		method="post">
 		<input name="date" value=${date } />
-		<button id="rebuiltViolationsByDate">立即計算違規狀態</button>
+		<button id="rebuiltViolationsByDate">立即計算當日違規狀態</button>
 	</form>
-
+<%-- 	<form action="Violation.api?action=doPunishingByDeleteBooking"
+		method="post">
+		<input name="date" value=${date } />
+		<button id="doPunishingByDeleteBooking">執行停權（刪除停權人員未來的訂位）</button>
+	</form>
+	<form action="Violation.api?action=doPunished" method="post">
+		<input name="date" value=${date } />
+		<button id="doPunished">將當日違規期滿者恢復權限。</button>
+	</form>
+ --%>
 	<!-- 
 	加入圖片放大的功能。
 	jquery.hoverpulse.js

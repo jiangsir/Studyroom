@@ -95,7 +95,7 @@ public class ViolationApi extends HttpServlet implements IAccessFilter {
 		case doPunished:
 			if (currentUser != null && currentUser.getIsAdmin()) {
 				Date date = Date.valueOf(request.getParameter("date"));
-				new ViolationService().doPunished(date);
+				new ViolationService().doResume(date);
 			}
 			response.sendRedirect("."
 					+ new SessionScope(request).getCurrentPage());

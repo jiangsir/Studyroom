@@ -3,9 +3,13 @@ package tw.jiangsir.Studyroom.DAOs;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import tw.jiangsir.Studyroom.Objects.Booking;
+import tw.jiangsir.Studyroom.Objects.Violation;
 import tw.jiangsir.Utils.Exceptions.DataException;
+import tw.jiangsir.Utils.Objects.AppConfig;
+import tw.jiangsir.Utils.Scopes.ApplicationScope;
 import tw.jiangsir.Utils.Tools.DateTool;
 
 public class BookingService {
@@ -13,6 +17,8 @@ public class BookingService {
 	public int insert(Booking booking) throws DataException {
 		BookingDAO bookingDao = new BookingDAO();
 		// 已經對資料庫的 studentid, date 兩個欄位設定為 UNIQUE 因此不需要在這邊作判斷。
+
+		this.checkHasBookingRight(booking.getStudentid(), booking.getDate());
 
 		try {
 			Booking otherbooking = bookingDao.getBookingByStudentidDate(
@@ -216,6 +222,39 @@ public class BookingService {
 		booking.setSeatid(seatid);
 		booking.setDate(new java.sql.Date(date.getTime()));
 		this.insert(booking);
+	}
+
+	/**
+	 * 判斷某人某天是否有 Booking 權限。
+	 * 
+	 * @param studentid
+	 * @param date
+	 */
+	public void checkHasBookingRight(String studentid, Date date) {
+
+		// DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		// Date today = Date
+		// .valueOf(df.format(new Date(System.currentTimeMillis())));
+
+		Violation violation = new ViolationService()
+				.getLastEnableViolationByStudentid(studentid);
+		if (violation == null) {
+			return;
+		}
+		Calendar suspendstart = Calendar.getInstance();
+		suspendstart.setTime(violation.getDate());
+		suspendstart.add(Calendar.DATE, 1);
+		AppConfig appConfig = ApplicationScope.getAppConfig();
+		if (DateTool.getDayCountBetween(
+				new Date(suspendstart.getTimeInMillis()), date) <= appConfig
+				.getPunishingdays()) {
+			Calendar suspendingend = Calendar.getInstance();
+			suspendingend.setTime(violation.getDate());
+			suspendingend.add(Calendar.DATE, appConfig.getPunishingdays());
+			throw new DataException("您(" + studentid + ")目前仍在停權中。您的停權時間為 "
+					+ new Date(suspendstart.getTimeInMillis()) + " 到"
+					+ new Date(suspendingend.getTimeInMillis()));
+		}
 	}
 
 }

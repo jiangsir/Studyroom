@@ -94,8 +94,8 @@ public class BookingApi extends HttpServlet implements IAccessFilter {
 							+ "@" + appConfig.getCheckhost(), passwd);
 				}
 
-				new ViolationService().checkIsInPunishing(
-						newBooking.getStudentid(), date);
+				// new BookingService().checkHasBookingRight(
+				// newBooking.getStudentid(), date);
 
 				new BookingService().insert(newBooking);
 

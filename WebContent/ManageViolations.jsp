@@ -23,7 +23,7 @@
 	${studentid.key}, 違規次數:${fn:length(studentid.value)} 次
 			<c:if
 				test="${fn:length(studentid.value)>=applicationScope.appConfig.punishingthreshold}">
-				<span style="color: red;"> --已停權！！</span>
+				<span style="color: red;"> --停權中！！</span>
 			</c:if>
 			<ul>
 				<c:forEach var="violation" items="${studentid.value}">

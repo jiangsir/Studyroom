@@ -3,8 +3,6 @@ package tw.jiangsir.Studyroom.DAOs;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedHashMap;
@@ -16,7 +14,6 @@ import tw.jiangsir.Studyroom.Objects.Violation;
 import tw.jiangsir.Utils.Exceptions.DataException;
 import tw.jiangsir.Utils.Objects.AppConfig;
 import tw.jiangsir.Utils.Scopes.ApplicationScope;
-import tw.jiangsir.Utils.Tools.DateTool;
 
 public class ViolationService {
 
@@ -145,13 +142,13 @@ public class ViolationService {
 	 * @param studentid
 	 * @return
 	 */
-	public boolean getIsInPunishing(String studentid, Date date) {
+	public boolean getIsSuspending(String studentid, Date date) {
 		try {
-			this.checkIsInPunishing(studentid, date);
-			return true;
+			new BookingService().checkHasBookingRight(studentid, date);
+			return false;
 		} catch (Exception e) {
 			e.printStackTrace();
-			return false;
+			return true;
 		}
 	}
 
@@ -188,11 +185,11 @@ public class ViolationService {
 	}
 
 	/**
-	 * 取得目前處在 punishing 的 studentid
+	 * 取得目前處在 停權中 的 studentid，也就是 enable violation >=3 的人。
 	 * 
 	 * @return
 	 */
-	private TreeSet<String> getOverPunishingThresholdStudentids(Date date) {
+	private TreeSet<String> getSuspendingStudentids(Date date) {
 		AppConfig appConfig = ApplicationScope.getAppConfig();
 		TreeSet<String> studentids = new TreeSet<String>();
 		LinkedHashMap<String, Integer> ss = new ViolationDAO()
@@ -215,13 +212,13 @@ public class ViolationService {
 	}
 
 	/**
-	 * 將某人設定為停權完畢！也就恢復這個人的訂位權利。
+	 * 分析某日若有人停權期滿，應該將它恢復。
 	 * 
 	 * @param date
 	 */
-	public void doPunished(Date date) {
-		for (String studentid : this.getOverPunishingThresholdStudentids(date)) {
-			if (!this.getIsInPunishing(studentid, date)) {
+	public void doResume(Date date) {
+		for (String studentid : this.getSuspendingStudentids(date)) {
+			if (!this.getIsSuspending(studentid, date)) {
 				try {
 					new ViolationDAO().updatePunished(studentid);
 				} catch (SQLException e) {
@@ -259,12 +256,12 @@ public class ViolationService {
 	// }
 
 	/**
-	 * 取得某一學生『最後一筆』違規記錄。可用來計算處罰開始的日期。
+	 * 取得某一學生『最後一筆』違規記錄。可用來計算停權開始的日期。
 	 * 
 	 * @param studentid
 	 * @return
 	 */
-	public Violation getLastPunishingViolationByStudentid(String studentid) {
+	public Violation getLastEnableViolationByStudentid(String studentid) {
 		// TreeMap<String, Object> fields = new TreeMap<String, Object>();
 		// fields.put("studentid", studentid);
 		// fields.put("status", Violation.STATUS.punishing.name());
@@ -279,7 +276,6 @@ public class ViolationService {
 					.getEnableViolationsByStudentid(studentid)) {
 				return violation;
 			}
-
 		}
 		return null;
 	}
@@ -297,38 +293,6 @@ public class ViolationService {
 		fields.put("studentid", studentid);
 		fields.put("status", Violation.STATUS.enable.name());
 		return new ViolationDAO().getViolationsByFields(fields, "date DESC", 0);
-	}
-
-	/**
-	 * 判斷某個人是否可以在 14天處罰期間。若是，就不能訂位。
-	 * 
-	 * @param studentid
-	 */
-	public void checkIsInPunishing(String studentid, Date date) {
-
-		// DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-		// Date today = Date
-		// .valueOf(df.format(new Date(System.currentTimeMillis())));
-
-		Violation violation = this
-				.getLastPunishingViolationByStudentid(studentid);
-		if (violation == null) {
-			return;
-		}
-		Calendar punishingstart = Calendar.getInstance();
-		punishingstart.setTime(violation.getDate());
-		punishingstart.add(Calendar.DATE, 1);
-		AppConfig appConfig = ApplicationScope.getAppConfig();
-		if (DateTool.getDayCountBetween(
-				new Date(punishingstart.getTimeInMillis()), date) <= appConfig
-				.getPunishingdays()) {
-			Calendar punishingend = Calendar.getInstance();
-			punishingend.setTime(violation.getDate());
-			punishingend.add(Calendar.DATE, appConfig.getPunishingdays());
-			throw new DataException("您目前仍在停權中。您的停權時間為 "
-					+ new Date(punishingstart.getTimeInMillis()) + " 到"
-					+ new Date(punishingend.getTimeInMillis()));
-		}
 	}
 
 	/**
