@@ -15,7 +15,7 @@
 </head>
 <body>
 	<jsp:include page="Header.jsp" />
-	<jsp:include page="includes/dialog/ViolationsDialog.jsp" />
+	<jsp:include page="includes/dialog/CancelViolationDialog.jsp" />
 	<hr>
 	<h1>目前有違規記錄的使用者</h1>
 	<table>
@@ -28,6 +28,7 @@
 			<ul>
 				<c:forEach var="violation" items="${studentid.value}">
 					<li>${violation.date}: ${violation.reason.value } －
+
 						<button type="button" id="cancelViolation"
 							violationid="${violation.id }">取消這個違規記錄</button>
 					</li>

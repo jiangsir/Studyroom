@@ -246,7 +246,7 @@ public class BookingService {
 		suspendstart.add(Calendar.DATE, 1);
 		AppConfig appConfig = ApplicationScope.getAppConfig();
 		if (DateTool.getDayCountBetween(
-				new Date(suspendstart.getTimeInMillis()), date) <= appConfig
+				new Date(suspendstart.getTimeInMillis()), date) < appConfig
 				.getPunishingdays()) {
 			Calendar suspendingend = Calendar.getInstance();
 			suspendingend.setTime(violation.getDate());

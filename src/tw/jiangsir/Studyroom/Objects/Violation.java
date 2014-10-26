@@ -101,6 +101,9 @@ public class Violation {
 	}
 
 	public void setComment(String comment) {
+		if (comment == null) {
+			return;
+		}
 		this.comment = comment;
 	}
 

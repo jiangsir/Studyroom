@@ -11,11 +11,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.TreeMap;
-
-import tw.jiangsir.Studyroom.Objects.Booking;
 import tw.jiangsir.Studyroom.Objects.Violation;
 import tw.jiangsir.Utils.DAOs.SuperDAO;
 import tw.jiangsir.Utils.Exceptions.DataException;

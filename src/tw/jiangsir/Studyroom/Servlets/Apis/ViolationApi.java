@@ -2,6 +2,8 @@ package tw.jiangsir.Studyroom.Servlets.Apis;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.util.ArrayList;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,7 +13,9 @@ import tw.jiangsir.Studyroom.DAOs.ViolationService;
 import tw.jiangsir.Studyroom.Objects.Violation;
 import tw.jiangsir.Utils.Exceptions.AccessException;
 import tw.jiangsir.Utils.Interfaces.IAccessFilter;
+import tw.jiangsir.Utils.Objects.AppConfig;
 import tw.jiangsir.Utils.Objects.CurrentUser;
+import tw.jiangsir.Utils.Scopes.ApplicationScope;
 import tw.jiangsir.Utils.Scopes.SessionScope;
 
 /**
@@ -48,9 +52,18 @@ public class ViolationApi extends HttpServlet implements IAccessFilter {
 		switch (GETACTION.valueOf(action)) {
 		case getViolationsByStudentid:
 			String studentid = request.getParameter("studentid");
+			ArrayList<Violation> violations = new ViolationService()
+					.getEnableViolationsByStudentid(studentid);
+			// AppConfig appConfig = ApplicationScope.getAppConfig();
 			request.setAttribute("studentid", studentid);
-			request.setAttribute("violations", new ViolationService()
-					.getEnableViolationsByStudentid(studentid));
+			request.setAttribute("violations", violations);
+
+			// String note = "恭喜您(" + studentid + ")，目前沒有任何違規記錄。";
+			// if (violations.size() > 0) {
+			// note = "請注意，違規 " + appConfig.getPunishingthreshold()
+			// + "次，將會被停權 " + appConfig.getPunishingdays() + " 天";
+			// }
+			// request.setAttribute("note", note);
 			request.getRequestDispatcher("includes/div/Violations.jsp")
 					.forward(request, response);
 			return;
@@ -103,10 +116,14 @@ public class ViolationApi extends HttpServlet implements IAccessFilter {
 		case cancelViolation:
 			int violationid = Integer.parseInt(request
 					.getParameter("violationid"));
+			String comment = request.getParameter("comment");
 			Violation violation = new ViolationService()
 					.getViolationById(violationid);
+			violation.setComment(comment);
 			violation.setStatus(Violation.STATUS.cancel);
 			new ViolationService().update(violation);
+			response.sendRedirect("."
+					+ new SessionScope(request).getCurrentPage());
 			break;
 		default:
 			break;

@@ -18,7 +18,8 @@
 					${violation.reason.value}</li>
 			</c:forEach>
 		</ul>
-		<div>請注意，違規 ${applicationScope.appConfig.punishingthreshold }
-			次，將會被停權 ${applicationScope.appConfig.punishingdays } 天</div>
+		<div>請注意，違規 ${applicationScope.appConfig.punishingthreshold}
+			次，將會被停權 ${applicationScope.appConfig.punishingdays} 天</div>
 	</c:if>
+
 </div>
