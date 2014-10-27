@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主機: localhost
--- 建立日期: Sep 16, 2014, 12:58 PM
+-- 建立日期: Oct 27, 2014, 12:10 AM
 -- 伺服器版本: 5.1.44
 -- PHP 版本: 5.3.1
 
@@ -36,7 +36,10 @@ CREATE TABLE IF NOT EXISTS `appconfigs` (
   `bookingend` time NOT NULL,
   `signinbegin` time NOT NULL,
   `signinend` time NOT NULL,
+  `punishingthreshold` int(11) NOT NULL,
+  `punishingdays` int(11) NOT NULL,
   `signinip` varchar(100) NOT NULL,
+  `workingseatids` varchar(200) NOT NULL,
   `announcement` text NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
@@ -102,7 +105,7 @@ CREATE TABLE IF NOT EXISTS `upfiles` (
   `bytes` longblob NOT NULL,
   `timestamp` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -120,6 +123,12 @@ CREATE TABLE IF NOT EXISTS `users` (
   UNIQUE KEY `account` (`account`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
+-- --------------------------------------------------------
+
+--
+-- 資料表格式： `violations`
+--
+
 CREATE TABLE IF NOT EXISTS `violations` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `date` date NOT NULL,
@@ -132,15 +141,12 @@ CREATE TABLE IF NOT EXISTS `violations` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 
-/*
-ALTER TABLE  `studyroom`.`bookings` DROP INDEX  `studentid` ,
-ADD UNIQUE  `seatid_date_status` (  `seatid` ,  `date` ,  `status` )
-*/
-
-ALTER TABLE  `appconfigs` ADD  `workingseatids` VARCHAR( 200 ) NOT NULL AFTER  `signinip`;
-ALTER TABLE  `appconfigs` ADD  `punishingthreshold` INT NOT NULL AFTER  `signinend`;
-ALTER TABLE  `appconfigs` ADD  `punishingdays` INT NOT NULL AFTER  `punishingthreshold`;
-
-
-ALTER TABLE  `appconfigs` CHANGE  `workingstudents`  `workingseatids` VARCHAR( 200 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;
-
+DELETE FROM  `studyroom`.`bookings` WHERE  `bookings`.`id` =89;
+DELETE FROM  `studyroom`.`bookings` WHERE  `bookings`.`id` =95;
+DELETE FROM  `studyroom`.`bookings` WHERE  `bookings`.`id` =96;
+DELETE FROM  `studyroom`.`bookings` WHERE  `bookings`.`id` =97;
+DELETE FROM  `studyroom`.`bookings` WHERE  `bookings`.`id` =98;
+DELETE FROM  `studyroom`.`bookings` WHERE  `bookings`.`id` =99;
+DELETE FROM  `studyroom`.`bookings` WHERE  `bookings`.`id` =100;
+DELETE FROM  `studyroom`.`bookings` WHERE  `bookings`.`id` =103;
+ALTER TABLE  `appconfigs` CHANGE  `workingseatids`  `workingstudentids` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;

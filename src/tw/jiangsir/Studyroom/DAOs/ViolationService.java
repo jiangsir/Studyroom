@@ -104,12 +104,12 @@ public class ViolationService {
 			return;
 		}
 		for (Booking booking : new BookingService().getBookingsByDate(date)) {
-			System.out.println("appConfig.getWorkingseatids()="
-					+ appConfig.getWorkingseatids() + " seatid="
+			System.out.println("appConfig.getWorkingstudentids()="
+					+ appConfig.getWorkingstudentids() + " seatid="
 					+ booking.getSeatid());
 			if (booking.getAttendance() == null
-					&& !appConfig.getWorkingseatids().contains(
-							booking.getSeatid())) {
+					&& !appConfig.getWorkingstudentids().contains(
+							booking.getStudentid())) {
 				// 沒有出席記錄， 且不是工讀生。
 				Violation violation = new Violation();
 				violation.setDate(date);

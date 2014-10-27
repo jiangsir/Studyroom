@@ -48,6 +48,7 @@ public class EditAppConfigServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		AppConfig appConfig = ApplicationScope.getAppConfig();
+
 		for (String name : request.getParameterMap().keySet()) {
 			try {
 				Method method = appConfig.getClass().getMethod(

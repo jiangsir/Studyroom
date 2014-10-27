@@ -109,9 +109,9 @@
 						maxlength="50" /></td>
 				</tr>
 				<tr style="padding: 10px;">
-					<th>工讀生座位列表</th>
-					<td style="padding: 10px;"><input name="workingseatids"
-						type="text" value="${appConfig.workingseatids}" size="100" /></td>
+					<th>工讀生列表</th>
+					<td style="padding: 10px;"><input name="workingstudentids"
+						type="text" value="${appConfig.workingstudentids}" size="100" /></td>
 				</tr>
 				<tr style="padding: 10px;">
 					<th>首頁說明</th>

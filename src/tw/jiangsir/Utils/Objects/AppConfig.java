@@ -75,8 +75,8 @@ public class AppConfig {
 
 	@Persistent(name = "checktype")
 	private CHECKTYPE checktype = CHECKTYPE.POP;
-	@Persistent(name = "workingseatids")
-	private TreeSet<Integer> workingseatids = new TreeSet<Integer>();
+	@Persistent(name = "workingstudentids")
+	private TreeSet<String> workingstudentids = new TreeSet<String>();
 
 	@Persistent(name = "bookingbegin")
 	private java.sql.Time bookingbegin = java.sql.Time.valueOf("06:00:00");
@@ -169,19 +169,19 @@ public class AppConfig {
 		this.setAuthdomains(StringTool.String2TreeSet(authDomains));
 	}
 
-	public TreeSet<Integer> getWorkingseatids() {
-		return workingseatids;
+	public TreeSet<String> getWorkingstudentids() {
+		return workingstudentids;
 	}
 
-	public void setWorkingseatids(TreeSet<Integer> workingseatids) {
-		this.workingseatids = workingseatids;
+	public void setWorkingstudentids(TreeSet<String> workingstudentids) {
+		this.workingstudentids = workingstudentids;
 	}
 
-	public void setWorkingseatids(String workingseatids) {
-		if (workingseatids == null || "".equals(workingseatids.trim())) {
+	public void setWorkingstudentids(String workingstudentids) {
+		if (workingstudentids == null || "".equals(workingstudentids.trim())) {
 			return;
 		}
-		this.setWorkingseatids(StringTool.String2Integer(workingseatids));
+		this.setWorkingstudentids(StringTool.String2TreeSet(workingstudentids));
 	}
 
 	public String getClient_id() {
