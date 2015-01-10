@@ -13,10 +13,14 @@ public class EscapeWrapper extends HttpServletRequestWrapper {
 
 	@Override
 	public String getParameter(String name) {
+		System.out.print("parameter name=" + name);
 		String value = this.getRequest().getParameter(name);
-		// System.out.println("parameter name=" + name + ", value="
-		// + StringEscapeUtils.escapeHtml(value));
-		return StringEscapeUtils.escapeHtml(value);
-	}
+		System.out.print(", value=" + value);
 
+		// value = StringEscapeUtils.escapeHtml(value);
+		// value = StringEscapeUtils.escapeXml(value);
+		value = StringEscapeUtils.escapeSql(value);
+		System.out.println(", value=" + value);
+		return value;
+	}
 }

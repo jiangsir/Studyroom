@@ -9,13 +9,14 @@ import javax.servlet.http.HttpServletResponse;
 import tw.jiangsir.Studyroom.DAOs.AttendanceDAO;
 import tw.jiangsir.Studyroom.DAOs.BookingService;
 import tw.jiangsir.Utils.Annotations.RoleSetting;
+import tw.jiangsir.Utils.Objects.User.ROLE;
 import tw.jiangsir.Utils.Tools.DateTool;
 
 /**
  * Servlet implementation class SignUp
  */
 @WebServlet(urlPatterns = { "/ManageBooking" })
-@RoleSetting
+@RoleSetting(allowHigherThen = ROLE.ADMIN)
 public class ManageBookingServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

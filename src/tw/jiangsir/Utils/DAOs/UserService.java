@@ -20,7 +20,12 @@ public class UserService {
 	}
 
 	public boolean isExitedAccount(String account) {
-		if (new UserDAO().getUserByAccount(account) == null) {
+		try {
+			if (new UserDAO().getUserByAccount(account) == null) {
+				return false;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
 			return false;
 		}
 		return true;
@@ -37,16 +42,26 @@ public class UserService {
 				: true;
 	}
 
-	public User getUser(String account) {
-		return new UserDAO().getUserByAccount(account);
+	public User getUserByAccount(String account) {
+		try {
+			return new UserDAO().getUserByAccount(account);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DataException(e);
+		}
 	}
 
 	public ArrayList<User> getUsers() {
 		return new UserDAO().getUsers();
 	}
 
-	public User getUser(int userid) {
-		return new UserDAO().getUserById(userid);
+	public User getUserById(long userid) {
+		try {
+			return new UserDAO().getUserById(userid);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DataException(e);
+		}
 	}
 
 	public User getUserByAccountPasswd(String account, String passwd) {

@@ -6,7 +6,7 @@
 
 <%@ page isELIgnored="false"%>
 
-<div id="deleteBookingDialogWithoutPassword" title="請輸入帳號密碼！"
+<div id="deleteBookingDialogWithoutPassword" title="取消"
 	style="display: none;">
 	<fieldset style="padding: 5px;">
 		<legend>

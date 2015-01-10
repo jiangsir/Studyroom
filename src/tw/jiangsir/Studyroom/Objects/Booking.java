@@ -5,6 +5,8 @@ import java.sql.Timestamp;
 
 import tw.jiangsir.Studyroom.DAOs.AttendanceService;
 import tw.jiangsir.Utils.Annotations.Persistent;
+import tw.jiangsir.Utils.DAOs.UserService;
+import tw.jiangsir.Utils.Objects.User;
 
 public class Booking {
 	public enum STATUS {
@@ -117,6 +119,10 @@ public class Booking {
 				.getLastAttendanceByStudentidDate(studentid, date);
 		// System.out.println(attendance);
 		return attendance;
+	}
+
+	public User getUser() {
+		return new UserService().getUserById(this.getUserid());
 	}
 
 }

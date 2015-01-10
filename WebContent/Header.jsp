@@ -18,13 +18,13 @@
 					<ul>
 						<li><a
 							href="${pageContext.request.contextPath}/ManageBooking">管理每日訂位</a></li>
-						<li><a href="${pageContext.request.contextPath}/BatchBooking">進行固定劃位</a></li>
+						<li><a href="${pageContext.request.contextPath}/BatchBooking">進行預約(固定)劃位</a></li>
 						<li><a
 							href="${pageContext.request.contextPath}/ManageRoomstatus">管理開館、閉館日期</a></li>
 						<li><a
 							href="${pageContext.request.contextPath}/ManageViolations">統計違規紀錄</a></li>
 						<li><a
-							href="${pageContext.request.contextPath}/EditAppConfig">編輯系統參數（訂位截至時間，不開放日期）</a></li>
+							href="${pageContext.request.contextPath}/EditAppConfig">管理系統參數</a></li>
 					</ul></li>
 				<li><a href="#">${sessionScope.currentUser.name}</a>
 					<ul>

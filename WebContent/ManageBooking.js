@@ -109,7 +109,7 @@ jQuery(document).ready(function() {
 		$(this).closest("form").submit();
 	});
 	jQuery("button#doPunished").click(function() {
-		//alert("doPunished");
+		// alert("doPunished");
 		$(this).closest("form").submit();
 	});
 

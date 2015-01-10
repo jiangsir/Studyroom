@@ -44,9 +44,9 @@ public class EscapeFilter implements Filter {
 		/**
 		 * 會導致寫入資料庫的中文變成亂碼。但顯示正常！
 		 */
-		// HttpServletRequest requestWrapper = new EscapeWrapper(req);
-		// chain.doFilter(requestWrapper, resp);
-		chain.doFilter(req, resp);
+		HttpServletRequest requestWrapper = new EscapeWrapper(req);
+		chain.doFilter(requestWrapper, resp);
+		// chain.doFilter(req, resp);
 	}
 
 	/**

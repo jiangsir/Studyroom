@@ -62,32 +62,23 @@ public class UserDAO extends SuperDAO<User> {
 		return result;
 	}
 
-	protected User getUserById(long userid) {
+	protected User getUserById(long userid) throws SQLException {
 		String sql = "SELECT * FROM users WHERE id=?";
-		try {
-			PreparedStatement pstmt = this.getConnection()
-					.prepareStatement(sql);
-			pstmt.setLong(1, userid);
-			for (User user : this.executeQuery(pstmt, User.class)) {
-				return user;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
+		PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
+		pstmt.setLong(1, userid);
+		for (User user : this.executeQuery(pstmt, User.class)) {
+			return user;
 		}
 		return null;
 	}
 
-	protected User getUserByAccount(String account) {
+	protected User getUserByAccount(String account) throws SQLException {
 		String sql = "SELECT * FROM users WHERE account=?";
 		PreparedStatement pstmt;
-		try {
-			pstmt = this.getConnection().prepareStatement(sql);
-			pstmt.setString(1, account);
-			for (User user : this.executeQuery(pstmt, User.class)) {
-				return user;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
+		pstmt = this.getConnection().prepareStatement(sql);
+		pstmt.setString(1, account);
+		for (User user : this.executeQuery(pstmt, User.class)) {
+			return user;
 		}
 		return null;
 	}

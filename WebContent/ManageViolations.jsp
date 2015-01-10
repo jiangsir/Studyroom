@@ -20,7 +20,7 @@
 	<h1>目前有違規記錄的使用者</h1>
 	<table>
 		<c:forEach var="studentid" items="${studentids }">
-	${studentid.key}, 違規次數:${fn:length(studentid.value)} 次
+			<a href="./StudentBookings?studentid=${studentid.key}">${studentid.key}</a>, 違規次數:${fn:length(studentid.value)} 次
 			<c:if
 				test="${fn:length(studentid.value)>=applicationScope.appConfig.punishingthreshold}">
 				<span style="color: red;"> --停權中！！</span>

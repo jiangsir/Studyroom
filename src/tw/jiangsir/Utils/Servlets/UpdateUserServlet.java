@@ -42,7 +42,7 @@ public class UpdateUserServlet extends HttpServlet {
 		this.isAccessible(request);
 
 		int userid = Integer.parseInt(request.getParameter("userid"));
-		request.setAttribute("user", new UserService().getUser(userid));
+		request.setAttribute("user", new UserService().getUserById(userid));
 		request.getRequestDispatcher("/InsertUser.jsp").forward(request,
 				response);
 	}
@@ -56,7 +56,7 @@ public class UpdateUserServlet extends HttpServlet {
 		this.isAccessible(request);
 
 		int userid = Integer.parseInt(request.getParameter("userid"));
-		User user = new UserService().getUser(userid);
+		User user = new UserService().getUserById(userid);
 		user.setAccount(request.getParameter("account"));
 		user.setPasswd(request.getParameter("passwd1"),
 				request.getParameter("passwd2"));

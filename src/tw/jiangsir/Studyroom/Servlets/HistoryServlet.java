@@ -29,7 +29,7 @@ public class HistoryServlet extends HttpServlet {
 				|| !userService.isExitedAccount(pathinfo.substring(1))) {
 			throw new ServletException("該用戶並不存在！");
 		}
-		User user = userService.getUser(pathinfo.substring(1));
+		User user = userService.getUserByAccount(pathinfo.substring(1));
 		request.setAttribute("user", user);
 		// request.getRequestDispatcher("/History.jsp").forward(request,
 		// response);

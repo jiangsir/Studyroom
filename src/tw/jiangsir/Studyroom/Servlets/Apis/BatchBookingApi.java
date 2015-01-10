@@ -15,6 +15,7 @@ import org.apache.catalina.tribes.util.Arrays;
 
 import tw.jiangsir.Studyroom.DAOs.BookingService;
 import tw.jiangsir.Studyroom.Objects.Booking;
+import tw.jiangsir.Utils.Annotations.RoleSetting;
 import tw.jiangsir.Utils.Exceptions.AccessException;
 import tw.jiangsir.Utils.Exceptions.ApiException;
 import tw.jiangsir.Utils.Exceptions.DataException;
@@ -27,6 +28,7 @@ import tw.jiangsir.Utils.Tools.DateTool;
  * Servlet implementation class BookUp
  */
 @WebServlet(urlPatterns = { "/BatchBooking.api" })
+@RoleSetting
 public class BatchBookingApi extends HttpServlet implements IAccessFilter {
 	private static final long serialVersionUID = 1L;
 
@@ -120,7 +122,9 @@ public class BatchBookingApi extends HttpServlet implements IAccessFilter {
 								studentids[i], date);
 					}
 				} catch (NumberFormatException e) {
+					e.printStackTrace();
 				} catch (DataException e) {
+					e.printStackTrace();
 				}
 			}
 		}

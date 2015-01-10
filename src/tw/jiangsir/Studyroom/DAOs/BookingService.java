@@ -9,6 +9,7 @@ import tw.jiangsir.Studyroom.Objects.Booking;
 import tw.jiangsir.Studyroom.Objects.Violation;
 import tw.jiangsir.Utils.Exceptions.DataException;
 import tw.jiangsir.Utils.Objects.AppConfig;
+import tw.jiangsir.Utils.Objects.User;
 import tw.jiangsir.Utils.Scopes.ApplicationScope;
 import tw.jiangsir.Utils.Tools.DateTool;
 
@@ -17,8 +18,9 @@ public class BookingService {
 	public int insert(Booking booking) throws DataException {
 		BookingDAO bookingDao = new BookingDAO();
 		// 已經對資料庫的 studentid, date 兩個欄位設定為 UNIQUE 因此不需要在這邊作判斷。
-
-		this.checkHasBookingRight(booking.getStudentid(), booking.getDate());
+		if (booking.getUser().getRole() != User.ROLE.ADMIN) {
+			this.checkHasBookingRight(booking.getStudentid(), booking.getDate());
+		}
 
 		try {
 			Booking otherbooking = bookingDao.getBookingByStudentidDate(
@@ -178,6 +180,15 @@ public class BookingService {
 			return null;
 		}
 
+	}
+
+	public ArrayList<Booking> getBookingsByStudentid(String studentid) {
+		try {
+			return new BookingDAO().getBookingsByStudentid(studentid);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DataException(e);
+		}
 	}
 
 	// /**

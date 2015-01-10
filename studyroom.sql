@@ -141,12 +141,3 @@ CREATE TABLE IF NOT EXISTS `violations` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 
-DELETE FROM  `studyroom`.`bookings` WHERE  `bookings`.`id` =89;
-DELETE FROM  `studyroom`.`bookings` WHERE  `bookings`.`id` =95;
-DELETE FROM  `studyroom`.`bookings` WHERE  `bookings`.`id` =96;
-DELETE FROM  `studyroom`.`bookings` WHERE  `bookings`.`id` =97;
-DELETE FROM  `studyroom`.`bookings` WHERE  `bookings`.`id` =98;
-DELETE FROM  `studyroom`.`bookings` WHERE  `bookings`.`id` =99;
-DELETE FROM  `studyroom`.`bookings` WHERE  `bookings`.`id` =100;
-DELETE FROM  `studyroom`.`bookings` WHERE  `bookings`.`id` =103;
-ALTER TABLE  `appconfigs` CHANGE  `workingseatids`  `workingstudentids` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;

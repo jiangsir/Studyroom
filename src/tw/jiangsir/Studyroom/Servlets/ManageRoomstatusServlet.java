@@ -11,12 +11,14 @@ import javax.servlet.http.HttpServletResponse;
 
 import tw.jiangsir.Utils.Annotations.RoleSetting;
 import tw.jiangsir.Utils.Objects.User;
+import tw.jiangsir.Utils.Objects.User.ROLE;
 import tw.jiangsir.Utils.Tools.DateTool;
 
 /**
  * Servlet implementation class ManageStudyroom
  */
 @WebServlet(urlPatterns = { "/ManageRoomstatus" })
+@RoleSetting(allowHigherThen = ROLE.ADMIN)
 public class ManageRoomstatusServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

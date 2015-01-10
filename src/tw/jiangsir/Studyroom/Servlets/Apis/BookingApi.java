@@ -8,9 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import tw.jiangsir.Studyroom.DAOs.BookingService;
-import tw.jiangsir.Studyroom.DAOs.ViolationService;
 import tw.jiangsir.Studyroom.Objects.Booking;
 import tw.jiangsir.Utils.Exceptions.AccessException;
 import tw.jiangsir.Utils.Exceptions.ApiException;
@@ -74,6 +72,13 @@ public class BookingApi extends HttpServlet implements IAccessFilter {
 
 			switch (POSTACTION.valueOf(request.getParameter("action"))) {
 			case booked:
+				if (request.getParameter("seatid") == null
+						|| !request.getParameter("seatid").matches("[0-9]+")) {
+					throw new DataException("沒有輸入正確的 seatid 參數。");
+				}
+				if (request.getParameter("studentid") == null) {
+					throw new DataException("沒有輸入 studentid 參數。");
+				}
 				int seatid = Integer.parseInt(request.getParameter("seatid"));
 				String studentid = request.getParameter("studentid");
 

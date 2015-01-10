@@ -127,12 +127,12 @@
 <body>
 	<jsp:include page="Header.jsp" />
 	<fieldset>
-		<legend>固定劃位</legend>
+		<legend>預約(固定)劃位</legend>
 		<button id="addRow" style="font-size: 0.8em;">＋增加一列</button>
 		<form id="addBatchBookings">
 			<ul>
 				<li id="row">學號：<input name="studentid" />: 座位號碼：<input
-					name="seatid" /><br />固定訂位每週 <input type="checkbox"
+					name="seatid" /><br />預約(固定)訂位每週 <input type="checkbox"
 					name="weekday" value="1">日<input type="checkbox"
 					name="weekday" value="2" checked="checked">一<input
 					type="checkbox" name="weekday" value="3" checked="checked">二<input
