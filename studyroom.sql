@@ -141,3 +141,5 @@ CREATE TABLE IF NOT EXISTS `violations` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 
+===================================
+ALTER TABLE  `bookings` DROP INDEX  `studentid`;

@@ -1,4 +1,4 @@
-package tw.jiangsir.Studyroom.Objects;
+package tw.jiangsir.Studyroom.Tables;
 
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -8,12 +8,12 @@ public class Violation {
 	@Persistent(name = "id")
 	private Long id = 0L;
 	@Persistent(name = "date")
-	private Date date = new Date(new java.util.Date().getTime());;
+	private Date date = new Date(System.currentTimeMillis());
 	@Persistent(name = "studentid")
 	private String studentid = "";
 
 	public enum REASON {
-		abuse("遲到、早退、未達規定時間"), // 濫用、早退、或未簽退
+		abuse("未用學生證刷卡"), // 用手機、影印本欺騙條碼機
 		absent("缺席"); // 缺席
 		private final String value;
 

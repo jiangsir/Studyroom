@@ -13,7 +13,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import tw.jiangsir.Studyroom.Objects.Booking;
+import tw.jiangsir.Studyroom.Tables.Booking;
 import tw.jiangsir.Utils.DAOs.SuperDAO;
 
 /**
@@ -97,7 +97,7 @@ public class BookingDAO extends SuperDAO<Booking> {
 
 	protected ArrayList<Booking> getBookingsByDate(Date date)
 			throws SQLException {
-		String sql = "SELECT * FROM bookings WHERE date=?";
+		String sql = "SELECT * FROM bookings WHERE date=? ORDER BY id DESC";
 		PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
 		pstmt.setDate(1, date);
 		return this.executeQuery(pstmt, Booking.class);

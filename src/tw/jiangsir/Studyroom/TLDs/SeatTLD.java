@@ -3,9 +3,9 @@ package tw.jiangsir.Studyroom.TLDs;
 import java.util.HashMap;
 
 import tw.jiangsir.Studyroom.DAOs.AttendanceService;
-import tw.jiangsir.Studyroom.Objects.Attendance;
-import tw.jiangsir.Studyroom.Objects.Booking;
 import tw.jiangsir.Studyroom.Servlets.BookUpServlet;
+import tw.jiangsir.Studyroom.Tables.Attendance;
+import tw.jiangsir.Studyroom.Tables.Booking;
 import tw.jiangsir.Utils.Exceptions.AccessException;
 
 public class SeatTLD {

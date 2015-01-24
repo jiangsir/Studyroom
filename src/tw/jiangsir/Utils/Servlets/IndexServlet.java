@@ -7,8 +7,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import tw.jiangsir.Studyroom.DAOs.AppConfigService;
 import tw.jiangsir.Studyroom.DAOs.AttendanceDAO;
 import tw.jiangsir.Studyroom.DAOs.BookingService;
 import tw.jiangsir.Studyroom.Servlets.SignInServlet;
@@ -86,6 +84,13 @@ public class IndexServlet extends HttpServlet implements IAccessFilter {
 
 		request.setAttribute("attendCount",
 				new AttendanceDAO().getAttendCount(date));
+
+		// TODO 還有幾個實驗要做：
+		// TODO 1. 因為被停權而“可以訂位”的座位，還了一個別人可以訂位嗎？
+		// TODO 2. 因為資料庫的 studentid+date 的 index 設定已經取消，資料庫可能記錄重複的訂位。程式部分要處理。
+		// TODO 3. 同一天內將會有同一位置擁有 2 個 studentid
+		// 的訂位記錄，以時間晚的為優先。(原座位人因為停權而釋出，但未刪除。)
+		// TODO 4.
 
 		request.getRequestDispatcher("/Index.jsp").forward(request, response);
 	}

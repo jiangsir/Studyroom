@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import tw.jiangsir.Studyroom.DAOs.BookingService;
-import tw.jiangsir.Studyroom.Objects.Booking;
+import tw.jiangsir.Studyroom.Tables.Booking;
 import tw.jiangsir.Utils.Annotations.RoleSetting;
 import tw.jiangsir.Utils.Exceptions.AccessException;
 import tw.jiangsir.Utils.Interfaces.IAccessFilter;

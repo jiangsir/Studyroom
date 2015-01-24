@@ -52,6 +52,7 @@
 				</fieldset>
 			</c:if>
 
+
 			<table style="border: 0px;">
 				<c:set var="grouplist" value="${fn:split('26,24,20', ',')}" />
 				<c:set var="base" value="0" />

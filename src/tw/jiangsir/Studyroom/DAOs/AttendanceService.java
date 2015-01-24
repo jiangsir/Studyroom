@@ -4,7 +4,8 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.TreeMap;
-import tw.jiangsir.Studyroom.Objects.Attendance;
+
+import tw.jiangsir.Studyroom.Tables.Attendance;
 import tw.jiangsir.Utils.Exceptions.DataException;
 
 public class AttendanceService {

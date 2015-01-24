@@ -13,7 +13,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.TreeMap;
-import tw.jiangsir.Studyroom.Objects.Violation;
+
+import tw.jiangsir.Studyroom.Tables.Booking;
+import tw.jiangsir.Studyroom.Tables.Violation;
 import tw.jiangsir.Utils.DAOs.SuperDAO;
 import tw.jiangsir.Utils.Exceptions.DataException;
 
@@ -90,7 +92,7 @@ public class ViolationDAO extends SuperDAO<Violation> {
 	 * @return
 	 * @throws SQLException
 	 */
-	protected synchronized int updatePunished(String studentid)
+	protected synchronized int setEnable2PunishedByStudentid(String studentid)
 			throws SQLException {
 		String sql = "UPDATE violations SET `status`='"
 				+ Violation.STATUS.punished.name() + "' WHERE `status`='"
@@ -163,4 +165,42 @@ public class ViolationDAO extends SuperDAO<Violation> {
 		return studentids;
 	}
 
+	private String status_enable_punished = "(`status`='"
+			+ Violation.STATUS.enable.name() + "' OR `status`='"
+			+ Violation.STATUS.punished.name() + "')";
+
+	/**
+	 * 取得目前有 1 個以上的 violation 的 student
+	 * 
+	 * @return
+	 * @throws SQLException
+	 */
+	protected ArrayList<String> getStudentidsWithEnableViolation()
+			throws SQLException {
+		String sql = "SELECT COUNT(studentid) AS count,studentid FROM violations WHERE "
+				+ status_enable_punished
+				+ " GROUP BY studentid ORDER BY count DESC";
+		PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
+		ArrayList<String> studentids = new ArrayList<String>();
+		for (Violation violation : this.executeQuery(pstmt, Violation.class)) {
+			studentids.add(violation.getStudentid());
+		}
+		return studentids;
+	}
+
+	/**
+	 * 取得某個 studentid 的所有 enable Violations
+	 * 
+	 * @param studentid
+	 * @return
+	 * @throws SQLException
+	 */
+	protected ArrayList<Violation> getEnabledViolations(String studentid)
+			throws SQLException {
+		String sql = "SELECT * FROM violations WHERE studentid=? AND "
+				+ status_enable_punished + " ORDER BY date ASC";
+		PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
+		pstmt.setString(1, studentid);
+		return this.executeQuery(pstmt, Violation.class);
+	}
 }

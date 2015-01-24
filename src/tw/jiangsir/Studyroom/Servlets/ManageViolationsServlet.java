@@ -23,8 +23,8 @@ public class ManageViolationsServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		request.setAttribute("studentids",
-				new ViolationService().getHashMapOfStudentidViolations());
+		request.setAttribute("studentidViolations",
+				new ViolationService().getStudentidViolations());
 
 		// request.setAttribute("punishingStudentids",
 		// new ViolationService().getPunishingStudentidsViolations());

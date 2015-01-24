@@ -4,7 +4,8 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.TreeMap;
-import tw.jiangsir.Studyroom.Objects.Roomstatus;
+
+import tw.jiangsir.Studyroom.Tables.Roomstatus;
 import tw.jiangsir.Utils.Exceptions.DataException;
 
 public class RoomstatusService {

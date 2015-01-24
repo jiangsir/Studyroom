@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import tw.jiangsir.Studyroom.DAOs.ViolationService;
-import tw.jiangsir.Studyroom.Objects.Violation;
+import tw.jiangsir.Studyroom.Tables.Violation;
 import tw.jiangsir.Utils.Exceptions.AccessException;
 import tw.jiangsir.Utils.Interfaces.IAccessFilter;
 import tw.jiangsir.Utils.Objects.AppConfig;
@@ -98,20 +98,20 @@ public class ViolationApi extends HttpServlet implements IAccessFilter {
 					+ new SessionScope(request).getCurrentPage());
 			break;
 		case doPunishingByDeleteBooking:
-			if (currentUser != null && currentUser.getIsAdmin()) {
-				Date date = Date.valueOf(request.getParameter("date"));
-				new ViolationService().doPunishingByDeleteBooking(date);
-			}
+			// if (currentUser != null && currentUser.getIsAdmin()) {
+			// Date date = Date.valueOf(request.getParameter("date"));
+			// new ViolationService().doPunishingByDeleteBooking(date);
+			// }
 			response.sendRedirect("."
 					+ new SessionScope(request).getCurrentPage());
 			break;
 		case doPunished:
-			if (currentUser != null && currentUser.getIsAdmin()) {
-				Date date = Date.valueOf(request.getParameter("date"));
-				new ViolationService().doResume(date);
-			}
-			response.sendRedirect("."
-					+ new SessionScope(request).getCurrentPage());
+			// if (currentUser != null && currentUser.getIsAdmin()) {
+			// Date date = Date.valueOf(request.getParameter("date"));
+			// new ViolationService().doFinishPunishByDate(date);
+			// }
+			// response.sendRedirect("."
+			// + new SessionScope(request).getCurrentPage());
 			break;
 		case cancelViolation:
 			int violationid = Integer.parseInt(request

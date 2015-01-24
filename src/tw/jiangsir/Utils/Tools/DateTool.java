@@ -5,7 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import tw.jiangsir.Studyroom.DAOs.BookingService;
-import tw.jiangsir.Studyroom.Objects.Booking;
+import tw.jiangsir.Studyroom.Tables.Booking;
 
 public class DateTool {
 

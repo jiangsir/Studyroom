@@ -1,4 +1,4 @@
-package tw.jiangsir.Studyroom.Objects;
+package tw.jiangsir.Studyroom.Tables;
 
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -12,7 +12,7 @@ public class Attendance {
 	@Persistent(name = "studentid")
 	private String studentid = "";
 	@Persistent(name = "date")
-	private Date date = new Date(new java.util.Date().getTime());;
+	private Date date = new Date(System.currentTimeMillis());;
 
 	public enum STATUS {
 		SignIn, // 簽到
@@ -22,7 +22,7 @@ public class Attendance {
 	@Persistent(name = "status")
 	private STATUS status = STATUS.SignIn;
 	@Persistent(name = "timestamp")
-	private Timestamp timestamp = new Timestamp(new java.util.Date().getTime());
+	private Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
 	public long getId() {
 		return id;

@@ -15,9 +15,10 @@ public class ViolationTask extends TimerTask {
 				+ new Timestamp(System.currentTimeMillis()));
 		new ViolationService().builtViolationsByDate(new Date(System
 				.currentTimeMillis()));
-		new ViolationService().doPunishingByDeleteBooking(new Date(System
-				.currentTimeMillis()));
-		new ViolationService().doResume(new Date(System.currentTimeMillis()));
+		// new ViolationService().doPunishingByDeleteBooking(new Date(System
+		// .currentTimeMillis()));
+		// new ViolationService().doFinishPunishByDate(new
+		// Date(System.currentTimeMillis()));
 	}
 
 }

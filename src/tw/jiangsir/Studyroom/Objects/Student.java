@@ -1,18 +1,18 @@
 package tw.jiangsir.Studyroom.Objects;
 
-import tw.jiangsir.Utils.Annotations.Persistent;
-
 public class Student {
+	private String id = "";
 
-	@Persistent(name = "id")
-	private Long id = 0L;
-
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
+	// ================================================================================
+	public void getViolateQueue() {
+
+	}
 }

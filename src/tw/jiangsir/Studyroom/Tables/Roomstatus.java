@@ -1,4 +1,4 @@
-package tw.jiangsir.Studyroom.Objects;
+package tw.jiangsir.Studyroom.Tables;
 
 import java.sql.Date;
 import java.sql.Timestamp;
