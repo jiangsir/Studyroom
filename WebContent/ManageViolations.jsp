@@ -28,7 +28,7 @@
 	<form action="Violation.api?action=disableViolationsByDate"
 		method="post">
 		取消 <input name="date"
-			value="<fmt:formatDate value="${now}" pattern="yyyy-MM-dd" />">日
+			value="<fmt:formatDate value="${now}" pattern="yyyy-MM-dd" />">日(含)
 		以前的違規記錄
 		<button type="confirm" id="disableViolationsByDate" title="確定要取消違規記錄？">確定</button>
 	</form>
@@ -40,7 +40,7 @@
 			<c:if test="${student.isStopBooking}">
 				<span style="color: red;"> --停權中！！</span>
 			</c:if>
-			<br> <br>所有違規列表
+			<br> <br>到目前為止的違規列表
 			<c:forEach var="violation" items="${student.violations}">
 			| ${violation.date}
 			</c:forEach>

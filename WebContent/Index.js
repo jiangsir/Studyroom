@@ -28,8 +28,8 @@ jQuery(document).ready(function() {
 	$("#insertBookingDialog").dialog({
 		autoOpen : false,
 		modal : true,
-		height : 400,
-		width : 350,
+		height : 350,
+		width : 500,
 		modal : true,
 		buttons : {
 			"訂位" : function() {

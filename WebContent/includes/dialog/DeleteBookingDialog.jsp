@@ -12,9 +12,9 @@
 			確定要取消訂位 <span id="seatid"></span> 號的位置？
 		</legend>
 		<br /> <label>請輸入學號</label><br /> <input type="text"
-			name="studentid" value="" style="width: 90%;"></input><br /> <label>請輸入學生信箱密碼
-			(${applicationScope.appConfig.checkhost})</label><br /> <input
-			type="password" name="passwd" value="" style="width: 90%;"></input> <br />
+			name="studentid" size="8" value=""></input>@${applicationScope.appConfig.checkhost}<br />
+		<label>請輸入學生信箱密碼 </label><br /> <input type="password" name="passwd"
+			value="" style="width: 90%;"></input> <br />
 	</fieldset>
 	<hr>
 	<jsp:include page="../div/ViolationQueue.jsp" />
