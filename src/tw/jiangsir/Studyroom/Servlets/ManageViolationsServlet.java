@@ -25,9 +25,15 @@ public class ManageViolationsServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		request.setAttribute("students", new ViolationService()
-				.getStudentsWithEnableViolation(new Date(System
-						.currentTimeMillis())));
+		Date date;
+		try {
+			date = Date.valueOf(request.getParameter("date"));
+		} catch (Exception e) {
+			date = new Date(System.currentTimeMillis());
+		}
+
+		request.setAttribute("students",
+				new ViolationService().getStudentsWithEnableViolation(date));
 		request.getRequestDispatcher("/ManageViolations.jsp").forward(request,
 				response);
 	}

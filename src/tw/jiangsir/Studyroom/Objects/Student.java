@@ -46,7 +46,11 @@ public class Student implements Comparable<Student> {
 	}
 
 	public ViolationQueue getViolationQueue() {
-		if (violationQueue.isFull() && !this.getIsStopBooking()) {
+		if (violationQueue.isFull()
+				&& (DateTool.getDayCountBetween(violationQueue.getLast()
+						.getDate(), date) < 0 || DateTool.getDayCountBetween(
+						violationQueue.getLast().getDate(), date) > ApplicationScope
+						.getAppConfig().getPunishingdays())) {
 			violationQueue.clear();
 		}
 		return violationQueue;
