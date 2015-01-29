@@ -91,17 +91,17 @@
 			event.preventDefault(); // 讓預設的動作失效！
 			//var content = "確認送出？";
 			var form = $(this).closest("form");
-			//form.append("<div id='confirm'>" + content + "</div>");
-			//var confirm = form.find("#confirm");
-			/* 			confirm.css({
-			 fontSize : '1.5em'
-			 });
-			 */$("<div></div>").html($(this).text()).css({
+			var content = $(this).text();
+			//alert($(this).attr("title"));
+			if ($(this).attr("title") != undefined) {
+				content = $(this).attr("title");
+			}
+			$("<div></div>").html(content).css({
 				fontSize : '1.5em'
 			}).dialog({
 				//autoOpen : false,
 				width : '40%',
-				title : "確認送出？",
+				title : "表單確認對話框",
 				buttons : {
 					"確定" : function() {
 						form.submit();

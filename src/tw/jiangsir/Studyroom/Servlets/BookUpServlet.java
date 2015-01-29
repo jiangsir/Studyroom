@@ -6,16 +6,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import tw.jiangsir.Studyroom.DAOs.BookingService;
-import tw.jiangsir.Studyroom.Tables.Booking;
 import tw.jiangsir.Utils.Exceptions.AccessException;
-import tw.jiangsir.Utils.Exceptions.ApiException;
-import tw.jiangsir.Utils.GoogleChecker.PopChecker;
 import tw.jiangsir.Utils.Interfaces.IAccessFilter;
 import tw.jiangsir.Utils.Scopes.ApplicationScope;
-import tw.jiangsir.Utils.Scopes.SessionScope;
 
 /**
  * Servlet implementation class BookUp

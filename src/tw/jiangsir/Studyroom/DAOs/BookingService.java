@@ -45,8 +45,7 @@ public class BookingService {
 						+ otherbooking.getSeatid() + "號位置了，不能重複訂位。");
 			}
 
-			if (new BookingDAO().getBookingsBySeatidDate(booking.getSeatid(),
-					booking.getDate()).size() > 0) {
+			if (!this.getCanOverBooking(booking.getSeatid(), booking.getDate())) {
 				throw new DataException(""
 						+ (DateTool.isSameday(booking.getDate(),
 								new java.util.Date()) ? "今天"
@@ -109,10 +108,14 @@ public class BookingService {
 	// }
 	// }
 
-	public ArrayList<Booking> getBookingsToday() {
+	/**
+	 * @deprecated
+	 * @return
+	 */
+	private ArrayList<Booking> getBookingsToday() {
 		try {
-			return new BookingDAO().getBookingsByDate(new Date(
-					new java.util.Date().getTime()));
+			return new BookingDAO().getBookingsByDate(new Date(System
+					.currentTimeMillis()));
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new DataException(e);
@@ -204,6 +207,28 @@ public class BookingService {
 			e.printStackTrace();
 			throw new DataException(e);
 		}
+	}
+
+	/**
+	 * 判斷這個 booking 可不可以被蓋過去。如果這個位置之前的訂位者是被停權的狀態，就可以被蓋過去。
+	 * 
+	 * @param seatid
+	 * @param date
+	 * @return
+	 */
+	public boolean getCanOverBooking(int seatid, Date date) {
+		try {
+			Booking booking = new BookingDAO().getBookingsBySeatidDate(seatid,
+					date);
+			if (booking == null
+					|| (booking != null && booking.getStudent()
+							.getIsStopBooking())) {
+				return true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	// /**

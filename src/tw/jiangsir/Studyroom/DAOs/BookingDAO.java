@@ -97,20 +97,37 @@ public class BookingDAO extends SuperDAO<Booking> {
 
 	protected ArrayList<Booking> getBookingsByDate(Date date)
 			throws SQLException {
-		String sql = "SELECT * FROM bookings WHERE date=? ORDER BY id DESC";
+		// 由於允許 overBooking 的存在。因此這裡必須改成取得最後一個 booking 的資料，要用 GROUP BY 處理
+		// SELECT * FROM (SELECT * FROM bookings WHERE date='2015-02-03' ORDER
+		// BY id DESC) as temp
+		// GROUP BY seatid,date
+		String sql = "SELECT * FROM (SELECT * FROM bookings WHERE date=? ORDER BY id DESC) as temp "
+				+ "GROUP BY seatid,date";
 		PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
 		pstmt.setDate(1, date);
 		return this.executeQuery(pstmt, Booking.class);
 	}
 
-	protected ArrayList<Booking> getBookingsBySeatidDate(int seatid, Date date)
+	/**
+	 * 取得某日某座位的 booking, 因為開放 OverBooking 的原因，因此要用 GROUP BY 取得最後訂位者。
+	 * 
+	 * @param seatid
+	 * @param date
+	 * @return
+	 * @throws SQLException
+	 */
+	protected Booking getBookingsBySeatidDate(int seatid, Date date)
 			throws SQLException {
-		String sql = "SELECT * FROM bookings WHERE seatid=? AND date=? AND `status`=?";
+		String sql = "SELECT * FROM (SELECT * FROM bookings WHERE seatid=? AND date=? AND `status`=? "
+				+ "ORDER BY id DESC) as temp GROUP BY seatid,date";
 		PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
 		pstmt.setInt(1, seatid);
 		pstmt.setDate(2, date);
 		pstmt.setString(3, Booking.STATUS.Booked.name());
-		return this.executeQuery(pstmt, Booking.class);
+		for (Booking booking : this.executeQuery(pstmt, Booking.class)) {
+			return booking;
+		}
+		return null;
 	}
 
 	protected HashMap<Integer, String> getBookupMapByDate(Date date)

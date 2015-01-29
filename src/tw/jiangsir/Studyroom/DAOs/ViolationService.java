@@ -192,9 +192,9 @@ public class ViolationService {
 	/**
 	 * 將目前所有 enable -> disable
 	 */
-	public void doDisableAllViolations() {
+	public void doDisableViolationsBeforeDate(Date date) {
 		try {
-			new ViolationDAO().setDisableToAll();
+			new ViolationDAO().setDisableBeforeDate(date);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -346,25 +346,13 @@ public class ViolationService {
 	 * 
 	 * @return
 	 */
-	public ArrayList<Student> getStudents() {
-		ArrayList<Student> students = new ArrayList<Student>();
+	public ArrayList<Student> getStudentsWithEnableViolation(Date date) {
 		try {
-			for (String studentid : new ViolationDAO()
-					.getStudentidsWithEnableViolation()) {
-				Student student = new Student(studentid, new Date(
-						System.currentTimeMillis()));
-				// student.setStudentid(studentid);
-				// student.setViolations(this
-				// .getEnableViolationsByStudentid(studentid));
-				// student.setViolationQueue(new ViolationService()
-				// .getViolateQueue(studentid));
-				students.add(student);
-			}
+			return new ViolationDAO().getStudentsWithEnableViolation(date);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		Collections.sort(students);
-		return students;
+		return null;
 	}
 
 	// /**

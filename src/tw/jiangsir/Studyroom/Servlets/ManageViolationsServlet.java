@@ -1,6 +1,8 @@
 package tw.jiangsir.Studyroom.Servlets;
 
 import java.io.IOException;
+import java.sql.Date;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -23,11 +25,9 @@ public class ManageViolationsServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		request.setAttribute("students", new ViolationService().getStudents());
-
-		// request.setAttribute("punishingStudentids",
-		// new ViolationService().getPunishingStudentidsViolations());
-
+		request.setAttribute("students", new ViolationService()
+				.getStudentsWithEnableViolation(new Date(System
+						.currentTimeMillis())));
 		request.getRequestDispatcher("/ManageViolations.jsp").forward(request,
 				response);
 	}

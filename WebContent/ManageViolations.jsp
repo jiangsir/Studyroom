@@ -11,19 +11,27 @@
 <script type="text/javascript" src="ManageViolations.js"></script>
 <script type="text/javascript"
 	src="includes/dialog/Confirm.js?${applicationScope.built }"></script>
-
+<jsp:useBean id="now" class="java.util.Date"></jsp:useBean>
 </head>
 <body>
 	<jsp:include page="Header.jsp" />
 	<jsp:include page="includes/dialog/CancelViolationDialog.jsp" />
 	<h1>目前有違規記錄的使用者</h1>
-	<jsp:include page="includes/dialog/Confirm.jsp">
+	<%-- 	<jsp:include page="includes/dialog/Confirm.jsp">
 		<jsp:param name="content" value="確定要刪除所有人的違規記錄？本動作只應每學期進行一次。" />
 		<jsp:param name="type" value="POST" />
 		<jsp:param name="url" value="Violation.api" />
 		<jsp:param name="data" value="action=disableAllViolations" />
 	</jsp:include>
-	<button type="confirm" id="disableAllViolations">刪除所有違規記錄(每學期僅做一次)</button>
+	<button type="confirm" id="disableAllViolations">取消所有違規記錄(每學期僅做一次)</button>
+ --%>
+	<form action="Violation.api?action=disableViolationsByDate"
+		method="post">
+		取消 <input name="date"
+			value="<fmt:formatDate value="${now}" pattern="yyyy-MM-dd" />">日
+		以前的違規記錄
+		<button type="confirm" id="disableViolationsByDate" title="確定要取消違規記錄？">確定</button>
+	</form>
 	<hr>
 	<c:forEach var="student" items="${students}">
 		<div style="">

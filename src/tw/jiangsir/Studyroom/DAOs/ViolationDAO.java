@@ -11,10 +11,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.TreeMap;
 
-import tw.jiangsir.Studyroom.Tables.Booking;
+import tw.jiangsir.Studyroom.Objects.Student;
 import tw.jiangsir.Studyroom.Tables.Violation;
 import tw.jiangsir.Utils.DAOs.SuperDAO;
 import tw.jiangsir.Utils.Exceptions.DataException;
@@ -112,12 +113,14 @@ public class ViolationDAO extends SuperDAO<Violation> {
 	 * @return
 	 * @throws SQLException
 	 */
-	protected synchronized int setDisableToAll() throws SQLException {
+	protected synchronized int setDisableBeforeDate(Date date)
+			throws SQLException {
 		String sql = "UPDATE violations SET `status`='"
 				+ Violation.STATUS.disable.name() + "' WHERE `status`='"
-				+ Violation.STATUS.enable.name() + "'";
+				+ Violation.STATUS.enable.name() + "' && date<=?";
 		int result = -1;
 		PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
+		pstmt.setDate(1, date);
 		result = this.executeUpdate(pstmt);
 		pstmt.close();
 		return result;
@@ -190,20 +193,47 @@ public class ViolationDAO extends SuperDAO<Violation> {
 	/**
 	 * 取得目前有 1 個以上的 violation 的 student
 	 * 
+	 * @param date
+	 *            在這個時間點以前的 enable Violations
 	 * @return
 	 * @throws SQLException
+	 * @deprecated
 	 */
-	protected ArrayList<String> getStudentidsWithEnableViolation()
+	private ArrayList<String> getStudentidsWithEnableViolation(Date date)
 			throws SQLException {
 		String sql = "SELECT COUNT(studentid) AS count,studentid FROM violations WHERE `status`='"
 				+ Violation.STATUS.enable.name()
-				+ "' GROUP BY studentid ORDER BY count DESC";
+				+ "' AND date<=? GROUP BY studentid ORDER BY count DESC";
 		PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
+		pstmt.setDate(1, date);
 		ArrayList<String> studentids = new ArrayList<String>();
 		for (Violation violation : this.executeQuery(pstmt, Violation.class)) {
 			studentids.add(violation.getStudentid());
 		}
 		return studentids;
+	}
+
+	/**
+	 * 取得目前有 1 個以上的 violation 的 student
+	 * 
+	 * @param date
+	 *            在這個時間點以前的 enable Violations
+	 * @return
+	 * @throws SQLException
+	 */
+	protected ArrayList<Student> getStudentsWithEnableViolation(Date date)
+			throws SQLException {
+		String sql = "SELECT COUNT(studentid) AS count,studentid FROM violations WHERE `status`='"
+				+ Violation.STATUS.enable.name()
+				+ "' AND date<=? GROUP BY studentid ORDER BY count DESC";
+		PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
+		pstmt.setDate(1, date);
+		ArrayList<Student> students = new ArrayList<Student>();
+		for (Violation violation : this.executeQuery(pstmt, Violation.class)) {
+			students.add(new Student(violation.getStudentid(), date));
+		}
+		Collections.sort(students);
+		return students;
 	}
 
 	/**

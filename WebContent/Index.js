@@ -67,7 +67,7 @@ jQuery(document).ready(function() {
 		getViolationsByStudentid(deleteBookingDialog, studentid);
 		deleteBookingDialog.find("#seatid").html(seatid);
 		deleteBookingDialog.find("input").val("");
-
+		deleteBookingDialog.find("input[name='studentid']").val(studentid);
 		deleteBookingDialog.dialog("open");
 		// });
 	});
@@ -153,7 +153,7 @@ function getViolationsByStudentid(deleteBookingDialog, studentid) {
 		beforeSend : function() {
 		},
 		success : function(result) {
-			deleteBookingDialog.find("#violations").html(result);
+			deleteBookingDialog.find("#violationQueue").html(result);
 		}
 	});
 

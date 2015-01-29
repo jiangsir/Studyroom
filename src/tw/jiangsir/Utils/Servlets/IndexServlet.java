@@ -73,6 +73,7 @@ public class IndexServlet extends HttpServlet implements IAccessFilter {
 			}
 		} else {
 			date = new java.sql.Date(System.currentTimeMillis());
+			// date = java.sql.Date.valueOf(request.getParameter("date"));
 		}
 
 		request.setAttribute("date", date);
@@ -87,8 +88,10 @@ public class IndexServlet extends HttpServlet implements IAccessFilter {
 				new AttendanceDAO().getAttendCount(date));
 
 		// TODO 還有幾個實驗要做：
-		// TODO 1. 因為被停權而“可以訂位”的座位，還了一個別人可以訂位嗎？
-		// TODO 2. 因為資料庫的 studentid+date 的 index 設定已經取消，資料庫可能記錄重複的訂位。程式部分要處理。
+		// TODO_DONE 1. 因為被停權而“可以訂位”的座位，換了一個別人可以訂位嗎？
+		// TODO_DONE 2. 因為資料庫的 studentid+date 的 index
+		// 設定已經取消，資料庫可能記錄重複的訂位。程式部分要處理。
+		// 用 CanOverBooking 來判斷。
 		// TODO 3. 同一天內將會有同一位置擁有 2 個 studentid
 		// 的訂位記錄，以時間晚的為優先。(原座位人因為停權而釋出，但未刪除。)
 		// TODO 4.

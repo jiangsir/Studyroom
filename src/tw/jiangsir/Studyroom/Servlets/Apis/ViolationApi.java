@@ -2,8 +2,6 @@ package tw.jiangsir.Studyroom.Servlets.Apis;
 
 import java.io.IOException;
 import java.sql.Date;
-import java.util.ArrayList;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -57,20 +55,11 @@ public class ViolationApi extends HttpServlet implements IAccessFilter {
 		switch (GETACTION.valueOf(action)) {
 		case getViolationsByStudentid:
 			String studentid = request.getParameter("studentid");
-			// ArrayList<Violation> violations = new ViolationService()
-			// .getEnableViolationsByStudentid(studentid);
-			// AppConfig appConfig = ApplicationScope.getAppConfig();
-			request.setAttribute("studentid", studentid);
-			request.setAttribute("violationQueue", new Student(studentid,
-					new Date(System.currentTimeMillis())).getViolationQueue());
 
-			// String note = "恭喜您(" + studentid + ")，目前沒有任何違規記錄。";
-			// if (violations.size() > 0) {
-			// note = "請注意，違規 " + appConfig.getPunishingthreshold()
-			// + "次，將會被停權 " + appConfig.getPunishingdays() + " 天";
-			// }
-			// request.setAttribute("note", note);
-			request.getRequestDispatcher("includes/div/Violations.jsp")
+			request.setAttribute("student", new Student(studentid, new Date(
+					System.currentTimeMillis())));
+
+			request.getRequestDispatcher("includes/div/ViolationQueue.jsp")
 					.forward(request, response);
 			return;
 		default:
@@ -83,7 +72,8 @@ public class ViolationApi extends HttpServlet implements IAccessFilter {
 		doPunishingByDeleteBooking, // 刪除未來 14 天的訂位資料。
 		doPunished, // 針對某個日期將已經 punishing 14 天的人恢復權限。
 		cancelViolation, // 取消某一個 violation.
-		disableAllViolations, // 刪除全部違規，每學期做一次。
+		// disableAllViolations, // 刪除全部違規，每學期做一次。
+		disableViolationsByDate, // 清除某個日期之前的違規記錄，更彈性。
 	}
 
 	/**
@@ -132,8 +122,14 @@ public class ViolationApi extends HttpServlet implements IAccessFilter {
 			response.sendRedirect("."
 					+ new SessionScope(request).getCurrentPage());
 			break;
-		case disableAllViolations:
-			new ViolationService().doDisableAllViolations();
+		// case disableAllViolations:
+		// new ViolationService().doDisableAllViolations();
+		// response.sendRedirect("."
+		// + new SessionScope(request).getCurrentPage());
+		// break;
+		case disableViolationsByDate:
+			Date date = Date.valueOf(request.getParameter("date"));
+			new ViolationService().doDisableViolationsBeforeDate(date);
 			response.sendRedirect("."
 					+ new SessionScope(request).getCurrentPage());
 			break;

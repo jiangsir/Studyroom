@@ -69,7 +69,7 @@ public class UserDAO extends SuperDAO<User> {
 		for (User user : this.executeQuery(pstmt, User.class)) {
 			return user;
 		}
-		return null;
+		return new User();
 	}
 
 	protected User getUserByAccount(String account) throws SQLException {

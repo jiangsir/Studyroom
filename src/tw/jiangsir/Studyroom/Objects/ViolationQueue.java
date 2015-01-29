@@ -4,8 +4,6 @@ import java.util.Comparator;
 import java.util.PriorityQueue;
 
 import tw.jiangsir.Studyroom.Tables.Violation;
-import tw.jiangsir.Utils.Scopes.ApplicationScope;
-import tw.jiangsir.Utils.Tools.DateTool;
 
 public class ViolationQueue extends PriorityQueue<Violation> {
 
