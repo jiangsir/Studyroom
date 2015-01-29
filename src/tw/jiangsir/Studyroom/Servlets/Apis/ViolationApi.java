@@ -10,12 +10,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import tw.jiangsir.Studyroom.DAOs.ViolationService;
+import tw.jiangsir.Studyroom.Objects.Student;
 import tw.jiangsir.Studyroom.Tables.Violation;
 import tw.jiangsir.Utils.Exceptions.AccessException;
 import tw.jiangsir.Utils.Interfaces.IAccessFilter;
-import tw.jiangsir.Utils.Objects.AppConfig;
 import tw.jiangsir.Utils.Objects.CurrentUser;
-import tw.jiangsir.Utils.Scopes.ApplicationScope;
 import tw.jiangsir.Utils.Scopes.SessionScope;
 
 /**
@@ -35,7 +34,13 @@ public class ViolationApi extends HttpServlet implements IAccessFilter {
 
 	@Override
 	public void AccessFilter(HttpServletRequest request) throws AccessException {
-
+		if ("POST".equals(request.getMethod())) {
+			CurrentUser currentUser = new SessionScope(request)
+					.getCurrentUser();
+			if (currentUser == null || !currentUser.getIsAdmin()) {
+				throw new AccessException("您的權限不足。");
+			}
+		}
 	}
 
 	public enum GETACTION {
@@ -52,11 +57,12 @@ public class ViolationApi extends HttpServlet implements IAccessFilter {
 		switch (GETACTION.valueOf(action)) {
 		case getViolationsByStudentid:
 			String studentid = request.getParameter("studentid");
-			ArrayList<Violation> violations = new ViolationService()
-					.getEnableViolationsByStudentid(studentid);
+			// ArrayList<Violation> violations = new ViolationService()
+			// .getEnableViolationsByStudentid(studentid);
 			// AppConfig appConfig = ApplicationScope.getAppConfig();
 			request.setAttribute("studentid", studentid);
-			request.setAttribute("violations", violations);
+			request.setAttribute("violationQueue", new Student(studentid,
+					new Date(System.currentTimeMillis())).getViolationQueue());
 
 			// String note = "恭喜您(" + studentid + ")，目前沒有任何違規記錄。";
 			// if (violations.size() > 0) {
@@ -70,7 +76,6 @@ public class ViolationApi extends HttpServlet implements IAccessFilter {
 		default:
 			break;
 		}
-		// response.getWriter().print("dfdfdfdfdfddfdfdf");
 	}
 
 	public enum POSTACTION {
@@ -78,6 +83,7 @@ public class ViolationApi extends HttpServlet implements IAccessFilter {
 		doPunishingByDeleteBooking, // 刪除未來 14 天的訂位資料。
 		doPunished, // 針對某個日期將已經 punishing 14 天的人恢復權限。
 		cancelViolation, // 取消某一個 violation.
+		disableAllViolations, // 刪除全部違規，每學期做一次。
 	}
 
 	/**
@@ -90,6 +96,7 @@ public class ViolationApi extends HttpServlet implements IAccessFilter {
 		String action = request.getParameter("action");
 		switch (POSTACTION.valueOf(action)) {
 		case rebuiltViolationsByDate:
+			System.out.println("rebuiltViolationsByDate");
 			if (currentUser != null && currentUser.getIsAdmin()) {
 				Date date = Date.valueOf(request.getParameter("date"));
 				new ViolationService().builtViolationsByDate(date);
@@ -122,6 +129,11 @@ public class ViolationApi extends HttpServlet implements IAccessFilter {
 			violation.setComment(comment);
 			violation.setStatus(Violation.STATUS.cancel);
 			new ViolationService().update(violation);
+			response.sendRedirect("."
+					+ new SessionScope(request).getCurrentPage());
+			break;
+		case disableAllViolations:
+			new ViolationService().doDisableAllViolations();
 			response.sendRedirect("."
 					+ new SessionScope(request).getCurrentPage());
 			break;

@@ -75,14 +75,45 @@
 	display: block;
 }
 </style>
+
+<script type="text/javascript" src="includes/dialog/Confirm.js"></script>
+
 <script language="javascript">
 	jQuery(document).ready(function() {
 		$("input:first").focus();
-		$("input[type=submit], [type='button']").button();
+		$("input[type=submit], [type='button'], [type='confirm']").button();
 		//$("input[type='checkbox']").buttonset();
 		$("button").button().click(function(event) {
 			event.preventDefault(); // 讓預設的動作失效！
 		});
+
+		$("form > button[type=confirm]").button().click(function(event) {
+			event.preventDefault(); // 讓預設的動作失效！
+			//var content = "確認送出？";
+			var form = $(this).closest("form");
+			//form.append("<div id='confirm'>" + content + "</div>");
+			//var confirm = form.find("#confirm");
+			/* 			confirm.css({
+			 fontSize : '1.5em'
+			 });
+			 */$("<div></div>").html($(this).text()).css({
+				fontSize : '1.5em'
+			}).dialog({
+				//autoOpen : false,
+				width : '40%',
+				title : "確認送出？",
+				buttons : {
+					"確定" : function() {
+						form.submit();
+					},
+					"取消" : function() {
+						$(this).dialog("close");
+					}
+				}
+			});
+
+		});
+
 		$(".closethick").button({
 			icons : {
 				primary : "ui-icon-closethick"

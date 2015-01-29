@@ -9,28 +9,36 @@
 <head>
 <jsp:include page="CommonHead.jsp" />
 <script type="text/javascript" src="ManageViolations.js"></script>
+<script type="text/javascript"
+	src="includes/dialog/Confirm.js?${applicationScope.built }"></script>
 
 </head>
 <body>
 	<jsp:include page="Header.jsp" />
 	<jsp:include page="includes/dialog/CancelViolationDialog.jsp" />
-	<hr>
 	<h1>目前有違規記錄的使用者</h1>
-	<c:forEach var="studentidViolation" items="${studentidViolations}">
+	<jsp:include page="includes/dialog/Confirm.jsp">
+		<jsp:param name="content" value="確定要刪除所有人的違規記錄？本動作只應每學期進行一次。" />
+		<jsp:param name="type" value="POST" />
+		<jsp:param name="url" value="Violation.api" />
+		<jsp:param name="data" value="action=disableAllViolations" />
+	</jsp:include>
+	<button type="confirm" id="disableAllViolations">刪除所有違規記錄(每學期僅做一次)</button>
+	<hr>
+	<c:forEach var="student" items="${students}">
 		<div style="">
-			<a href="./StudentBookings?studentid=${studentidViolation.studentid}">${studentidViolation.studentid}</a>,
-			違規次數:${fn:length(studentidViolation.violationQueue)} 次
-			<c:if test="${studentidViolation.isStopBooking}">
+			<a href="./StudentBookings?studentid=${student.studentid}">${student.studentid}</a>,
+			違規次數:${fn:length(student.violationQueue)} 次
+			<c:if test="${student.isStopBooking}">
 				<span style="color: red;"> --停權中！！</span>
 			</c:if>
 			<br> <br>所有違規列表
-			<c:forEach var="violation" items="${studentidViolation.violations}">
+			<c:forEach var="violation" items="${student.violations}">
 			| ${violation.date}
 			</c:forEach>
 
 			<ul>
-				<c:forEach var="violation"
-					items="${studentidViolation.violationQueue}">
+				<c:forEach var="violation" items="${student.violationQueue}">
 					<li style="display: inline-block;">
 						<button type="button" id="cancelViolation"
 							violationid="${violation.id }">取消 ${violation.date}:

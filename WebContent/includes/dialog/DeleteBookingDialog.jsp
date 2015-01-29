@@ -17,6 +17,6 @@
 			type="password" name="passwd" value="" style="width: 90%;"></input> <br />
 	</fieldset>
 	<hr>
-	<jsp:include page="../div/Violations.jsp" />
+	<jsp:include page="../div/ViolationQueue.jsp" />
 
 </div>

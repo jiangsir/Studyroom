@@ -92,14 +92,32 @@ public class ViolationDAO extends SuperDAO<Violation> {
 	 * @return
 	 * @throws SQLException
 	 */
-	protected synchronized int setEnable2PunishedByStudentid(String studentid)
-			throws SQLException {
+	// protected synchronized int setEnable2PunishedByStudentid(String
+	// studentid)
+	// throws SQLException {
+	// String sql = "UPDATE violations SET `status`='"
+	// + Violation.STATUS.punished.name() + "' WHERE `status`='"
+	// + Violation.STATUS.enable.name() + "' AND `studentid`=?";
+	// int result = -1;
+	// PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
+	// pstmt.setString(1, studentid);
+	// result = this.executeUpdate(pstmt);
+	// pstmt.close();
+	// return result;
+	// }
+
+	/**
+	 * 將所有 enable 的 Violation 改成 disable.
+	 * 
+	 * @return
+	 * @throws SQLException
+	 */
+	protected synchronized int setDisableToAll() throws SQLException {
 		String sql = "UPDATE violations SET `status`='"
-				+ Violation.STATUS.punished.name() + "' WHERE `status`='"
-				+ Violation.STATUS.enable.name() + "' AND `studentid`=?";
+				+ Violation.STATUS.disable.name() + "' WHERE `status`='"
+				+ Violation.STATUS.enable.name() + "'";
 		int result = -1;
 		PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
-		pstmt.setString(1, studentid);
 		result = this.executeUpdate(pstmt);
 		pstmt.close();
 		return result;
@@ -165,9 +183,9 @@ public class ViolationDAO extends SuperDAO<Violation> {
 		return studentids;
 	}
 
-	private String status_enable_punished = "(`status`='"
-			+ Violation.STATUS.enable.name() + "' OR `status`='"
-			+ Violation.STATUS.punished.name() + "')";
+	// private String status_enable_punished = "(`status`='"
+	// + Violation.STATUS.enable.name() + "' OR `status`='"
+	// + Violation.STATUS.punished.name() + "')";
 
 	/**
 	 * 取得目前有 1 個以上的 violation 的 student
@@ -177,9 +195,9 @@ public class ViolationDAO extends SuperDAO<Violation> {
 	 */
 	protected ArrayList<String> getStudentidsWithEnableViolation()
 			throws SQLException {
-		String sql = "SELECT COUNT(studentid) AS count,studentid FROM violations WHERE "
-				+ status_enable_punished
-				+ " GROUP BY studentid ORDER BY count DESC";
+		String sql = "SELECT COUNT(studentid) AS count,studentid FROM violations WHERE `status`='"
+				+ Violation.STATUS.enable.name()
+				+ "' GROUP BY studentid ORDER BY count DESC";
 		PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
 		ArrayList<String> studentids = new ArrayList<String>();
 		for (Violation violation : this.executeQuery(pstmt, Violation.class)) {
@@ -192,15 +210,18 @@ public class ViolationDAO extends SuperDAO<Violation> {
 	 * 取得某個 studentid 的所有 enable Violations
 	 * 
 	 * @param studentid
+	 * @param date
 	 * @return
 	 * @throws SQLException
 	 */
-	protected ArrayList<Violation> getEnabledViolations(String studentid)
-			throws SQLException {
-		String sql = "SELECT * FROM violations WHERE studentid=? AND "
-				+ status_enable_punished + " ORDER BY date ASC";
+	protected ArrayList<Violation> getEnabledViolations(String studentid,
+			Date date) throws SQLException {
+		String sql = "SELECT * FROM violations WHERE studentid=? AND `status`='"
+				+ Violation.STATUS.enable.name()
+				+ "' AND date<=? ORDER BY date ASC";
 		PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
 		pstmt.setString(1, studentid);
+		pstmt.setDate(2, date);
 		return this.executeQuery(pstmt, Violation.class);
 	}
 }

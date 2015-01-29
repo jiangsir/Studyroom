@@ -13,7 +13,7 @@ public class Violation {
 	private String studentid = "";
 
 	public enum REASON {
-		abuse("未用學生證刷卡"), // 用手機、影印本欺騙條碼機
+		abuse("由他人代刷，或用手機刷卡。"), // 用手機、影印本欺騙條碼機
 		absent("缺席"); // 缺席
 		private final String value;
 
@@ -30,11 +30,12 @@ public class Violation {
 	private REASON reason = REASON.absent;
 
 	public enum STATUS {
-		punished, // 已經處罰完畢。也就是恢復正常使用。
+		//punished, // 已經處罰完畢。也就是恢復正常使用。
 		// punishing, // 正在停權中。也就是取消未來兩週的訂位。
-		outdated, // 設定為過期，也就是未來可能出現還新學期，就要全部歸零的狀況。
+		// outdated, // 設定為過期，也就是未來可能出現還新學期，就要全部歸零的狀況。
 		cancel, // 手動取消該違規。
-		enable;// 有效的違規
+		enable, // 有效的違規
+		disable;// 每學期進行一次，將違規取消。
 	}
 
 	@Persistent(name = "status")

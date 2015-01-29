@@ -8,7 +8,6 @@
 
 <div class="confirm_dialog"
 	style="cursor: default; padding: 10px; display: none; text-align: center"
-	title="${param.title}" type="${param.type}" url="${param.url}"
-	data="${param.data}">
-	<h2>${param.title}</h2>
+	type="${param.type}" url="${param.url}" data="${param.data}">
+	<h2>${param.content}</h2>
 </div>

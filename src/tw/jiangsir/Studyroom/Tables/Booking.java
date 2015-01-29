@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.sql.Timestamp;
 
 import tw.jiangsir.Studyroom.DAOs.AttendanceService;
+import tw.jiangsir.Studyroom.Objects.Student;
 import tw.jiangsir.Utils.Annotations.Persistent;
 import tw.jiangsir.Utils.DAOs.UserService;
 import tw.jiangsir.Utils.Objects.User;
@@ -25,7 +26,7 @@ public class Booking {
 	@Persistent(name = "seatid")
 	private Integer seatid = 0;
 	@Persistent(name = "date")
-	private Date date = new Date(new java.util.Date().getTime());
+	private Date date = new Date(System.currentTimeMillis());
 	@Persistent(name = "status")
 	private STATUS status = STATUS.Booked;
 	@Persistent(name = "timestamp")
@@ -109,6 +110,7 @@ public class Booking {
 	// return this.getStatus() == Booking.STATUS.SignOut;
 	// }
 
+	// ===============================================================================
 	/**
 	 * 取得這個預約學生最後一個簽到記錄。
 	 * 
@@ -123,6 +125,16 @@ public class Booking {
 
 	public User getUser() {
 		return new UserService().getUserById(this.getUserid());
+	}
+
+	public Student getStudent() {
+		return new Student(this.getStudentid(), this.getDate());
+	}
+
+	@Override
+	public String toString() {
+		return "id=" + this.getId() + ", studentid=" + this.getStudentid()
+				+ ", date=" + this.getDate();
 	}
 
 }

@@ -53,9 +53,10 @@ public class IndexServlet extends HttpServlet implements IAccessFilter {
 		CurrentUser currentUser = new SessionScope(request.getSession(false))
 				.getCurrentUser();
 		AppConfig appConfig = ApplicationScope.getAppConfig();
-		System.out.println("appConfig.getSigninip()=" + appConfig.getSigninip()
-				+ ", request.getRemoteAddr()=" + request.getRemoteAddr()
-				+ ", currentUser=" + currentUser);
+		// System.out.println("appConfig.getSigninip()=" +
+		// appConfig.getSigninip()
+		// + ", request.getRemoteAddr()=" + request.getRemoteAddr()
+		// + ", currentUser=" + currentUser);
 		if (request.getRemoteAddr().equals(appConfig.getSigninip())
 				&& (currentUser == null || !currentUser.getIsAdmin())) {
 			response.sendRedirect(request.getContextPath()
@@ -77,8 +78,8 @@ public class IndexServlet extends HttpServlet implements IAccessFilter {
 		request.setAttribute("date", date);
 		request.setAttribute("nextdate", DateTool.getNextDate(date));
 		request.setAttribute("prevdate", DateTool.getPrevDate(date));
-		request.setAttribute("bookupMap",
-				new BookingService().getBookupMapByDate(date));
+		// request.setAttribute("bookupMap",
+		// new BookingService().getBookupMapByDate(date));
 		request.setAttribute("hashBookings",
 				new BookingService().getHashBookings(date));
 

@@ -2,17 +2,16 @@ package tw.jiangsir.Studyroom.DAOs;
 
 import java.sql.Date;
 import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.logging.Logger;
 
-import tw.jiangsir.Studyroom.Objects.StudentViolations;
+import tw.jiangsir.Studyroom.Objects.Student;
 import tw.jiangsir.Studyroom.Objects.ViolationQueue;
 import tw.jiangsir.Studyroom.Tables.Booking;
 import tw.jiangsir.Studyroom.Tables.Violation;
@@ -41,14 +40,14 @@ public class ViolationService {
 		}
 	}
 
-	public void delete(long id) throws DataException {
-		try {
-			new ViolationDAO().delete(id);
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DataException(e);
-		}
-	}
+	// public void delete(long id) throws DataException {
+	// try {
+	// new ViolationDAO().delete(id);
+	// } catch (SQLException e) {
+	// e.printStackTrace();
+	// throw new DataException(e);
+	// }
+	// }
 
 	public Violation getViolationById(long id) {
 		TreeMap<String, Object> fields = new TreeMap<String, Object>();
@@ -86,11 +85,6 @@ public class ViolationService {
 	 * @param date
 	 */
 	public void builtViolationsByDate(Date date) {
-		try {
-			new ViolationDAO().deleteByDate(date);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
 		// DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		// Date today = Date
 		// .valueOf(df.format(new Date(System.currentTimeMillis())));
@@ -99,17 +93,26 @@ public class ViolationService {
 		// return;
 		// }
 		AppConfig appConfig = ApplicationScope.getAppConfig();
-		Timestamp signinend = Timestamp.valueOf(date.toString() + " "
-				+ appConfig.getSigninend());
-		Timestamp now = new Timestamp(System.currentTimeMillis());
+		// Timestamp signinend = Timestamp.valueOf(date.toString() + " "
+		// + appConfig.getSigninend());
+		Time signinend = appConfig.getSigninend();
+		Time now = new Time(System.currentTimeMillis());
+		// Timestamp now = new Timestamp(System.currentTimeMillis());
 		System.out.println("signinend=" + signinend);
 		System.out.println("now=" + now);
 		if (!signinend.before(now)) {
-			return;
+			throw new DataException("簽到截止時間還沒有到，因此不進行「違規統計」");
 		}
 		if (!new RoomstatusService().isOpen(date)) {
-			return;
+			throw new DataException("本日(" + date + ")設定為不開放，因此不進行「違規統計」");
 		}
+
+		try {
+			new ViolationDAO().deleteByDate(date);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
 		for (Booking booking : new BookingService().getBookingsByDate(date)) {
 			System.out.println("appConfig.getWorkingstudentids()="
 					+ appConfig.getWorkingstudentids() + " seatid="
@@ -133,10 +136,11 @@ public class ViolationService {
 	 * 
 	 * @param studentid
 	 * @return
+	 * @deprecated 不在這裡，改到 Student 內部處理。
 	 */
-	public ViolationQueue getViolateQueue(String studentid) {
+	private ViolationQueue getViolateQueue(String studentid, Date date) {
 		ArrayList<Violation> enableViolations = this
-				.getEnableViolationsByStudentid(studentid);
+				.getEnableViolationsByStudentid(studentid, date);
 		ViolationQueue queue = new ViolationQueue(ApplicationScope
 				.getAppConfig().getPunishingthreshold());
 		for (Violation violation : enableViolations) {
@@ -157,24 +161,17 @@ public class ViolationService {
 		return queue;
 	}
 
-	/**
-	 * 判斷是否已經達到違規上限。<br>
-	 * 20150113 任何時刻只要有 3 個 enalbe 就不能訂位，座位表也不顯示。<br>
-	 * 20150123 改成 enable violation 都不清除(只在學期初清除)，用 ViolationQueue(由
-	 * PriorityQueue 實作) 來判斷是否有違規。<br>
-	 * 
-	 * @param studentid
-	 * @return
-	 */
-	public boolean getIsStopBookingByStudentid(String studentid, Date date) {
-		ViolationQueue queue = this.getViolateQueue(studentid);
-		if (queue.isFull()
-				&& DateTool.getDayCountBetween(queue.getLast().getDate(), date) <= ApplicationScope
-						.getAppConfig().getPunishingdays()) {
-			return true;
-		}
-		return false;
-	}
+	// private boolean getIsStopBookingByStudentid(String studentid, Date date)
+	// {
+	// ViolationQueue queue = this.getViolateQueue(studentid, date);
+	// if (queue.isFull()
+	// && DateTool.getDayCountBetween(queue.getLast().getDate(), date) <=
+	// ApplicationScope
+	// .getAppConfig().getPunishingdays()) {
+	// return true;
+	// }
+	// return false;
+	// }
 
 	/**
 	 * 判斷某人是否在停權期間？
@@ -193,34 +190,45 @@ public class ViolationService {
 	// }
 
 	/**
-	 * 進行違規停權，把未來 14 天內該使用者的所有訂位刪除。
+	 * 將目前所有 enable -> disable
 	 */
-	private void doPunishingByDeleteBooking(Date date) {
-		// 1. 已經固定劃位的人，要取消兩週內的劃位。
-		// 2. 要進行劃位的人，兩周內無法訂位。
-		AppConfig appConfig = ApplicationScope.getAppConfig();
-		for (Booking booking : new BookingService().getBookingsByDate(date)) {
-			if (this.getIsStopBookingByStudentid(booking.getStudentid(),
-					booking.getDate())) {
-				Calendar calendar = Calendar.getInstance();
-				calendar.setTime(date);
-				for (int i = 1; i <= appConfig.getPunishingdays(); i++) {
-					calendar.add(Calendar.DATE, 1);
-
-					// 這裡是把 booking.status 設定為 "Punish"
-					// new BookingService().doPunishByStudentidDate(booking
-					// .getStudentid(), new Date(calendar.getTime()
-					// .getTime()));
-
-					// 這裡是直接將 booking 刪除。
-					// 20150110 違規後，暫不直接刪除訂位，而是用學生的違規狀態來決定是否可以訂位。
-					new BookingService().deleteByStudentidDate(booking
-							.getStudentid(), new Date(calendar.getTime()
-							.getTime()));
-				}
-			}
+	public void doDisableAllViolations() {
+		try {
+			new ViolationDAO().setDisableToAll();
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 	}
+
+	/**
+	 * 進行違規停權，把未來 14 天內該使用者的所有訂位刪除。
+	 */
+	// private void doPunishingByDeleteBooking(Date date) {
+	// // 1. 已經固定劃位的人，要取消兩週內的劃位。
+	// // 2. 要進行劃位的人，兩周內無法訂位。
+	// AppConfig appConfig = ApplicationScope.getAppConfig();
+	// for (Booking booking : new BookingService().getBookingsByDate(date)) {
+	// if (this.getIsStopBookingByStudentid(booking.getStudentid(),
+	// booking.getDate())) {
+	// Calendar calendar = Calendar.getInstance();
+	// calendar.setTime(date);
+	// for (int i = 1; i <= appConfig.getPunishingdays(); i++) {
+	// calendar.add(Calendar.DATE, 1);
+	//
+	// // 這裡是把 booking.status 設定為 "Punish"
+	// // new BookingService().doPunishByStudentidDate(booking
+	// // .getStudentid(), new Date(calendar.getTime()
+	// // .getTime()));
+	//
+	// // 這裡是直接將 booking 刪除。
+	// // 20150110 違規後，暫不直接刪除訂位，而是用學生的違規狀態來決定是否可以訂位。
+	// new BookingService().deleteByStudentidDate(booking
+	// .getStudentid(), new Date(calendar.getTime()
+	// .getTime()));
+	// }
+	// }
+	// }
+	// }
 
 	/**
 	 * 取得目前處在 停權中 的 studentid，也就是 enable violation >=3 的人。
@@ -256,15 +264,15 @@ public class ViolationService {
 	 * @param date
 	 * @deprecated
 	 */
-	private void doFinishPunishByDate(Date date) {
-		for (String studentid : this.getSuspendingStudentids(date)) {
-			try {
-				new ViolationDAO().setEnable2PunishedByStudentid(studentid);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-	}
+	// private void doFinishPunishByDate(Date date) {
+	// for (String studentid : this.getSuspendingStudentids(date)) {
+	// try {
+	// new ViolationDAO().setEnable2PunishedByStudentid(studentid);
+	// } catch (SQLException e) {
+	// e.printStackTrace();
+	// }
+	// }
+	// }
 
 	/**
 	 * 取得某一學生 enable 的違規記錄。
@@ -272,14 +280,15 @@ public class ViolationService {
 	 * @param studentid
 	 * @return
 	 */
-	public ArrayList<Violation> getEnableViolationsByStudentid(String studentid) {
+	public ArrayList<Violation> getEnableViolationsByStudentid(
+			String studentid, Date date) {
 		// TreeMap<String, Object> fields = new TreeMap<String, Object>();
 		// fields.put("studentid", studentid);
 		// fields.put("status", Violation.STATUS.enable.name());
 		// return new ViolationDAO().getViolationsByFields(fields, "date ASC",
 		// 0);
 		try {
-			return new ViolationDAO().getEnabledViolations(studentid);
+			return new ViolationDAO().getEnabledViolations(studentid, date);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -337,24 +346,25 @@ public class ViolationService {
 	 * 
 	 * @return
 	 */
-	public ArrayList<StudentViolations> getStudentidViolations() {
-		ArrayList<StudentViolations> violations = new ArrayList<StudentViolations>();
+	public ArrayList<Student> getStudents() {
+		ArrayList<Student> students = new ArrayList<Student>();
 		try {
 			for (String studentid : new ViolationDAO()
 					.getStudentidsWithEnableViolation()) {
-				StudentViolations studentViolations = new StudentViolations();
-				studentViolations.setStudentid(studentid);
-				studentViolations.setViolations(this
-						.getEnableViolationsByStudentid(studentid));
-				studentViolations.setViolationQueue(new ViolationService()
-						.getViolateQueue(studentid));
-				violations.add(studentViolations);
+				Student student = new Student(studentid, new Date(
+						System.currentTimeMillis()));
+				// student.setStudentid(studentid);
+				// student.setViolations(this
+				// .getEnableViolationsByStudentid(studentid));
+				// student.setViolationQueue(new ViolationService()
+				// .getViolateQueue(studentid));
+				students.add(student);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		Collections.sort(violations);
-		return violations;
+		Collections.sort(students);
+		return students;
 	}
 
 	// /**
@@ -388,7 +398,7 @@ public class ViolationService {
 		AppConfig appConfig = ApplicationScope.getAppConfig();
 
 		ArrayList<Violation> violations = new ViolationService()
-				.getEnableViolationsByStudentid(studentid);
+				.getEnableViolationsByStudentid(studentid, date);
 		if (violations.size() < appConfig.getPunishingthreshold()) {
 			return true;
 		}

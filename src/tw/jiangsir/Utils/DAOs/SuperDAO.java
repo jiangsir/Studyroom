@@ -207,7 +207,7 @@ abstract public class SuperDAO<T> {
 						e1.printStackTrace();
 						continue;
 					} catch (NoSuchMethodException e1) {
-						e1.printStackTrace();
+						// e1.printStackTrace();
 						continue;
 					}
 				}

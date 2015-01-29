@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import tw.jiangsir.Studyroom.DAOs.AttendanceService;
 import tw.jiangsir.Studyroom.DAOs.ViolationService;
+import tw.jiangsir.Studyroom.Objects.Student;
 import tw.jiangsir.Studyroom.Tables.Attendance;
 import tw.jiangsir.Studyroom.Tables.Attendance.STATUS;
 import tw.jiangsir.Utils.Annotations.RoleSetting;
@@ -83,23 +84,24 @@ public class AttendanceApi extends HttpServlet implements IAccessFilter {
 			// }
 			// System.out.println(attendances);
 			// response.getWriter().print(attendances);
-			long ms = 0L;
-			long prev_SignOut = 0;
-			ArrayList<Attendance> attendances = new AttendanceService()
-					.getAttendancesByStudentidDate(studentid, date);
-			for (Attendance attendance : attendances) {
-				if (attendance.getStatus() == STATUS.SignOut) {
-					prev_SignOut = attendance.getTimestamp().getTime();
-				} else if (attendance.getStatus() == STATUS.SignIn
-						&& prev_SignOut > 0) {
-					ms += prev_SignOut - attendance.getTimestamp().getTime();
-				}
-			}
-			request.setAttribute("ms", ms);
-			request.setAttribute("studentid", studentid);
-			request.setAttribute("attendances", attendances);
-			request.setAttribute("violations",
-					new ViolationService().getEnableViolationsByStudentid(studentid));
+			// long ms = 0L;
+			// long prev_SignOut = 0;
+			// ArrayList<Attendance> attendances = new AttendanceService()
+			// .getAttendancesByStudentidDate(studentid, date);
+			// for (Attendance attendance : attendances) {
+			// if (attendance.getStatus() == STATUS.SignOut) {
+			// prev_SignOut = attendance.getTimestamp().getTime();
+			// } else if (attendance.getStatus() == STATUS.SignIn
+			// && prev_SignOut > 0) {
+			// ms += prev_SignOut - attendance.getTimestamp().getTime();
+			// }
+			// }
+			request.setAttribute("student", new Student(studentid, date));
+			// request.setAttribute("ms", ms);
+			// request.setAttribute("studentid", studentid);
+			// request.setAttribute("attendances", attendances);
+			// request.setAttribute("violationQueue",
+			// new Student(studentid, date).getViolationQueue());
 			request.getRequestDispatcher("includes/div/StudentAttendance.jsp")
 					.forward(request, response);
 		} catch (Exception e) {

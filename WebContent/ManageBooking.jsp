@@ -144,12 +144,15 @@
 	<div>總訂位人數：${fn:length(hashBookings)} 人。</div>
 	<div>簽到人數： ${attendCount } 人。</div>
 	<div>未簽到人數：${fn:length(hashBookings)-attendCount }人。</div>
-	<%-- 	<form action="Violation.api?action=rebuiltViolationsByDate"
+	<form action="Violation.api?action=rebuiltViolationsByDate"
 		method="post">
-		<input name="date" value=${date } />
-		<button id="rebuiltViolationsByDate">立即計算當日違規狀態</button>
-	</form>
+		<%-- 		<jsp:include page="includes/dialog/Confirm.jsp">
+			<jsp:param name="content" value="確定要立即計算當日違規狀態？" />
+		</jsp:include>
  --%>
+		<input name="date" value=${date } />
+		<button type="confirm" id="rebuiltViolationsByDate">立即進行「違規統計」</button>
+	</form>
 
 	<%-- 	<form action="Violation.api?action=doPunishingByDeleteBooking"
 		method="post">
