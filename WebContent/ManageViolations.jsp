@@ -40,7 +40,7 @@
 			<c:if test="${student.isStopBooking}">
 				<span style="color: red;"> --停權中！！</span>
 			</c:if>
-			<br> <br>到目前為止的違規列表
+			<br> <br>到目前為止的違規列表( ${fn:length(student.violations)}次)
 			<c:forEach var="violation" items="${student.violations}">
 			| ${violation.date}
 			</c:forEach>

@@ -143,3 +143,5 @@ CREATE TABLE IF NOT EXISTS `violations` (
 
 ===================================
 ALTER TABLE  `bookings` DROP INDEX  `studentid`;
+
+UPDATE `violations` SET `status`='enable' WHERE `status`='punished';

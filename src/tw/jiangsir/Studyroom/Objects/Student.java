@@ -156,8 +156,9 @@ public class Student implements Comparable<Student> {
 				.size()) {
 			return -1;
 		} else {
-			if (this.getViolationQueue().getLast().getDate()
-					.before(o.getViolationQueue().getLast().getDate())) {
+			if (!this.getViolationQueue().isEmpty()
+					&& this.getViolationQueue().getLast().getDate()
+							.before(o.getViolationQueue().getLast().getDate())) {
 				return 1;
 			} else {
 				return -1;

@@ -49,6 +49,9 @@ public class ViolationQueue extends PriorityQueue<Violation> {
 	}
 
 	public Violation getLast() {
+		if (isEmpty()) {
+			return null;
+		}
 		return (Violation) super.toArray()[size() - 1];
 	}
 
