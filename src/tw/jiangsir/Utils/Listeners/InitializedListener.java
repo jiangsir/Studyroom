@@ -30,7 +30,6 @@ public class InitializedListener implements ServletContextListener {
 	 * Default constructor.
 	 */
 	public InitializedListener() {
-		// TODO Auto-generated constructor stub
 	}
 
 	/**

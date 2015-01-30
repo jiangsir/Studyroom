@@ -28,7 +28,6 @@ public class EditAppConfigServlet extends HttpServlet {
 	 */
 	public EditAppConfigServlet() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	/**

@@ -27,7 +27,6 @@ public class ViolationApi extends HttpServlet implements IAccessFilter {
 	 */
 	public ViolationApi() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override

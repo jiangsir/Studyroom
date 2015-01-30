@@ -32,7 +32,6 @@ public class RoomstatusApi extends HttpServlet implements IAccessFilter {
 	 */
 	public RoomstatusApi() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override

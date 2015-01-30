@@ -38,19 +38,16 @@ public class CurrentUserDAO extends SuperDAO<CurrentUser> {
 
 	@Override
 	public int insert(CurrentUser t) throws SQLException {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public int update(CurrentUser t) throws SQLException {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public boolean delete(long i) throws SQLException {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

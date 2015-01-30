@@ -1,20 +1,13 @@
 package tw.jiangsir.Studyroom.Servlets.Apis;
 
 import java.io.IOException;
-import java.util.ArrayList;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import tw.jiangsir.Studyroom.DAOs.AttendanceService;
-import tw.jiangsir.Studyroom.DAOs.ViolationService;
 import tw.jiangsir.Studyroom.Objects.Student;
-import tw.jiangsir.Studyroom.Tables.Attendance;
-import tw.jiangsir.Studyroom.Tables.Attendance.STATUS;
 import tw.jiangsir.Utils.Annotations.RoleSetting;
 import tw.jiangsir.Utils.Exceptions.AccessException;
 import tw.jiangsir.Utils.Exceptions.ApiException;
@@ -36,7 +29,6 @@ public class AttendanceApi extends HttpServlet implements IAccessFilter {
 	 */
 	public AttendanceApi() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override

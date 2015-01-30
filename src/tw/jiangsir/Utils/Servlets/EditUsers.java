@@ -23,7 +23,6 @@ public class EditUsers extends HttpServlet {
 	 */
 	public EditUsers() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -42,7 +41,6 @@ public class EditUsers extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 	}
 
 }

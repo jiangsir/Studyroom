@@ -67,7 +67,6 @@ public class StudentBookingsServlet extends HttpServlet implements
 	 */
 	public StudentBookingsServlet() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	/**

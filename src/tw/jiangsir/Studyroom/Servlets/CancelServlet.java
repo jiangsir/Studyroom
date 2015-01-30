@@ -7,12 +7,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import tw.jiangsir.Studyroom.DAOs.BookingService;
-import tw.jiangsir.Studyroom.Tables.Booking;
-import tw.jiangsir.Utils.Exceptions.DataException;
-import tw.jiangsir.Utils.Exceptions.ApiException;
-import tw.jiangsir.Utils.GoogleChecker.PopChecker;
-
 /**
  * Servlet implementation class BookUp
  */
@@ -25,7 +19,6 @@ public class CancelServlet extends HttpServlet {
 	 */
 	public CancelServlet() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	/**

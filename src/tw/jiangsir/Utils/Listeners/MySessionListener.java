@@ -22,7 +22,6 @@ public class MySessionListener implements HttpSessionListener {
 	 * Default constructor.
 	 */
 	public MySessionListener() {
-		// TODO Auto-generated constructor stub
 	}
 
 	/**

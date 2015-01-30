@@ -100,7 +100,7 @@ public class ViolationService {
 		// Timestamp now = new Timestamp(System.currentTimeMillis());
 		System.out.println("signinend=" + signinend);
 		System.out.println("now=" + now);
-		if (!signinend.before(now)) {
+		if (now.before(signinend)) {
 			throw new DataException("簽到截止時間還沒有到，因此不進行「違規統計」");
 		}
 		if (!new RoomstatusService().isOpen(date)) {

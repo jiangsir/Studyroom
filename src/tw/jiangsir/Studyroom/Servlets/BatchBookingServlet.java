@@ -21,8 +21,6 @@ public class BatchBookingServlet extends HttpServlet implements IAccessFilter {
 
 	@Override
 	public void AccessFilter(HttpServletRequest request) throws AccessException {
-		// TODO Auto-generated method stub
-
 	}
 
 	/**
@@ -30,7 +28,6 @@ public class BatchBookingServlet extends HttpServlet implements IAccessFilter {
 	 */
 	public BatchBookingServlet() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	/**

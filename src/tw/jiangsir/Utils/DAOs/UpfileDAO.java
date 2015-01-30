@@ -22,7 +22,6 @@ public class UpfileDAO extends SuperDAO<Upfile> {
 
 	@Override
 	public int update(Upfile upfile) throws SQLException {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 

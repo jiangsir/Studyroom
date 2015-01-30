@@ -47,7 +47,6 @@ public class BookUpServlet extends HttpServlet implements IAccessFilter {
 	 */
 	public BookUpServlet() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	/**

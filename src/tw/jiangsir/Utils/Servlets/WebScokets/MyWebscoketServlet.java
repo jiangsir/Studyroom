@@ -17,7 +17,6 @@ public class MyWebscoketServlet extends WebSocketServlet {
     @Override
     protected StreamInbound createWebSocketInbound(String subProtocol,
 	    HttpServletRequest request) {
-	// TODO Auto-generated method stub
 	return null;
     }
 

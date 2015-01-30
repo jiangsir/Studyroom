@@ -3,8 +3,6 @@ package tw.jiangsir.Studyroom.Servlets.Apis;
 import java.io.IOException;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -33,7 +31,6 @@ public class SignInApi extends HttpServlet implements IAccessFilter {
 	 */
 	public SignInApi() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override

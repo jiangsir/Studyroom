@@ -32,7 +32,6 @@ public class BookingApi extends HttpServlet implements IAccessFilter {
 	 */
 	public BookingApi() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override

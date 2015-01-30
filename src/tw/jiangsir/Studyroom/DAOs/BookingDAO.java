@@ -95,6 +95,13 @@ public class BookingDAO extends SuperDAO<Booking> {
 		return this.executeQuery(pstmt, Booking.class);
 	}
 
+	/**
+	 * 每天每個座位取出最後一筆 booking
+	 * 
+	 * @param date
+	 * @return
+	 * @throws SQLException
+	 */
 	protected ArrayList<Booking> getBookingsByDate(Date date)
 			throws SQLException {
 		// 由於允許 overBooking 的存在。因此這裡必須改成取得最後一個 booking 的資料，要用 GROUP BY 處理

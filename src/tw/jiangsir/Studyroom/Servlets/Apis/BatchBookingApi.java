@@ -37,7 +37,6 @@ public class BatchBookingApi extends HttpServlet implements IAccessFilter {
 	 */
 	public BatchBookingApi() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
