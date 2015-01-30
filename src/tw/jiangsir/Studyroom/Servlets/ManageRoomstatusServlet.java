@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import tw.jiangsir.Utils.Annotations.RoleSetting;
-import tw.jiangsir.Utils.Objects.User;
 import tw.jiangsir.Utils.Objects.User.ROLE;
 import tw.jiangsir.Utils.Tools.DateTool;
 

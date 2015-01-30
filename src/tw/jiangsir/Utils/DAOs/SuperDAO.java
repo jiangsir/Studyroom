@@ -178,7 +178,7 @@ abstract public class SuperDAO<T> {
 	}
 
 	public ArrayList<T> executeQuery(PreparedStatement pstmt, Class<T> theclass) {
-		long starttime = System.currentTimeMillis();
+		// long starttime = System.currentTimeMillis();
 		ResultSet rs = null;
 		ArrayList<T> list = new ArrayList<T>(); // 準備用 ArrayList 來回傳查詢結果。
 		try {
@@ -241,7 +241,7 @@ abstract public class SuperDAO<T> {
 	 * @return
 	 */
 	public ArrayList<Long> executeQueryId(String sql) {
-		long starttime = System.currentTimeMillis();
+		// long starttime = System.currentTimeMillis();
 		ResultSet rs = null;
 		PreparedStatement pstmt;
 		ArrayList<Long> list = new ArrayList<Long>();

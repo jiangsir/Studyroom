@@ -1,25 +1,6 @@
 package tw.jiangsir.Utils.Scopes;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.sql.Time;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.InvalidPropertiesFormatException;
-import java.util.Properties;
-import java.util.TreeMap;
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
-import tw.jiangsir.Utils.Annotations.Property;
-import tw.jiangsir.Utils.Exceptions.Cause;
-import tw.jiangsir.Utils.Exceptions.DataException;
 import tw.jiangsir.Utils.Scopes.ApplicationScope;
 
 public class ConfigHandler {

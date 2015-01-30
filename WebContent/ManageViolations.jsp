@@ -34,27 +34,30 @@
 	</form>
 	<hr>
 	<c:forEach var="student" items="${students}">
-		<div style="">
-			<a href="./StudentBookings?studentid=${student.studentid}">${student.studentid}</a>,
-			違規次數:${fn:length(student.violationQueue)} 次
-			<c:if test="${student.isStopBooking}">
-				<span style="color: red;"> --停權中！！</span>
-			</c:if>
-			<br> <br>到目前為止的違規列表( ${fn:length(student.violations)}次)
-			<c:forEach var="violation" items="${student.violations}">
-			| ${violation.date}
-			</c:forEach>
+		<div style="display: inline-block;">
+			<a href="./StudentBookings?studentid=${student.studentid}">${student.studentid}</a>
+			<%-- 			,違規次數:${fn:length(student.violationQueue)} 次
 
-			<ul>
+ --%>
+			<ul style="display: inline-block;">
 				<c:forEach var="violation" items="${student.violationQueue}">
 					<li style="display: inline-block;">
 						<button type="button" id="cancelViolation"
-							violationid="${violation.id }">取消 ${violation.date}:
+							violationid="${violation.id }">取消 ${violation.date}
 							${violation.reason.value }</button>
 					</li>
 				</c:forEach>
 			</ul>
+			<c:if test="${student.isStopBooking}">
+				<span style="color: red;"> --停權中！！</span>
+			</c:if>
 		</div>
+		<br>歷史違規列表( ${fn:length(student.violations)}次)
+			<c:forEach var="violation" items="${student.violations}">
+			| ${violation.date}
+			</c:forEach>
+
+		<hr>
 	</c:forEach>
 	<jsp:include page="Footer.jsp" />
 </body>
