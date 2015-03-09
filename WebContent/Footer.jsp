@@ -15,7 +15,8 @@
 		${fn:length(applicationScope.onlineUsers) } 人登入
 	</div>
 	<div>
-		Designed &amp; <a href="${pageContext.request.contextPath}/Admin">管理</a>
-		by <a href="mailto:jiangsir@tea.nknush.kh.edu.tw">jiangsir@高師大附中</a>.
+		Studyroom Built${applicationScope.built } | Designed &amp; <a
+			href="${pageContext.request.contextPath}/Admin">管理 </a> by <a
+			href="mailto:jiangsir@tea.nknush.kh.edu.tw">jiangsir@高師大附中</a>.
 	</div>
 </div>

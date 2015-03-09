@@ -10,7 +10,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <jsp:include page="CommonHead.jsp" />
-<script type="text/javascript" src="EditAppConfig.js"></script>
+<script type="text/javascript"
+	src="EditAppConfig.js?${application.built}"></script>
 </head>
 <body>
 	<jsp:include page="Header.jsp" />
