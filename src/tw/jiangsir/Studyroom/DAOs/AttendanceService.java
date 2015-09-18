@@ -39,8 +39,8 @@ public class AttendanceService {
 	public Attendance getAttendanceById(long id) {
 		TreeMap<String, Object> fields = new TreeMap<String, Object>();
 		fields.put("id", id);
-		for (Attendance attendance : new AttendanceDAO().getAttendanceByFields(
-				fields, "", 0)) {
+		for (Attendance attendance : new AttendanceDAO()
+				.getAttendanceByFields(fields, "", 0)) {
 			return attendance;
 		}
 		return null;
@@ -62,8 +62,8 @@ public class AttendanceService {
 		TreeMap<String, Object> fields = new TreeMap<String, Object>();
 		fields.put("studentid", studentid);
 		fields.put("date", new Date(System.currentTimeMillis()));
-		for (Attendance attendance : new AttendanceDAO().getAttendanceByFields(
-				fields, "timestamp DESC", 0)) {
+		for (Attendance attendance : new AttendanceDAO()
+				.getAttendanceByFields(fields, "timestamp DESC", 0)) {
 			return attendance;
 		}
 		return null;
@@ -80,20 +80,20 @@ public class AttendanceService {
 		TreeMap<String, Object> fields = new TreeMap<String, Object>();
 		fields.put("studentid", studentid);
 		fields.put("date", date);
-		for (Attendance attendance : new AttendanceDAO().getAttendanceByFields(
-				fields, "timestamp DESC", 0)) {
+		for (Attendance attendance : new AttendanceDAO()
+				.getAttendanceByFields(fields, "timestamp DESC", 0)) {
 			return attendance;
 		}
 		return null;
 	}
 
-	public ArrayList<Attendance> getAttendancesByStudentidDate(
-			String studentid, Date date) {
+	public ArrayList<Attendance> getAttendancesByStudentidDate(String studentid,
+			Date date, String orderby) {
 		TreeMap<String, Object> fields = new TreeMap<String, Object>();
 		fields.put("studentid", studentid);
 		fields.put("date", date);
 		return new AttendanceDAO().getAttendanceByFields(fields,
-				"timestamp DESC", 0);
+				"timestamp " + orderby, 0);
 	}
 
 	public void doSignIn(String studentid) {

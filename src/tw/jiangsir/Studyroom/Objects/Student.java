@@ -22,11 +22,11 @@ public class Student implements Comparable<Student> {
 		this.date = date;
 		ViolationService violationService = new ViolationService();
 		this.setStudentid(studentid);
-		setViolations(violationService.getEnableViolationsByStudentid(
-				studentid, date));
+		setViolations(violationService.getEnableViolationsByStudentid(studentid,
+				date));
 		setViolationQueue();
 		this.setAttendances(new AttendanceService()
-				.getAttendancesByStudentidDate(studentid, date));
+				.getAttendancesByStudentidDate(studentid, date, "DESC"));
 	}
 
 	public String getStudentid() {
@@ -46,11 +46,12 @@ public class Student implements Comparable<Student> {
 	}
 
 	public ViolationQueue getViolationQueue() {
-		if (violationQueue.isFull()
-				&& (DateTool.getDayCountBetween(violationQueue.getLast()
-						.getDate(), date) < 0 || DateTool.getDayCountBetween(
-						violationQueue.getLast().getDate(), date) > ApplicationScope
-						.getAppConfig().getPunishingdays())) {
+		if (violationQueue.isFull() && (DateTool.getDayCountBetween(
+				violationQueue.getLast().getDate(), date) < 0
+				|| DateTool.getDayCountBetween(
+						violationQueue.getLast().getDate(),
+						date) > ApplicationScope.getAppConfig()
+								.getPunishingdays())) {
 			violationQueue.clear();
 		}
 		return violationQueue;
@@ -58,13 +59,14 @@ public class Student implements Comparable<Student> {
 
 	public void setViolationQueue() {
 		ArrayList<Violation> enableViolations = this.getViolations();
-		ViolationQueue violationQueue = new ViolationQueue(ApplicationScope
-				.getAppConfig().getPunishingthreshold());
+		ViolationQueue violationQueue = new ViolationQueue(
+				ApplicationScope.getAppConfig().getPunishingthreshold());
 		for (Violation violation : enableViolations) {
 			if (violationQueue.isFull()) {
-				if (DateTool.getDayCountBetween(violationQueue.getLast()
-						.getDate(), violation.getDate()) > ApplicationScope
-						.getAppConfig().getPunishingdays()) {
+				if (DateTool.getDayCountBetween(
+						violationQueue.getLast().getDate(),
+						violation.getDate()) > ApplicationScope.getAppConfig()
+								.getPunishingdays()) {
 					// 已經超過 14 天，就清除舊的違規。
 					violationQueue.clear();
 					violationQueue.add(violation);
@@ -135,11 +137,12 @@ public class Student implements Comparable<Student> {
 			return false;
 		}
 		if (violationQueue.isFull()
-				&& DateTool.getDayCountBetween(violationQueue.getLast()
-						.getDate(), date) > 0
-				&& DateTool.getDayCountBetween(violationQueue.getLast()
-						.getDate(), date) <= ApplicationScope.getAppConfig()
-						.getPunishingdays()) {
+				&& DateTool.getDayCountBetween(
+						violationQueue.getLast().getDate(), date) > 0
+				&& DateTool.getDayCountBetween(
+						violationQueue.getLast().getDate(),
+						date) <= ApplicationScope.getAppConfig()
+								.getPunishingdays()) {
 			return true;
 		}
 		return false;
@@ -157,8 +160,8 @@ public class Student implements Comparable<Student> {
 			return -1;
 		} else {
 			if (!this.getViolationQueue().isEmpty()
-					&& this.getViolationQueue().getLast().getDate()
-							.before(o.getViolationQueue().getLast().getDate())) {
+					&& this.getViolationQueue().getLast().getDate().before(
+							o.getViolationQueue().getLast().getDate())) {
 				return 1;
 			} else {
 				return -1;

@@ -2,7 +2,10 @@ package tw.jiangsir.Studyroom.Tables;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Arrays;
 
+import tw.jiangsir.Studyroom.DAOs.AttendanceService;
 import tw.jiangsir.Studyroom.DAOs.BookingService;
 import tw.jiangsir.Utils.Annotations.Persistent;
 
@@ -77,8 +80,37 @@ public class Attendance {
 	}
 
 	public int getSeatid() {
-		return new BookingService().getBookingByStudentidDate(this.getDate(),
-				this.getStudentid()).getSeatid();
+		return new BookingService()
+				.getBookingByStudentidDate(this.getDate(), this.getStudentid())
+				.getSeatid();
+	}
+
+	/**
+	 * 取得停留時間。
+	 * 
+	 * @return
+	 */
+	public int getStaytime() {
+		if (this.getIsSignOut()) {
+			long staytime = 0L;
+			long closestSignin = 0L;
+			ArrayList<Attendance> attendances = new AttendanceService()
+					.getAttendancesByStudentidDate(this.getStudentid(),
+							this.getDate(), "ASC");
+			for (Attendance attendance : attendances) {
+				if (attendance.getIsSignIn()) {
+					closestSignin = attendance.getTimestamp().getTime();
+				}
+				if (attendance.getIsSignOut()) {
+					staytime += (attendance.getTimestamp().getTime()
+							- closestSignin);
+					closestSignin = 0;
+				}
+			}
+			return (int) (staytime / 1000L / 60L);
+		} else {
+			return 0;
+		}
 	}
 
 }

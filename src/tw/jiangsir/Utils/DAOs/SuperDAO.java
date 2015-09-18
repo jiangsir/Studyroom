@@ -35,7 +35,7 @@ abstract public class SuperDAO<T> {
 
 	Logger logger = Logger.getLogger(this.getClass().getName());
 	HashMap<String, Field> fields = new HashMap<String, Field>();
-	int PAGESIZE = 20;
+	int PAGESIZE = 30;
 
 	public Connection getConnection() {
 		try {
@@ -177,8 +177,9 @@ abstract public class SuperDAO<T> {
 		return list;
 	}
 
-	public ArrayList<T> executeQuery(PreparedStatement pstmt, Class<T> theclass) {
-		// long starttime = System.currentTimeMillis();
+	public ArrayList<T> executeQuery(PreparedStatement pstmt,
+			Class<T> theclass) {
+		long starttime = System.currentTimeMillis();
 		ResultSet rs = null;
 		ArrayList<T> list = new ArrayList<T>(); // 準備用 ArrayList 來回傳查詢結果。
 		try {
@@ -188,8 +189,8 @@ abstract public class SuperDAO<T> {
 			while (rs.next()) {
 				T t = (T) theclass.newInstance(); // 實體化一個 T
 				for (int i = 1; i <= columnCount; i++) {
-					String settername = this.getSetMethodName(rsmd
-							.getColumnName(i));
+					String settername = this
+							.getSetMethodName(rsmd.getColumnName(i));
 					Object value;
 					if (rsmd.getColumnType(i) == Types.BLOB
 							|| rsmd.getColumnType(i) == Types.LONGVARBINARY) {
@@ -330,7 +331,8 @@ abstract public class SuperDAO<T> {
 			if (sql.contains("ORDER")) {
 				sql = sql.substring(0, sql.indexOf("ORDER") - 1);
 			}
-			if (!sql.toUpperCase().startsWith("SELECT COUNT(*) AS COUNT FROM")) {
+			if (!sql.toUpperCase()
+					.startsWith("SELECT COUNT(*) AS COUNT FROM")) {
 				return -1;
 			}
 			System.out.println(pstmt.toString());

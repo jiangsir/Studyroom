@@ -25,7 +25,7 @@
 	border: solid 2px #bbbbbb;
 	margin: auto;
 	vertical-align: middle;
-	padding: 3em;
+	padding: 2em;
 	border-radius: 1em;
 }
 
@@ -39,6 +39,14 @@ input {
 	border: none;
 	border: solid 1px #ccc;
 	border-radius: 10px;
+}
+
+td {
+	padding-left: 1em;
+}
+
+.firstLine {
+	font-size: 2em;
 }
 </style>
 <script type="text/javascript">
@@ -97,6 +105,7 @@ input {
 			}
 		});
 
+		jQuery("tr[id='attendance']:first").addClass("firstLine");
 	});
 </script>
 </head>
@@ -116,7 +125,7 @@ input {
 	<hr>
 	<div id="errorjson"
 		style="text-align: center; color: red; font-size: 2em;"></div>
-	<table style="margin: auto; width: 40%;">
+	<table style="margin: auto; text-align: center;">
 		<tr>
 			<td>學號</td>
 			<td>座位</td>
@@ -124,15 +133,16 @@ input {
 			<td>時間</td>
 		</tr>
 		<c:forEach var="attendance" items="${attendances }">
-			<tr>
+			<tr id="attendance">
 				<td>${attendance.studentid}</td>
 				<td>${attendance.seatid}</td>
 				<td><c:if test="${attendance.status=='SignIn' }">
 						<span style="color: green;">簽到</span>
 					</c:if> <c:if test="${attendance.status=='SignOut' }">
-						<span style="color: red;">簽退</span>
+						<span style="color: red;">簽退 (入場${attendance.staytime }分鐘)</span>
 					</c:if></td>
-				<td>${attendance.timestamp}</td>
+				<td><fmt:formatDate value="${attendance.timestamp}"
+						pattern="yyyy-MM-dd HH:mm" /></td>
 			</tr>
 		</c:forEach>
 	</table>
