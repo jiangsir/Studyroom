@@ -21,7 +21,6 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import tw.jiangsir.Utils.Annotations.Persistent;
-import tw.jiangsir.Utils.Scopes.ApplicationScope;
 
 abstract public class SuperDAO<T> {
 	private static Connection conn = null;
@@ -223,8 +222,8 @@ abstract public class SuperDAO<T> {
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		} finally {
-			// logger.info("PSTMT_SQL=" + pstmt.toString() + " 共耗時 "
-			// + (System.currentTimeMillis() - starttime) + " ms");
+			logger.info("PSTMT_SQL=" + pstmt.toString() + " 共耗時 "
+					+ (System.currentTimeMillis() - starttime) + " ms");
 			try {
 				rs.close();
 				pstmt.close();

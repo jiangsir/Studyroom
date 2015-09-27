@@ -23,6 +23,10 @@ public class User implements Serializable {
 	private String account = "";
 	@Persistent(name = "passwd")
 	private String passwd = "";
+	@Persistent(name = "email")
+	private String email = "";
+	@Persistent(name = "picture")
+	private String picture = "";
 	@Persistent(name = "name")
 	private String name = "";
 	@Persistent(name = "role")
@@ -78,6 +82,28 @@ public class User implements Serializable {
 			throw new DataException("姓名不可為空！");
 		}
 		this.name = name;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		if (email == null) {
+			return;
+		}
+		this.email = email;
+	}
+
+	public String getPicture() {
+		return picture;
+	}
+
+	public void setPicture(String picture) {
+		if (picture == null) {
+			return;
+		}
+		this.picture = picture;
 	}
 
 	public ROLE[] getRoles() {

@@ -14,9 +14,8 @@ public class DateTool {
 		Calendar cal2 = Calendar.getInstance();
 		cal1.setTime(date1);
 		cal2.setTime(date2);
-		return (cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR))
-				&& (cal1.get(Calendar.DAY_OF_YEAR) == cal2
-						.get(Calendar.DAY_OF_YEAR));
+		return (cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR)) && (cal1
+				.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR));
 	}
 
 	/**
@@ -188,8 +187,8 @@ public class DateTool {
 		// toCalendar.set(Calendar.MILLISECOND, 0);
 
 		ArrayList<java.sql.Date> days = new ArrayList<java.sql.Date>();
-		for (int day = 0; day <= DateTool
-				.getDayCountBetween(begindate, enddate); day++) {
+		for (int day = 0; day <= DateTool.getDayCountBetween(begindate,
+				enddate); day++) {
 			days.add(new java.sql.Date(fromCalendar.getTime().getTime()));
 			fromCalendar.add(Calendar.DATE, 1);
 		}
@@ -198,10 +197,12 @@ public class DateTool {
 
 	public static void main(String[] args) {
 		java.sql.Date date = java.sql.Date.valueOf("2014-01-30");
-		java.sql.Time time = java.sql.Time.valueOf("10:00:00");
-		java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf(date
-				.toString() + " " + time.toString());
+		java.sql.Time time = java.sql.Time.valueOf("23:59:00");
+
+		java.sql.Timestamp timestamp = java.sql.Timestamp
+				.valueOf(date.toString() + " " + time.toString());
 		System.out.println("timestamp=" + timestamp);
+
 		java.sql.Time nowtime = new java.sql.Time(System.currentTimeMillis());
 		if (nowtime.after(time)) {
 			System.out.println(nowtime + " is after " + time);
@@ -209,9 +210,15 @@ public class DateTool {
 			System.out.println(nowtime + " is not after " + time);
 		}
 
-		System.out.println("date="
-				+ new java.util.Date(java.sql.Date.valueOf("2014-01-30")
-						.getTime()));
+		nowtime = DateTool.getNowtime();
+		if (nowtime.after(time)) {
+			System.out.println(nowtime + " is after " + time);
+		} else {
+			System.out.println(nowtime + " is not after " + time);
+		}
+
+		System.out.println("date=" + new java.util.Date(
+				java.sql.Date.valueOf("2014-01-30").getTime()));
 		System.out.println(java.sql.Time.valueOf("10:00:00"));
 		System.out.println(date.toString() + time.toString());
 

@@ -39,8 +39,10 @@ public class PopChecker {
 			store.close();
 		} catch (MessagingException e) {
 			e.printStackTrace();
+			System.out.println("email:" + email + ", pass:" + passwd);
 			if (e instanceof AuthenticationFailedException) {
-				throw new DataException("驗證有誤，帳號密碼可能有誤（如果您的學生信箱尚未開通，請登入後即可開通）！");
+				throw new DataException("驗證有誤，帳號密碼可能有誤（如果您的學生信箱尚未開通，請登入後即可開通）！"
+						+ e.getLocalizedMessage());
 			}
 			if (e.getLocalizedMessage().contains("timed out")) {
 				throw new DataException("連線逾時！");

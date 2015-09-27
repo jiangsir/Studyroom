@@ -12,6 +12,29 @@
 <jsp:include page="CommonHead.jsp" />
 <script type="text/javascript"
 	src="EditAppConfig.js?${application.built}"></script>
+<script type="text/javascript" src="jscripts/tinymce/tinymce.min.js"></script>
+<!-- 使用 TinyMCE  -->
+<script type="text/javascript">
+	tinymce
+			.init({
+				language : "zh_TW",
+				selector : ".mceAdvanced",
+				theme : "modern",
+				plugins : [ "advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker",
+						"searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
+						"save table contextmenu directionality emoticons template paste textcolor" ],
+				toolbar : "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons",
+
+			});
+	tinymce
+			.init({
+				language : "zh_TW",
+				selector : ".mceSimple",
+				plugins : "colorpicker textcolor",
+				toolbar : "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | forecolor backcolor emoticons",
+			});
+</script>
+
 </head>
 <body>
 	<jsp:include page="Header.jsp" />
@@ -51,21 +74,35 @@
 						maxlength="255" /></td>
 				</tr>
 				<tr style="padding: 10px;">
+					<th>Google OAuth2 認證主機</th>
+					<td style="padding: 10px;"><input name="authdomains"
+						type="text" id="authdomains" value="${appConfig.authdomains}"
+						size="100" maxlength="255" /></td>
+				</tr>
+
+				<tr style="padding: 10px;">
+					<th>Google OAuth2 認證資訊</th>
+					<td style="padding: 10px;">底下 3項資料請到 Google Developers
+						Console: <a href="https://console.developers.google.com/project">https://console.developers.google.com/project</a>
+						進行申請及設定。
+					</td>
+				</tr>
+				<tr style="padding: 10px;">
 					<th>clientid</th>
 					<td style="padding: 10px;"><input name="client_id" type="text"
-						value="${appConfig.client_id}" size="50" maxlength="255" /></td>
+						size="100" value="${appConfig.client_id}" maxlength="255" /></td>
 				</tr>
 				<tr style="padding: 10px;">
 					<th>client_secret</th>
 					<td style="padding: 10px;"><input name="client_secret"
 						type="text" id="Title" value="${appConfig.client_secret}"
-						size="50" maxlength="255" /></td>
+						size="100" maxlength="255" /></td>
 				</tr>
 				<tr style="padding: 10px;">
 					<th>redirect_uri</th>
 					<td style="padding: 10px;"><input name="redirect_uri"
-						type="text" id="Title" value="${appConfig.redirect_uri}" size="50"
-						maxlength="255" /></td>
+						type="text" id="Title" value="${appConfig.redirect_uri}"
+						size="100" maxlength="255" /></td>
 				</tr>
 				<tr style="padding: 10px;">
 					<th>訂位開始時間</th>
@@ -80,7 +117,7 @@
 						size="50" maxlength="50" /></td>
 				</tr>
 				<tr style="padding: 10px;">
-					<th>簽到／退開始時間</th>
+					<th>簽到／退開始時間(開館時間,停止退訂)</th>
 					<td style="padding: 10px;"><input name="signinbegin"
 						type="text" id="signinbegin" value="${appConfig.signinbegin}"
 						size="50" maxlength="50" /></td>
@@ -117,8 +154,8 @@
 				<tr style="padding: 10px;">
 					<th>首頁說明</th>
 					<td style="padding: 10px;"><textarea
-							style="width: 50em; height: 20em;" name="announcement">${appConfig.announcement}</textarea>
-					</td>
+							style="width: 80%; height: 20em;" name="announcement"
+							class="mceSimple">${appConfig.announcement}</textarea></td>
 				</tr>
 			</table>
 		</div>

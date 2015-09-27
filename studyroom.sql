@@ -145,3 +145,13 @@ CREATE TABLE IF NOT EXISTS `violations` (
 ALTER TABLE  `bookings` DROP INDEX  `studentid`;
 
 UPDATE `violations` SET `status`='enable' WHERE `status`='punished';
+
+
+
+==============================
+
+
+ALTER TABLE  `users` ADD  `email` VARCHAR( 255 ) NOT NULL AFTER  `passwd`;
+ALTER TABLE  `users` ADD  `picture` TEXT NOT NULL AFTER  `email`;
+
+

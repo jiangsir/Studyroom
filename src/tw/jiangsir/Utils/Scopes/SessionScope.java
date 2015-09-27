@@ -11,6 +11,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import tw.jiangsir.Utils.GoogleChecker.GoogleLoginServlet;
+import tw.jiangsir.Utils.GoogleChecker.OAuth2CallbackServlet;
 import tw.jiangsir.Utils.Objects.CurrentUser;
 import tw.jiangsir.Utils.Servlets.LoginServlet;
 import tw.jiangsir.Utils.Servlets.LogoutServlet;
@@ -57,14 +59,14 @@ public class SessionScope implements Serializable {
 		this.setSession_privilege((LinkedHashSet<String>) session
 				.getAttribute("session_privilege"));
 		this.setSession_locale((Locale) session.getAttribute("session_locale"));
-		this.setSession_useragent((String) session
-				.getAttribute("session_useragent"));
+		this.setSession_useragent(
+				(String) session.getAttribute("session_useragent"));
 		this.setSession_requestheaders((HashMap<String, String>) session
 				.getAttribute("session_requestheaders"));
 		this.setCurrentUser((CurrentUser) session.getAttribute("currentUser"));
 		this.setLastsubmission((Date) session.getAttribute("lastsubmission"));
-		this.setReturnPages((ArrayList<String>) session
-				.getAttribute("returnPages"));
+		this.setReturnPages(
+				(ArrayList<String>) session.getAttribute("returnPages"));
 	}
 
 	public String getSessionid() {
@@ -192,11 +194,17 @@ public class SessionScope implements Serializable {
 	}
 
 	public void setReturnPage(String servletPath, String querystring) {
-		if (servletPath.startsWith(LoginServlet.class.getAnnotation(
-				WebServlet.class).urlPatterns()[0])
-				|| servletPath.startsWith(LogoutServlet.class.getAnnotation(
-						WebServlet.class).urlPatterns()[0])
+		// oauth2callback
+		if (servletPath
+				.startsWith(LoginServlet.class.getAnnotation(WebServlet.class)
+						.urlPatterns()[0])
+				|| servletPath.startsWith(LogoutServlet.class
+						.getAnnotation(WebServlet.class).urlPatterns()[0])
 				|| servletPath.startsWith(ShowSessionsServlet.class
+						.getAnnotation(WebServlet.class).urlPatterns()[0])
+				|| servletPath.startsWith(GoogleLoginServlet.class
+						.getAnnotation(WebServlet.class).urlPatterns()[0])
+				|| servletPath.startsWith(OAuth2CallbackServlet.class
 						.getAnnotation(WebServlet.class).urlPatterns()[0])
 				|| servletPath.startsWith("/Update")
 				|| servletPath.startsWith("/Insert")

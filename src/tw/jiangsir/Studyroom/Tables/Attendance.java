@@ -2,11 +2,8 @@ package tw.jiangsir.Studyroom.Tables;
 
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import tw.jiangsir.Studyroom.DAOs.AttendanceService;
 import tw.jiangsir.Studyroom.DAOs.BookingService;
+import tw.jiangsir.Studyroom.Objects.Student;
 import tw.jiangsir.Utils.Annotations.Persistent;
 
 public class Attendance {
@@ -18,8 +15,17 @@ public class Attendance {
 	private Date date = new Date(System.currentTimeMillis());;
 
 	public enum STATUS {
-		SignIn, // 簽到
-		SignOut;// 簽退
+		SignIn("簽到"), // 簽到
+		SignOut("簽退");
+		private String status;
+
+		STATUS(String status) {
+			this.status = status;
+		}
+
+		public String getValue() {
+			return this.status;
+		}
 	}
 
 	@Persistent(name = "status")
@@ -85,32 +91,8 @@ public class Attendance {
 				.getSeatid();
 	}
 
-	/**
-	 * 取得停留時間。
-	 * 
-	 * @return
-	 */
-	public int getStaytime() {
-		if (this.getIsSignOut()) {
-			long staytime = 0L;
-			long closestSignin = 0L;
-			ArrayList<Attendance> attendances = new AttendanceService()
-					.getAttendancesByStudentidDate(this.getStudentid(),
-							this.getDate(), "ASC");
-			for (Attendance attendance : attendances) {
-				if (attendance.getIsSignIn()) {
-					closestSignin = attendance.getTimestamp().getTime();
-				}
-				if (attendance.getIsSignOut()) {
-					staytime += (attendance.getTimestamp().getTime()
-							- closestSignin);
-					closestSignin = 0;
-				}
-			}
-			return (int) (staytime / 1000L / 60L);
-		} else {
-			return 0;
-		}
+	public Student getStudent() {
+		return new Student(studentid, date);
 	}
 
 }

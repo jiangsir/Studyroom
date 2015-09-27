@@ -11,6 +11,9 @@
 		<legend>
 			確定要訂位 <span id="seatid"></span> 號的位置？
 		</legend>
+		<div>
+			<a href="./GoogleLogin?returnPage=$">登入學生信箱。</a>
+		</div>
 		<br />新生或從未使用過學生信箱的同學請務必先登入自己的信箱，同意使用條款後帳號才會開通，接下來才能在這裡訂位。<br /> <label>請輸入學號</label><br />
 		<input type="text" name="studentid" size="8" value=""></input>@${applicationScope.appConfig.checkhost}<br />
 		<label>請輸入學生信箱密碼</label><br /> <input type="password" name="passwd"

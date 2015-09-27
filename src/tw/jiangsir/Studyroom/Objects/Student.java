@@ -26,7 +26,7 @@ public class Student implements Comparable<Student> {
 				date));
 		setViolationQueue();
 		this.setAttendances(new AttendanceService()
-				.getAttendancesByStudentidDate(studentid, date, "DESC"));
+				.getAttendancesByStudentidDate(studentid, date, "ASC"));
 	}
 
 	public String getStudentid() {
@@ -119,6 +119,41 @@ public class Student implements Comparable<Student> {
 			}
 		}
 		return ms;
+	}
+
+	/**
+	 * 取得停留時間(f分鐘)。
+	 * 
+	 * @return
+	 */
+	private int getStayMin() {
+		long staytime = 0L;
+		long closestSignin = 0L;
+
+		// ArrayList<Attendance> attendances = new AttendanceService()
+		// .getAttendancesByStudentidDate(this.getStudentid(),
+		// this.getDate(), "ASC");
+		for (Attendance attendance : this.getAttendances()) {
+			if (attendance.getIsSignIn()) {
+				closestSignin = attendance.getTimestamp().getTime();
+			}
+			if (attendance.getIsSignOut()) {
+				staytime += (attendance.getTimestamp().getTime()
+						- closestSignin);
+				closestSignin = 0;
+			}
+		}
+		return (int) (staytime / 1000L / 60L);
+	}
+
+	/**
+	 * 入場時間，文字化
+	 * 
+	 * @return
+	 */
+	public String getStaytime() {
+		int min = this.getStayMin();
+		return (min / 60 > 0 ? min / 60 + " 小時" : "") + min % 60 + " 分鐘";
 	}
 
 	/**

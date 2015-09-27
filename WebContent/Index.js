@@ -22,7 +22,26 @@ jQuery(document).ready(function() {
 			var seatid = $(this).attr("seatid");
 			$("div#insertBookingDialog span#seatid").html(seatid);
 			$("#insertBookingDialog").find("input").val("");
-			$("#insertBookingDialog").dialog("open");
+			jQuery.getJSON("user.api?action=getCurrentUser", function(currentUser) {
+				if (currentUser != null && currentUser.isGoogleUser) {
+					jQuery.ajax({
+						type : "POST",
+						url : "Booking.api",
+						data : "action=bookingByGoogleLogin&seatid=" + seatid,
+						async : false,
+						timeout : 5000,
+						success : function(result) {
+							location.reload();
+						},
+						error : function(jqXHR, textStatus, errorThrown) {
+							showErrorDialog(jqXHR, textStatus, errorThrown);
+						}
+					});
+				} else {
+					// $("#insertBookingDialog").dialog("open");
+					location.href = "GoogleLogin";
+				}
+			});
 		});
 	});
 	$("#insertBookingDialog").dialog({
@@ -32,6 +51,23 @@ jQuery(document).ready(function() {
 		width : 500,
 		modal : true,
 		buttons : {
+			// "GoogleLogin 訂位" : function() {
+			// var seatid = $(this).find("span[id='seatid']").text();
+			// jQuery.ajax({
+			// type : "POST",
+			// url : "Booking.api",
+			// data : "action=bookingByGoogleLogin&seatid=" + seatid,
+			// async : false,
+			// timeout : 5000,
+			// success : function(result) {
+			// location.reload();
+			// },
+			// error : function(jqXHR, textStatus, errorThrown) {
+			// showErrorDialog(jqXHR, textStatus, errorThrown);
+			// }
+			// });
+			// $(this).dialog("close");
+			// },
 			"訂位" : function() {
 				var studentid = $(this).find("input[name='studentid']").val();
 				var passwd = $(this).find("input[name='passwd']").val();
@@ -68,7 +104,25 @@ jQuery(document).ready(function() {
 		deleteBookingDialog.find("#seatid").html(seatid);
 		deleteBookingDialog.find("input").val("");
 		deleteBookingDialog.find("input[name='studentid']").val(studentid);
-		deleteBookingDialog.dialog("open");
+		jQuery.getJSON("user.api?action=getCurrentUser", function(currentUser) {
+			if (currentUser != null && currentUser.isGoogleUser) {
+				jQuery.ajax({
+					type : "POST",
+					url : "Booking.api",
+					data : "action=cancelByGoogleLogin&seatid=" + seatid,
+					async : false,
+					timeout : 5000,
+					success : function(result) {
+						location.reload();
+					},
+					error : function(jqXHR, textStatus, errorThrown) {
+						showErrorDialog(jqXHR, textStatus, errorThrown);
+					}
+				});
+			} else {
+				deleteBookingDialog.dialog("open");
+			}
+		});
 		// });
 	});
 	deleteBookingDialog.dialog({

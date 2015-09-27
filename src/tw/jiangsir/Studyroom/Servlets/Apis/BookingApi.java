@@ -2,6 +2,8 @@ package tw.jiangsir.Studyroom.Servlets.Apis;
 
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.Date;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,12 +15,14 @@ import tw.jiangsir.Studyroom.Tables.Booking;
 import tw.jiangsir.Utils.Exceptions.AccessException;
 import tw.jiangsir.Utils.Exceptions.ApiException;
 import tw.jiangsir.Utils.Exceptions.DataException;
+import tw.jiangsir.Utils.GoogleChecker.GoogleLoginServlet;
 import tw.jiangsir.Utils.GoogleChecker.PopChecker;
 import tw.jiangsir.Utils.Interfaces.IAccessFilter;
 import tw.jiangsir.Utils.Objects.AppConfig;
 import tw.jiangsir.Utils.Objects.CurrentUser;
 import tw.jiangsir.Utils.Scopes.ApplicationScope;
 import tw.jiangsir.Utils.Scopes.SessionScope;
+import tw.jiangsir.Utils.Tools.DateTool;
 
 /**
  * Servlet implementation class BookUp
@@ -35,7 +39,8 @@ public class BookingApi extends HttpServlet implements IAccessFilter {
 	}
 
 	@Override
-	public void AccessFilter(HttpServletRequest request) throws AccessException {
+	public void AccessFilter(HttpServletRequest request)
+			throws AccessException {
 
 	}
 
@@ -48,6 +53,8 @@ public class BookingApi extends HttpServlet implements IAccessFilter {
 	}
 
 	public enum POSTACTION {
+		bookingByGoogleLogin, // 用 Google Login 的身份進行 Booking
+		cancelByGoogleLogin, // 用 Google Login 的身份進行 Booking
 		booked, // 訂位
 		cancel;// 取消
 	}
@@ -61,6 +68,7 @@ public class BookingApi extends HttpServlet implements IAccessFilter {
 		HttpSession session = request.getSession(false);
 		AppConfig appConfig = ApplicationScope.getAppConfig();
 		CurrentUser currentUser = new SessionScope(session).getCurrentUser();
+
 		try {
 			java.sql.Date date;
 			try {
@@ -70,6 +78,64 @@ public class BookingApi extends HttpServlet implements IAccessFilter {
 			}
 
 			switch (POSTACTION.valueOf(request.getParameter("action"))) {
+			case bookingByGoogleLogin:
+				if (currentUser == null) {
+					response.sendRedirect(GoogleLoginServlet.class
+							.getAnnotation(WebServlet.class).urlPatterns()[0]);
+					return;
+				}
+				if (request.getParameter("seatid") == null
+						|| !request.getParameter("seatid").matches("[0-9]+")) {
+					throw new DataException("沒有輸入正確的 seatid 參數。");
+				}
+				int seatid = Integer.parseInt(request.getParameter("seatid"));
+
+				Booking newBooking = new Booking();
+				newBooking.setSeatid(seatid);
+				newBooking.setStudentid(currentUser.getAccount());
+				newBooking.setUserid(
+						currentUser == null ? 0 : currentUser.getId());
+				newBooking.setDate(date);
+				new BookingService().insert(newBooking);
+
+				break;
+			case cancelByGoogleLogin:
+				if (currentUser == null) {
+					response.sendRedirect(GoogleLoginServlet.class
+							.getAnnotation(WebServlet.class).urlPatterns()[0]);
+					return;
+				}
+				seatid = Integer.parseInt(request.getParameter("seatid"));
+
+				if (currentUser != null && currentUser.getIsAdmin()) {
+					new BookingService().delete(seatid, date);
+					return;
+				}
+
+				java.sql.Time nowtime = DateTool.getNowtime();
+				if (nowtime.after(appConfig.getSigninbegin())) {
+					throw new DataException("已經超過開館時間("
+							+ appConfig.getSigninbegin() + ")囉，不能取消訂位！");
+				}
+				// studentid = request.getParameter("studentid");
+				// passwd = request.getParameter("passwd");
+				//
+				// new PopChecker().isGmailAccount(
+				// studentid.trim() + "@" + appConfig.getCheckhost(),
+				// passwd);
+
+				Booking booking = new BookingService()
+						.getBookingTodayByStudentid(currentUser.getAccount());
+				if (booking == null) {
+					throw new DataException("您(" + currentUser.getAccount()
+							+ ")今天並沒有訂位，因此不能取消訂位！");
+				} else if (booking.getSeatid() != seatid) {
+					throw new DataException("您(" + currentUser.getAccount()
+							+ ")可能不是這個位置(" + seatid + ")的主人，無法讓您取消訂位。");
+				}
+				new BookingService().delete(booking.getId());
+
+				break;
 			case booked:
 				if (request.getParameter("seatid") == null
 						|| !request.getParameter("seatid").matches("[0-9]+")) {
@@ -78,16 +144,16 @@ public class BookingApi extends HttpServlet implements IAccessFilter {
 				if (request.getParameter("studentid") == null) {
 					throw new DataException("沒有輸入 studentid 參數。");
 				}
-				int seatid = Integer.parseInt(request.getParameter("seatid"));
+				seatid = Integer.parseInt(request.getParameter("seatid"));
 				String studentid = request.getParameter("studentid");
 
 				String passwd = request.getParameter("passwd");
 
-				Booking newBooking = new Booking();
+				newBooking = new Booking();
 				newBooking.setSeatid(seatid);
 				newBooking.setStudentid(studentid);
-				newBooking
-						.setUserid(new SessionScope(session).getCurrentUser() == null ? 0
+				newBooking.setUserid(
+						new SessionScope(session).getCurrentUser() == null ? 0
 								: new SessionScope(session).getCurrentUser()
 										.getId());
 				newBooking.setDate(date);
@@ -111,21 +177,25 @@ public class BookingApi extends HttpServlet implements IAccessFilter {
 					new BookingService().delete(seatid, date);
 					return;
 				}
-				if (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) >= 18) {
-					throw new DataException("已經超過開館時間囉，不能取消訂位！");
+
+				nowtime = DateTool.getNowtime();
+				if (nowtime.after(appConfig.getSigninbegin())) {
+					throw new DataException("已經超過開館時間("
+							+ appConfig.getSigninbegin() + ")囉，不能取消訂位！");
 				}
 
 				studentid = request.getParameter("studentid");
 				passwd = request.getParameter("passwd");
 
-				new PopChecker().isGmailAccount(studentid.trim() + "@"
-						+ appConfig.getCheckhost(), passwd);
+				new PopChecker().isGmailAccount(
+						studentid.trim() + "@" + appConfig.getCheckhost(),
+						passwd);
 
-				Booking booking = new BookingService()
+				booking = new BookingService()
 						.getBookingTodayByStudentid(studentid);
 				if (booking == null) {
-					throw new DataException("您(" + studentid
-							+ ")今天並沒有訂位，因此不能取消訂位！");
+					throw new DataException(
+							"您(" + studentid + ")今天並沒有訂位，因此不能取消訂位！");
 				} else if (booking.getSeatid() != seatid) {
 					throw new DataException("您(" + studentid + ")可能不是這個位置("
 							+ seatid + ")的主人，無法讓您取消訂位。");

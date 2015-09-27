@@ -45,12 +45,8 @@ public class OAuth2CallbackServlet extends HttpServlet {
 		String apiKey = appConfig.getClient_id(); // 你的ClientID
 		String apiSecret = appConfig.getClient_secret();// 你的Client secret
 		String redirect_uri = appConfig.getRedirect_uri();// 你的轉址網址
-
-		OAuthService service = new ServiceBuilder()
-				.provider(Google2Api.class)
-				.apiKey(apiKey)
-				.apiSecret(apiSecret)
-				.callback(redirect_uri)
+		OAuthService service = new ServiceBuilder().provider(Google2Api.class)
+				.apiKey(apiKey).apiSecret(apiSecret).callback(redirect_uri)
 				.scope("https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email")
 				.build();
 
@@ -72,19 +68,27 @@ public class OAuth2CallbackServlet extends HttpServlet {
 		System.out.println(_sBody);
 		GoogleUser googleUser = mapper.readValue(_sBody, GoogleUser.class);
 		String domain = googleUser.getEmail().split("@")[1];
-		if (!ApplicationScope.getAppConfig().getAuthdomains().contains(domain)) {
-			throw new DataException("您所登入的 domain(" + googleUser.getEmail()
-					+ ") 並沒有在允許的範圍內。");
+		if (!ApplicationScope.getAppConfig().getAuthdomains()
+				.contains(domain)) {
+			throw new DataException(
+					"您所登入的 domain(" + googleUser.getEmail() + ") 並沒有在允許的範圍內("
+							+ ApplicationScope.getAppConfig().getAuthdomains()
+							+ "!=" + domain + ")。");
 		}
 		CurrentUser currentUser = new CurrentUser();
-		currentUser.setAccount(googleUser.getEmail());
+		currentUser.setAccount(googleUser.getEmail().split("@")[0]);
+		currentUser.setEmail(googleUser.getEmail());
+		currentUser.setPicture(googleUser.getPicture());
 		currentUser.setName(googleUser.getName());
 		currentUser.setRole(User.ROLE.USER);
+		currentUser.setIsGoogleUser(true);
 		// currentUser.setSession(session);
 		new SessionScope(session).setCurrentUser(currentUser);
-		// response.sendRedirect("."
-		// + new SessionScope(session).getHistories().get(0));
-		response.sendRedirect("./");
+
+		System.out.println("response.sendRedirect="
+				+ new SessionScope(session).getCurrentPage());
+		response.sendRedirect("." + new SessionScope(session).getCurrentPage());
+		// response.sendRedirect("./");
 	}
 
 	/**

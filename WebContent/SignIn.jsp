@@ -136,13 +136,14 @@ td {
 			<tr id="attendance">
 				<td>${attendance.studentid}</td>
 				<td>${attendance.seatid}</td>
-				<td><c:if test="${attendance.status=='SignIn' }">
-						<span style="color: green;">簽到</span>
-					</c:if> <c:if test="${attendance.status=='SignOut' }">
-						<span style="color: red;">簽退 (入場${attendance.staytime }分鐘)</span>
+				<td><c:if test="${attendance.isSignIn}">
+						<span style="color: green;">${attendance.status.value }</span>
+					</c:if> <c:if test="${attendance.isSignOut }">
+						<span style="color: red;">${attendance.status.value } (今日入場
+							${attendance.student.staytime})</span>
 					</c:if></td>
 				<td><fmt:formatDate value="${attendance.timestamp}"
-						pattern="yyyy-MM-dd HH:mm" /></td>
+						pattern="MM-dd HH:mm:ss" /></td>
 			</tr>
 		</c:forEach>
 	</table>
