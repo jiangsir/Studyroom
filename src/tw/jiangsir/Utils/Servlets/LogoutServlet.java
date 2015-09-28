@@ -45,7 +45,7 @@ public class LogoutServlet extends HttpServlet {
 		// }
 		response.sendRedirect(
 				"https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://"
-						+ request.getLocalAddr()
+						+ request.getServerName()
 						+ (request.getServerPort() == 80 ? ""
 								: ":" + request.getServerPort())
 						+ "/" + request.getContextPath());
