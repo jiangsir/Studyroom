@@ -70,10 +70,8 @@ public class OAuth2CallbackServlet extends HttpServlet {
 		String domain = googleUser.getEmail().split("@")[1];
 		if (!ApplicationScope.getAppConfig().getAuthdomains()
 				.contains(domain)) {
-			throw new DataException(
-					"您所登入的 domain(" + googleUser.getEmail() + ") 並沒有在允許的範圍內("
-							+ ApplicationScope.getAppConfig().getAuthdomains()
-							+ "!=" + domain + ")。");
+			throw new DataException("您所登入的 domain(" + googleUser.getEmail()
+					+ ") 並非有效的學生信箱，請點擊<h1><a href=\"./Logout\">登出</a></h1>並重新登入。");
 		}
 		CurrentUser currentUser = new CurrentUser();
 		currentUser.setAccount(googleUser.getEmail().split("@")[0]);

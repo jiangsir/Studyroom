@@ -74,6 +74,21 @@
 	float: left;
 	display: block;
 }
+
+#logo a {
+	text-decoration: none;
+	color: inherit;
+}
+
+#logo a:hover {
+	text-decoration: none;
+	color: inherit;
+}
+
+#logo a:VISITED {
+	text-decoration: none;
+	color: inherit;
+}
 </style>
 
 <script type="text/javascript" src="includes/dialog/Confirm.js"></script>

@@ -31,18 +31,25 @@ public class LogoutServlet extends HttpServlet {
 		CurrentUser currentUser = sessionScope.getCurrentUser();
 		sessionScope.doLogout();
 
-		if (currentUser.getIsGoogleUser()) {
-			response.sendRedirect(
-					"https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://"
-							+ request.getLocalAddr()
-							+ (request.getServerPort() == 80 ? ""
-									: ":" + request.getServerPort())
-							+ "/" + request.getContextPath());
-			return;
-		} else {
-			response.sendRedirect(request.getContextPath());
-			return;
-		}
+		// if (currentUser != null && currentUser.getIsGoogleUser()) {
+		// response.sendRedirect(
+		// "https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://"
+		// + request.getLocalAddr()
+		// + (request.getServerPort() == 80 ? ""
+		// : ":" + request.getServerPort())
+		// + "/" + request.getContextPath());
+		// return;
+		// } else {
+		// response.sendRedirect(request.getContextPath());
+		// return;
+		// }
+		response.sendRedirect(
+				"https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://"
+						+ request.getLocalAddr()
+						+ (request.getServerPort() == 80 ? ""
+								: ":" + request.getServerPort())
+						+ "/" + request.getContextPath());
+		return;
 	}
 
 	/**

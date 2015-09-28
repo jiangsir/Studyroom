@@ -6,7 +6,7 @@
 <%@ page isELIgnored="false"%>
 <div id="header">
 	<div id="logo" style="font-size: 3em; text-align: center; margin: 1em;">
-		${applicationScope.appConfig.title }
+		<a href="./">${applicationScope.appConfig.title }</a>
 		<%-- <a href="${pageContext.request.contextPath}"><img
 			src="${pageContext.request.contextPath}/images/BANNER_IMAGE.jpg"></a> --%>
 	</div>
@@ -29,23 +29,27 @@
 								href="${pageContext.request.contextPath}/EditAppConfig">管理系統參數</a></li>
 						</ul></li>
 				</c:if>
-				<li><a href="#"><img
-						src="${sessionScope.currentUser.picture}" width="30px" />${sessionScope.currentUser.account}</a>
-					<ul>
+				<li><a href="${pageContext.request.contextPath}/Logout">登出</a></li>
+				<li><img src="${sessionScope.currentUser.picture}" width="30px" />
+					${sessionScope.currentUser.account}(${sessionScope.currentUser.name})
+					<%-- 					<ul>
 						<li><a
 							href="${pageContext.request.contextPath}/UpdateUser.do?userid=${sessionScope.currentUser.id}">修改</a></li>
 						<li><a href="${pageContext.request.contextPath}/Logout">登出</a></li>
-					</ul></li>
-
+					</ul> --%></li>
+			</c:if> <c:if test="${sessionScope.currentUser==null}">
+				<li><a href="${pageContext.request.contextPath}/GoogleLogin">登入學生信箱</a></li>
 			</c:if></li>
 		<c:if
 			test="${pageContext.request.remoteAddr == applicationScope.appConfig.signinip || sessionScope.currentUser.isAdmin}">
 			<li><a href="${pageContext.request.contextPath}/SignIn">簽到／退</a></li>
 		</c:if>
-		<c:if
+		<%-- 		<c:if
 			test="${pageContext.request.remoteAddr != applicationScope.appConfig.signinip || sessionScope.currentUser.isAdmin}">
 			<li><a href="${pageContext.request.contextPath}/">訂位</a></li>
 		</c:if>
+ --%>
+
 		<!-- 		<li><a href="#">Item 1</a></li>
 		<li><a href="#">Item 2</a></li>
 		<li><a href="#">Item 3</a>

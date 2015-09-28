@@ -38,8 +38,8 @@ jQuery(document).ready(function() {
 						}
 					});
 				} else {
-					// $("#insertBookingDialog").dialog("open");
-					location.href = "GoogleLogin";
+					$("#insertBookingDialog").dialog("open");
+					// location.href = "GoogleLogin";
 				}
 			});
 		});
@@ -48,7 +48,7 @@ jQuery(document).ready(function() {
 		autoOpen : false,
 		modal : true,
 		height : 350,
-		width : 500,
+		width : '50%',
 		modal : true,
 		buttons : {
 			// "GoogleLogin 訂位" : function() {
@@ -68,26 +68,30 @@ jQuery(document).ready(function() {
 			// });
 			// $(this).dialog("close");
 			// },
-			"訂位" : function() {
-				var studentid = $(this).find("input[name='studentid']").val();
-				var passwd = $(this).find("input[name='passwd']").val();
-				var seatid = $(this).find("span[id='seatid']").text();
-
-				jQuery.ajax({
-					type : "POST",
-					url : "Booking.api",
-					data : "action=booked&studentid=" + studentid + "&passwd=" + passwd + "&seatid=" + seatid,
-					async : false,
-					timeout : 5000,
-					success : function(result) {
-						location.reload();
-					},
-					error : function(jqXHR, textStatus, errorThrown) {
-						showErrorDialog(jqXHR, textStatus, errorThrown);
-					}
-				});
-				$(this).dialog("close");
+			"登入學生信箱" : function() {
+				location.href = "GoogleLogin";
 			},
+			// "訂位" : function() {
+			// var studentid = $(this).find("input[name='studentid']").val();
+			// var passwd = $(this).find("input[name='passwd']").val();
+			// var seatid = $(this).find("span[id='seatid']").text();
+			//
+			// jQuery.ajax({
+			// type : "POST",
+			// url : "Booking.api",
+			// data : "action=booked&studentid=" + studentid + "&passwd=" +
+			// passwd + "&seatid=" + seatid,
+			// async : false,
+			// timeout : 5000,
+			// success : function(result) {
+			// location.reload();
+			// },
+			// error : function(jqXHR, textStatus, errorThrown) {
+			// showErrorDialog(jqXHR, textStatus, errorThrown);
+			// }
+			// });
+			// $(this).dialog("close");
+			// },
 			"取消" : function() {
 				$(this).dialog("close");
 			}
@@ -127,32 +131,37 @@ jQuery(document).ready(function() {
 	});
 	deleteBookingDialog.dialog({
 		autoOpen : false,
-		height : 450,
-		width : '40%',
+		height : 350,
+		width : '50%',
 		modal : true,
 		buttons : {
-			"取消訂位" : function() {
-				var studentid = $(this).find("input[name='studentid']").val();
-				var passwd = $(this).find("input[name='passwd']").val();
-				var seatid = $(this).find("span[id='seatid']").text();
-
-				jQuery.ajax({
-					type : "POST",
-					url : "Booking.api",
-					data : "action=cancel&studentid=" + studentid + "&passwd=" + passwd + "&seatid=" + seatid,
-					async : false,
-					timeout : 5000,
-					beforeSend : function() {
-					},
-					success : function(result) {
-						location.reload();
-					},
-					error : function(jqXHR, textStatus, errorThrown) {
-						showErrorDialog(jqXHR, textStatus, errorThrown);
-					}
-				});
-				$(this).dialog("close");
+			"登入學生信箱" : function() {
+				location.href = "GoogleLogin";
 			},
+
+			// "取消訂位" : function() {
+			// var studentid = $(this).find("input[name='studentid']").val();
+			// var passwd = $(this).find("input[name='passwd']").val();
+			// var seatid = $(this).find("span[id='seatid']").text();
+			//
+			// jQuery.ajax({
+			// type : "POST",
+			// url : "Booking.api",
+			// data : "action=cancel&studentid=" + studentid + "&passwd=" +
+			// passwd + "&seatid=" + seatid,
+			// async : false,
+			// timeout : 5000,
+			// beforeSend : function() {
+			// },
+			// success : function(result) {
+			// location.reload();
+			// },
+			// error : function(jqXHR, textStatus, errorThrown) {
+			// showErrorDialog(jqXHR, textStatus, errorThrown);
+			// }
+			// });
+			// $(this).dialog("close");
+			// },
 			"取消" : function() {
 				$(this).dialog("close");
 			}
