@@ -45,13 +45,6 @@
 					</div>
 				</c:if>
 			</div>
-			<c:if test="${fn:trim(appConfig.announcement)!=''}">
-				<fieldset style="width: 60%; margin: auto; margin-bottom: 1em;">
-					<legend>說明：</legend>
-					<pre>${applicationScope.appConfig.announcement}</pre>
-				</fieldset>
-			</c:if>
-
 
 			<table style="border: 0px;">
 				<c:set var="grouplist" value="${fn:split('26,24,20', ',')}" />
@@ -74,12 +67,24 @@
 					</tr>
 				</c:forEach>
 			</table>
-			<div>
-				<span style="color: green;">綠色代表已簽到</span>，<span style="color: red;">紅色代表已簽退</span>，黑色代表已訂位但未簽到(即缺席)
-			</div>
-			<div>總訂位人數：${fn:length(hashBookings)} 人。</div>
-			<div>簽到人數： ${attendCount } 人。</div>
-			<div>缺席人數：${fn:length(hashBookings)-attendCount }人。</div>
+
+			<c:if test="${fn:trim(appConfig.announcement)!=''}">
+				<fieldset style="width: 60%; margin: auto; margin-bottom: 1em;">
+					<legend>說明：</legend>
+					<div>${applicationScope.appConfig.announcement}</div>
+					<hr />
+					<div>
+						<span style="color: green;">綠色代表已簽到</span>，<span
+							style="color: red;">紅色代表已簽退</span>，黑色代表已訂位但未簽到(即缺席)
+					</div>
+					<div>總訂位人數：${fn:length(hashBookings)} 人。</div>
+					<div>簽到人數： ${attendCount } 人。</div>
+					<div>缺席人數：${fn:length(hashBookings)-attendCount }人。</div>
+
+				</fieldset>
+			</c:if>
+
+
 
 		</c:when>
 		<c:otherwise>

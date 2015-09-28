@@ -9,9 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import com.apple.eawt.Application;
-
 import tw.jiangsir.Utils.Exceptions.ApiException;
 import tw.jiangsir.Utils.Objects.CurrentUser;
 import tw.jiangsir.Utils.Objects.User;
@@ -21,7 +18,9 @@ import tw.jiangsir.Utils.Scopes.SessionScope;
 /**
  * Servlet implementation class LoginServlet
  */
-@WebServlet(urlPatterns = { "/GooglePopLogin" }, name = "GooglePopLogin", initParams = { @WebInitParam(name = "VIEW", value = "/Login.jsp") })
+@WebServlet(urlPatterns = {
+		"/GooglePopLogin" }, name = "GooglePopLogin", initParams = {
+				@WebInitParam(name = "VIEW", value = "/Login.jsp") })
 public class GooglePopLoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	public static String[] urlPatterns = GooglePopLoginServlet.class
@@ -55,8 +54,10 @@ public class GooglePopLoginServlet extends HttpServlet {
 		String passwd = request.getParameter("passwd");
 
 		try {
-			new PopChecker().isGmailAccount(account + "@"
-					+ ApplicationScope.getAppConfig().getCheckhost(), passwd);
+			new PopChecker().isGmailAccount(
+					account + "@"
+							+ ApplicationScope.getAppConfig().getCheckhost(),
+					passwd);
 			CurrentUser currentUser = new CurrentUser();
 			currentUser.setAccount(account);
 			currentUser.setPasswd(passwd);

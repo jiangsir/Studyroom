@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-import tw.jiangsir.Studyroom.DAOs.BookingService;
-import tw.jiangsir.Studyroom.Tables.Booking;
-
 public class DateTool {
 
 	public static boolean isSameday(Date date1, Date date2) {

@@ -5,14 +5,17 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ page isELIgnored="false"%>
 <div id="header">
-	<div id="logo" style="font-size: 3em; text-align: center; margin: 1em;">
+	<div id="logo"
+		style="font-size: 3em; text-align: center; margin: 0.6em;">
 		<a href="./">${applicationScope.appConfig.title }</a>
 		<%-- <a href="${pageContext.request.contextPath}"><img
 			src="${pageContext.request.contextPath}/images/BANNER_IMAGE.jpg"></a> --%>
 	</div>
 
 	<ul id="menu">
-		<li style="float: left; text-align: left;">${pageContext.request.remoteAddr}</li>
+		<li style="float: left; text-align: left;"><a
+			href="${pageContext.request.contextPath}/">回首頁</a></li>
+		<li style="float: left; text-align: left;"><a href="#">${pageContext.request.remoteAddr}</a></li>
 		<li><c:if test="${sessionScope.currentUser!=null}">
 				<c:if test="${sessionScope.currentUser.isAdmin}">
 					<li><a href="#">管理</a>
@@ -30,7 +33,8 @@
 						</ul></li>
 				</c:if>
 				<li><a href="${pageContext.request.contextPath}/Logout">登出</a></li>
-				<li><img src="${sessionScope.currentUser.picture}" width="30px" />
+				<li><img src="${sessionScope.currentUser.picture}"
+					height="30px" style="vertical-align: middle;" />
 					${sessionScope.currentUser.account}(${sessionScope.currentUser.name})
 					<%-- 					<ul>
 						<li><a
