@@ -11,7 +11,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <jsp:include page="CommonHead.jsp" />
 <script type="text/javascript"
-	src="EditAppConfig.js?${application.built}"></script>
+	src="EditAppConfig.js?${applicationScope.built}"></script>
 <script type="text/javascript" src="jscripts/tinymce/tinymce.min.js"></script>
 <!-- 使用 TinyMCE  -->
 <script type="text/javascript">

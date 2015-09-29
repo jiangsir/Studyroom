@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.TreeMap;
 
 import tw.jiangsir.Studyroom.Tables.Attendance;
+import tw.jiangsir.Utils.DAOs.SuperDAO.ORDER;
 import tw.jiangsir.Utils.Exceptions.DataException;
 
 public class AttendanceService {
@@ -77,23 +78,37 @@ public class AttendanceService {
 	 */
 	public Attendance getLastAttendanceByStudentidDate(String studentid,
 			Date date) {
+		if (StudentService.getTodayStudents().containsKey(studentid)) {
+			int lastindex = StudentService.getTodayStudents().get(studentid)
+					.getAttendances().size();
+			if (lastindex == 0) {
+				return null;
+			}
+			return StudentService.getTodayStudents().get(studentid)
+					.getAttendances().get(lastindex - 1);
+		}
+
 		TreeMap<String, Object> fields = new TreeMap<String, Object>();
 		fields.put("studentid", studentid);
 		fields.put("date", date);
 		for (Attendance attendance : new AttendanceDAO()
-				.getAttendanceByFields(fields, "timestamp DESC", 0)) {
+				.getAttendanceByFields(fields, "timestamp " + ORDER.DESC, 0)) {
 			return attendance;
 		}
 		return null;
 	}
 
 	public ArrayList<Attendance> getAttendancesByStudentidDate(String studentid,
-			Date date, String orderby) {
+			Date date, ORDER order) {
+		if (StudentService.getTodayStudents().containsKey(studentid)) {
+			return StudentService.getTodayStudents().get(studentid)
+					.getAttendances();
+		}
 		TreeMap<String, Object> fields = new TreeMap<String, Object>();
 		fields.put("studentid", studentid);
 		fields.put("date", date);
 		return new AttendanceDAO().getAttendanceByFields(fields,
-				"timestamp " + orderby, 0);
+				"timestamp " + order, 0);
 	}
 
 	public void doSignIn(String studentid) {

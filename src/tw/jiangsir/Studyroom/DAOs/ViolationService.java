@@ -51,8 +51,8 @@ public class ViolationService {
 	public Violation getViolationById(long id) {
 		TreeMap<String, Object> fields = new TreeMap<String, Object>();
 		fields.put("id", id);
-		for (Violation violation : new ViolationDAO().getViolationsByFields(
-				fields, "", 0)) {
+		for (Violation violation : new ViolationDAO()
+				.getViolationsByFields(fields, "", 0)) {
 			return violation;
 		}
 		return null;
@@ -70,7 +70,8 @@ public class ViolationService {
 	 * @param studentid
 	 * @return
 	 */
-	public ArrayList<Violation> getViolationsTodayByStudentid(String studentid) {
+	public ArrayList<Violation> getViolationsTodayByStudentid(
+			String studentid) {
 		TreeMap<String, Object> fields = new TreeMap<String, Object>();
 		fields.put("date", new Date(System.currentTimeMillis()));
 		fields.put("studentid", studentid);
@@ -116,9 +117,8 @@ public class ViolationService {
 			System.out.println("appConfig.getWorkingstudentids()="
 					+ appConfig.getWorkingstudentids() + " seatid="
 					+ booking.getSeatid());
-			if (booking.getAttendance() == null
-					&& !appConfig.getWorkingstudentids().contains(
-							booking.getStudentid())) {
+			if (booking.getStudent().getLastAttendance() == null && !appConfig
+					.getWorkingstudentids().contains(booking.getStudentid())) {
 				// 沒有出席記錄， 且不是工讀生。
 				Violation violation = new Violation();
 				violation.setDate(date);
@@ -140,13 +140,13 @@ public class ViolationService {
 	private ViolationQueue getViolateQueue(String studentid, Date date) {
 		ArrayList<Violation> enableViolations = this
 				.getEnableViolationsByStudentid(studentid, date);
-		ViolationQueue queue = new ViolationQueue(ApplicationScope
-				.getAppConfig().getPunishingthreshold());
+		ViolationQueue queue = new ViolationQueue(
+				ApplicationScope.getAppConfig().getPunishingthreshold());
 		for (Violation violation : enableViolations) {
 			if (queue.isFull()) {
 				if (DateTool.getDayCountBetween(queue.getLast().getDate(),
 						violation.getDate()) > ApplicationScope.getAppConfig()
-						.getPunishingdays()) { // 已經超過 14 天，就清除舊的違規。
+								.getPunishingdays()) { // 已經超過 14 天，就清除舊的違規。
 					queue.clear();
 					queue.add(violation);
 				} else {
@@ -279,13 +279,18 @@ public class ViolationService {
 	 * @param studentid
 	 * @return
 	 */
-	public ArrayList<Violation> getEnableViolationsByStudentid(
-			String studentid, Date date) {
+	public ArrayList<Violation> getEnableViolationsByStudentid(String studentid,
+			Date date) {
 		// TreeMap<String, Object> fields = new TreeMap<String, Object>();
 		// fields.put("studentid", studentid);
 		// fields.put("status", Violation.STATUS.enable.name());
 		// return new ViolationDAO().getViolationsByFields(fields, "date ASC",
 		// 0);
+		if (StudentService.getTodayStudents().containsKey(studentid)) {
+			return StudentService.getTodayStudents().get(studentid)
+					.getViolations();
+		}
+
 		try {
 			return new ViolationDAO().getEnabledViolations(studentid, date);
 		} catch (SQLException e) {
@@ -399,8 +404,8 @@ public class ViolationService {
 		suspendstart.setTime(lastViolation.getDate());
 		suspendstart.add(Calendar.DATE, 1);
 		if (DateTool.getDayCountBetween(
-				new Date(suspendstart.getTimeInMillis()), date) < appConfig
-				.getPunishingdays()) {
+				new Date(suspendstart.getTimeInMillis()),
+				date) < appConfig.getPunishingdays()) {
 			Calendar suspendingend = Calendar.getInstance();
 			suspendingend.setTime(lastViolation.getDate());
 			suspendingend.add(Calendar.DATE, appConfig.getPunishingdays());

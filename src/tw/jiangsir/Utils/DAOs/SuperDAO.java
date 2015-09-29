@@ -36,6 +36,11 @@ abstract public class SuperDAO<T> {
 	HashMap<String, Field> fields = new HashMap<String, Field>();
 	int PAGESIZE = 30;
 
+	public static enum ORDER {
+		ASC, //
+		DESC;
+	}
+
 	public Connection getConnection() {
 		try {
 			if (conn == null || conn.isClosed()) {

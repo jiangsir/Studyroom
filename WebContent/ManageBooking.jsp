@@ -11,8 +11,9 @@
 <head>
 <jsp:include page="CommonHead.jsp" />
 <script type="text/javascript"
-	src="jscripts/functions/showErrorDialog.js"></script>
-<script type="text/javascript" src="ManageBooking.js"></script>
+	src="jscripts/functions/showErrorDialog.js?${applicationScope.built }"></script>
+<script type="text/javascript"
+	src="ManageBooking.js?${applicationScope.built }"></script>
 
 <style type="text/css">
 .seat {
@@ -94,7 +95,7 @@
 											<div id="demotip">&nbsp;</div>
 											<c:choose>
 												<c:when
-													test="${hashBookings[seatidString].attendance.isSignIn}">
+													test="${hashBookings[seatidString].student.lastAttendance.isSignIn}">
 													<div style="margin-top: 0.6em; color: #00aa00">
 														${hashBookings[seatidString].studentid } <span
 															style="font-weight: bold;"> <fmt:formatNumber
@@ -102,7 +103,7 @@
 													</div>
 												</c:when>
 												<c:when
-													test="${hashBookings[seatidString].attendance.isSignOut}">
+													test="${hashBookings[seatidString].student.lastAttendance.isSignOut}">
 													<div style="margin-top: 0.6em; color: red;">
 														${hashBookings[seatidString].studentid } <span
 															style="font-weight: bold;"> <fmt:formatNumber

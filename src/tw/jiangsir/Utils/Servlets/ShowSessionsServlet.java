@@ -50,7 +50,8 @@ public class ShowSessionsServlet extends HttpServlet {
 		}
 		Alert alert = new Alert();
 		alert.setTitle("顯示 Session 內的資訊。");
-		alert.setSubtitle("sessionid=" + session.getId());
+		alert.setSubtitle(
+				"sessionid=" + (session == null ? "null" : session.getId()));
 		alert.setContent("session 內的 attribute names 如下列：<br>" + text);
 		request.setAttribute("alert", alert);
 		request.getRequestDispatcher("/Alert.jsp").forward(request, response);

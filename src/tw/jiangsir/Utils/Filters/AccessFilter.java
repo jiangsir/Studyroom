@@ -29,7 +29,8 @@ import tw.jiangsir.Utils.Scopes.SessionScope;
 /**
  * Servlet Filter implementation class RoleFilter
  */
-@WebFilter(filterName = "RoleFilter", urlPatterns = { "/*" }, asyncSupported = true)
+@WebFilter(filterName = "RoleFilter", urlPatterns = {
+		"/*" }, asyncSupported = true)
 public class AccessFilter implements Filter {
 
 	/**
@@ -53,10 +54,10 @@ public class AccessFilter implements Filter {
 		HttpServletResponse response = (HttpServletResponse) resp;
 		String servletPath = request.getServletPath();
 
-		HttpServlet httpServlet = ApplicationScope.getUrlpatterns().get(
-				servletPath);
-		if (httpServlet == null
-				|| httpServlet.getClass().getAnnotation(RoleSetting.class) == null) {
+		HttpServlet httpServlet = ApplicationScope.getUrlpatterns()
+				.get(servletPath);
+		if (httpServlet == null || httpServlet.getClass()
+				.getAnnotation(RoleSetting.class) == null) {
 			chain.doFilter(request, response);
 			return;
 		}
@@ -65,15 +66,15 @@ public class AccessFilter implements Filter {
 
 		UserService userService = new UserService();
 		if (!userService.isUserOnline(session)) {
-			request.setAttribute("defaultLogin", ApplicationScope
-					.getAppConfig().getDefaultlogin());
+			request.setAttribute("defaultLogin",
+					ApplicationScope.getAppConfig().getDefaultlogin());
 			request.getRequestDispatcher("/Login.jsp").forward(request,
 					response);
 			return;
 		}
-		CurrentUser currentUser = new SessionScope(session).getCurrentUser();
-		if (!this.isUserInRoles(currentUser, httpServlet.getClass()
-				.getAnnotation(RoleSetting.class))) {
+		CurrentUser currentUser = new SessionScope(request).getCurrentUser();
+		if (!this.isUserInRoles(currentUser,
+				httpServlet.getClass().getAnnotation(RoleSetting.class))) {
 			throw new RoleException("您沒有權限瀏覽這個頁面。");
 		}
 
@@ -90,8 +91,9 @@ public class AccessFilter implements Filter {
 						Method servletMethod = httpServlet.getClass()
 								.getDeclaredMethod(method.getName(),
 										HttpServletRequest.class);
-						servletMethod.invoke(httpServlet.getClass()
-								.newInstance(), new Object[] { request });
+						servletMethod.invoke(
+								httpServlet.getClass().newInstance(),
+								new Object[] { request });
 					} catch (SecurityException e) {
 						e.printStackTrace();
 						throw new AccessException(new Cause(e));
@@ -109,8 +111,8 @@ public class AccessFilter implements Filter {
 						// AccessException) {
 						// throw (AccessException) e.getTargetException();
 						// }
-						throw new AccessException(new Cause(
-								e.getTargetException()));
+						throw new AccessException(
+								new Cause(e.getTargetException()));
 					} catch (InstantiationException e) {
 						e.printStackTrace();
 						throw new AccessException(new Cause(e));

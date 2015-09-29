@@ -91,7 +91,8 @@
 }
 </style>
 
-<script type="text/javascript" src="includes/dialog/Confirm.js"></script>
+<script type="text/javascript"
+	src="includes/dialog/Confirm.js?${applicationScope.built}"></script>
 
 <script language="javascript">
 	jQuery(document).ready(function() {

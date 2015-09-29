@@ -12,11 +12,11 @@
 <head>
 <jsp:include page="CommonHead.jsp" />
 
-<script type="text/javascript" src="Index.js"></script>
+<script type="text/javascript" src="Index.js?${applicationScope.built }"></script>
 <script type="text/javascript"
-	src="jscripts/functions/showErrorDialog.js"></script>
+	src="jscripts/functions/showErrorDialog.js?${applicationScope.built }"></script>
 <script type="text/javascript"
-	src="jscripts/functions/showLoadingDialog.js"></script>
+	src="jscripts/functions/showLoadingDialog.js?${applicationScope.built }"></script>
 </head>
 <body>
 	<jsp:include page="includes/dialog/Error.jsp" />
@@ -29,6 +29,12 @@
 	<jsp:include page="Header.jsp" />
 
 	<jsp:useBean id="now" class="java.util.Date"></jsp:useBean>
+	<c:if test="${sessionScope.currentUser.isAdmin}">
+		<div style="margin: 1em; text-align: center;">
+			<a href="?date=${prevdate }" type="button">前一日</a> <a href="?"
+				type="button">今天</a> <a href="?date=${nextdate}" type="button">後一日</a>
+		</div>
+	</c:if>
 	<c:choose>
 		<c:when test="${room:isOpen(date) }">
 			<div style="text-align: center;">
@@ -39,12 +45,6 @@
 						value="${fn:length(hashBookings)/140*100}" />
 					% )
 				</h1>
-				<c:if test="${sessionScope.currentUser.isAdmin}">
-					<div style="margin: 1em;">
-						<a href="?date=${prevdate }" type="button">前一日</a> <a href="?"
-							type="button">今天</a> <a href="?date=${nextdate}" type="button">後一日</a>
-					</div>
-				</c:if>
 			</div>
 
 			<table style="border: 0px;">
@@ -84,9 +84,6 @@
 
 				</fieldset>
 			</c:if>
-
-
-
 		</c:when>
 		<c:otherwise>
 			<div style="text-align: center;">

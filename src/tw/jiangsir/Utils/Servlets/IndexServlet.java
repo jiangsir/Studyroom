@@ -24,8 +24,8 @@ import tw.jiangsir.Utils.Tools.DateTool;
 @WebServlet(urlPatterns = { "/Index" }, name = "Index")
 public class IndexServlet extends HttpServlet implements IAccessFilter {
 	private static final long serialVersionUID = 1L;
-	public static String[] urlPatterns = IndexServlet.class.getAnnotation(
-			WebServlet.class).urlPatterns();
+	public static String[] urlPatterns = IndexServlet.class
+			.getAnnotation(WebServlet.class).urlPatterns();
 	public static ServletConfig config;
 
 	/**
@@ -36,8 +36,9 @@ public class IndexServlet extends HttpServlet implements IAccessFilter {
 	}
 
 	@Override
-	public void AccessFilter(HttpServletRequest request) throws AccessException {
-		SessionScope sessionScope = new SessionScope(request.getSession(false));
+	public void AccessFilter(HttpServletRequest request)
+			throws AccessException {
+		SessionScope sessionScope = new SessionScope(request);
 		if (request.getQueryString() != null
 				&& !sessionScope.getCurrentUser().getIsAdmin()) {
 			throw new AccessException("未被允許的參數。");
@@ -59,9 +60,8 @@ public class IndexServlet extends HttpServlet implements IAccessFilter {
 		// + ", currentUser=" + currentUser);
 		if (request.getRemoteAddr().equals(appConfig.getSigninip())
 				&& (currentUser == null || !currentUser.getIsAdmin())) {
-			response.sendRedirect(request.getContextPath()
-					+ SignInServlet.class.getAnnotation(WebServlet.class)
-							.urlPatterns()[0]);
+			response.sendRedirect(request.getContextPath() + SignInServlet.class
+					.getAnnotation(WebServlet.class).urlPatterns()[0]);
 			return;
 		}
 		java.sql.Date date;

@@ -8,7 +8,8 @@
 <html>
 <head>
 <jsp:include page="CommonHead.jsp" />
-<script type="text/javascript" src="ManageViolations.js"></script>
+<script type="text/javascript"
+	src="ManageViolations.js?${applicationScope.built }"></script>
 <script type="text/javascript"
 	src="includes/dialog/Confirm.js?${applicationScope.built }"></script>
 <jsp:useBean id="now" class="java.util.Date"></jsp:useBean>

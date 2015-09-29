@@ -45,7 +45,8 @@ public class SessionScope implements Serializable {
 	};
 
 	public SessionScope(HttpServletRequest request) {
-		this(request.getSession(false));
+		this(request.getSession(false) == null ? request.getSession()
+				: request.getSession(false));
 	}
 
 	@SuppressWarnings("unchecked")

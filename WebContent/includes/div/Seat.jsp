@@ -41,11 +41,13 @@
 			<c:if test="${hashBookings[param.seatid].isBooked}">
 				<div class="unseat">
 					<c:choose>
-						<c:when test="${hashBookings[param.seatid].attendance.isSignIn}">
+						<c:when
+							test="${hashBookings[param.seatid].student.lastAttendance.isSignIn}">
 							<div style="margin-top: 0.6em; color: #00aa00">
 								${hashBookings[param.seatid].studentid }</div>
 						</c:when>
-						<c:when test="${hashBookings[param.seatid].attendance.isSignOut}">
+						<c:when
+							test="${hashBookings[param.seatid].student.lastAttendance.isSignOut}">
 							<div style="margin-top: 0.6em; color: red;">
 								${hashBookings[param.seatid].studentid }</div>
 						</c:when>
@@ -71,12 +73,13 @@
 						studentid="${hashBookings[param.seatid].studentid }">
 						<div style="margin-top: 0.6em;">
 							<c:choose>
-								<c:when test="${hashBookings[param.seatid].attendance.isSignIn}">
+								<c:when
+									test="${hashBookings[param.seatid].student.lastAttendance.isSignIn}">
 									<div style="margin-top: 0.6em; color: #00aa00">
 										${hashBookings[param.seatid].studentid }</div>
 								</c:when>
 								<c:when
-									test="${hashBookings[param.seatid].attendance.isSignOut}">
+									test="${hashBookings[param.seatid].student.lastAttendance.isSignOut}">
 									<div style="margin-top: 0.6em; color: red;">
 										${hashBookings[param.seatid].studentid }</div>
 								</c:when>

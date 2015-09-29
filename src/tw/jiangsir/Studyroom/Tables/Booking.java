@@ -116,12 +116,12 @@ public class Booking {
 	 * 
 	 * @return
 	 */
-	public Attendance getAttendance() {
-		Attendance attendance = new AttendanceService()
-				.getLastAttendanceByStudentidDate(studentid, date);
-		// System.out.println(attendance);
-		return attendance;
-	}
+	// public Attendance getAttendance() {
+	// Attendance attendance = new AttendanceService()
+	// .getLastAttendanceByStudentidDate(studentid, date);
+	// // System.out.println(attendance);
+	// return attendance;
+	// }
 
 	public User getUser() {
 		return new UserService().getUserById(this.getUserid());

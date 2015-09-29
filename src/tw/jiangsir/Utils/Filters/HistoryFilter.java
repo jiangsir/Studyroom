@@ -11,15 +11,14 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import tw.jiangsir.Utils.Scopes.ApplicationScope;
 import tw.jiangsir.Utils.Scopes.SessionScope;
 
 /**
  * Servlet Filter implementation class EncodingFilter
  */
-@WebFilter(filterName = "HistoryFilter", urlPatterns = { "/*" }, asyncSupported = true)
+@WebFilter(filterName = "HistoryFilter", urlPatterns = {
+		"/*" }, asyncSupported = true)
 public class HistoryFilter implements Filter {
 
 	/**
@@ -42,13 +41,12 @@ public class HistoryFilter implements Filter {
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response = (HttpServletResponse) resp;
 
-		HttpSession session = request.getSession(false);
 		String servletPath = request.getServletPath();
 
-		HttpServlet httpServlet = ApplicationScope.getUrlpatterns().get(
-				servletPath);
+		HttpServlet httpServlet = ApplicationScope.getUrlpatterns()
+				.get(servletPath);
 		if (httpServlet != null) {
-			new SessionScope(session).setReturnPage(servletPath,
+			new SessionScope(request).setReturnPage(servletPath,
 					request.getQueryString());
 		}
 		chain.doFilter(request, response);

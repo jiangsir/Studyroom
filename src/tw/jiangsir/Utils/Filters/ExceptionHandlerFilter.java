@@ -26,7 +26,8 @@ import tw.jiangsir.Utils.Scopes.SessionScope;
 /**
  * Servlet Filter implementation class EncodingFilter
  */
-@WebFilter(filterName = "ExceptionHandlerFilter", urlPatterns = { "/*" }, asyncSupported = true)
+@WebFilter(filterName = "ExceptionHandlerFilter", urlPatterns = {
+		"/*" }, asyncSupported = true)
 public class ExceptionHandlerFilter implements Filter {
 
 	/**
@@ -73,7 +74,7 @@ public class ExceptionHandlerFilter implements Filter {
 
 			try {
 				uris.put("回前頁", new URI(request.getContextPath()
-						+ new SessionScope(session).getPreviousPage()));
+						+ new SessionScope(request).getPreviousPage()));
 			} catch (URISyntaxException e1) {
 				e1.printStackTrace();
 			}
@@ -83,7 +84,8 @@ public class ExceptionHandlerFilter implements Filter {
 
 			if (e instanceof ApiException) {
 				ObjectMapper mapper = new ObjectMapper();
-				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+				response.setStatus(
+						HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 				response.getWriter().write(mapper.writeValueAsString(alert));
 				response.flushBuffer();
 				return;

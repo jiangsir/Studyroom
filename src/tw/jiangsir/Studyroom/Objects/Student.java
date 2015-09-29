@@ -4,10 +4,12 @@ import java.sql.Date;
 import java.util.ArrayList;
 
 import tw.jiangsir.Studyroom.DAOs.AttendanceService;
+import tw.jiangsir.Studyroom.DAOs.StudentService;
 import tw.jiangsir.Studyroom.DAOs.ViolationService;
 import tw.jiangsir.Studyroom.Tables.Attendance;
 import tw.jiangsir.Studyroom.Tables.Violation;
 import tw.jiangsir.Studyroom.Tables.Attendance.STATUS;
+import tw.jiangsir.Utils.DAOs.SuperDAO.ORDER;
 import tw.jiangsir.Utils.Scopes.ApplicationScope;
 import tw.jiangsir.Utils.Tools.DateTool;
 
@@ -26,7 +28,11 @@ public class Student implements Comparable<Student> {
 				date));
 		setViolationQueue();
 		this.setAttendances(new AttendanceService()
-				.getAttendancesByStudentidDate(studentid, date, "ASC"));
+				.getAttendancesByStudentidDate(studentid, date, ORDER.ASC));
+
+		StudentService.getTodayStudents().put(studentid, this);
+		System.out.println(
+				"todayStudents=" + StudentService.getTodayStudents().size());
 	}
 
 	public String getStudentid() {
@@ -95,6 +101,28 @@ public class Student implements Comparable<Student> {
 
 	public void setAttendances(ArrayList<Attendance> attendances) {
 		this.attendances = attendances;
+	}
+
+	/**
+	 * 取得這個預約學生最後一個簽到記錄。
+	 * 
+	 * @return
+	 */
+	public Attendance getLastAttendance() {
+		ArrayList<Attendance> attendances = this.getAttendances();
+		if (attendances.size() == 0) {
+			return null;
+		} else if (attendances.size() == 1) {
+			return attendances.get(0);
+		} else {
+			int lastindex = attendances.size() - 1;
+			if (attendances.get(0).getTimestamp()
+					.after(attendances.get(lastindex).getTimestamp())) {
+				return attendances.get(0);
+			} else {
+				return attendances.get(lastindex);
+			}
+		}
 	}
 
 	/**
