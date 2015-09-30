@@ -42,7 +42,7 @@
  --%>
 
 	<c:if test="${sessionScope.currentUser.isAdmin}">
-		<fieldset style="text-align: left; background-color: maroon;">
+		<fieldset id="debug">
 			<legend>Debug: </legend>
 			<ul>
 				<c:forEach var="debug" items="${alert.debugs}">

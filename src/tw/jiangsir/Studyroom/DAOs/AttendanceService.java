@@ -13,6 +13,7 @@ public class AttendanceService {
 
 	public int insert(Attendance attendance) throws DataException {
 		try {
+			StudentService.clearCacheStudent(attendance.getStudentid());
 			return new AttendanceDAO().insert(attendance);
 		} catch (SQLException e) {
 			throw new DataException(e);
@@ -21,6 +22,7 @@ public class AttendanceService {
 
 	public void update(Attendance attendance) throws DataException {
 		try {
+			StudentService.clearCacheStudent(attendance.getStudentid());
 			new AttendanceDAO().update(attendance);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -28,13 +30,13 @@ public class AttendanceService {
 		}
 	}
 
-	public void delete(long id) throws DataException {
-		try {
-			new AttendanceDAO().delete(id);
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DataException(e);
-		}
+	private void delete(long id) throws DataException {
+		// try {
+		// new AttendanceDAO().delete(id);
+		// } catch (SQLException e) {
+		// e.printStackTrace();
+		// throw new DataException(e);
+		// }
 	}
 
 	public Attendance getAttendanceById(long id) {
@@ -60,6 +62,16 @@ public class AttendanceService {
 	 * @return
 	 */
 	public Attendance getLastAttendanceTodayByStudentid(String studentid) {
+		if (StudentService.getCacheStudents().containsKey(studentid)) {
+			int lastindex = StudentService.getCacheStudents().get(studentid)
+					.getAttendances().size();
+			if (lastindex == 0) {
+				return null;
+			}
+			return StudentService.getCacheStudents().get(studentid)
+					.getAttendances().get(lastindex - 1);
+		}
+
 		TreeMap<String, Object> fields = new TreeMap<String, Object>();
 		fields.put("studentid", studentid);
 		fields.put("date", new Date(System.currentTimeMillis()));
@@ -76,7 +88,7 @@ public class AttendanceService {
 	 * @param studentid
 	 * @return
 	 */
-	public Attendance getLastAttendanceByStudentidDate(String studentid,
+	private Attendance getLastAttendanceByStudentidDate(String studentid,
 			Date date) {
 		if (StudentService.getCacheStudents().containsKey(studentid)) {
 			int lastindex = StudentService.getCacheStudents().get(studentid)

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import tw.jiangsir.Studyroom.DAOs.AttendanceDAO;
 import tw.jiangsir.Studyroom.DAOs.BookingService;
+import tw.jiangsir.Studyroom.DAOs.StudentService;
 import tw.jiangsir.Studyroom.Servlets.SignInServlet;
 import tw.jiangsir.Utils.Exceptions.AccessException;
 import tw.jiangsir.Utils.Interfaces.IAccessFilter;
@@ -86,6 +87,8 @@ public class IndexServlet extends HttpServlet implements IAccessFilter {
 
 		request.setAttribute("attendCount",
 				new AttendanceDAO().getAttendCount(date));
+		request.setAttribute("cacheStudents",
+				StudentService.getCacheStudents());
 
 		// TODO 還有幾個實驗要做：
 		// TODO_DONE 1. 因為被停權而“可以訂位”的座位，換了一個別人可以訂位嗎？

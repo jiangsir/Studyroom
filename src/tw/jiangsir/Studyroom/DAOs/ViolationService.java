@@ -24,6 +24,7 @@ public class ViolationService {
 
 	public int insert(Violation violation) throws DataException {
 		try {
+			StudentService.clearCacheStudent(violation.getStudentid());
 			return new ViolationDAO().insert(violation);
 		} catch (SQLException e) {
 			throw new DataException(e);
@@ -32,6 +33,7 @@ public class ViolationService {
 
 	public void update(Violation violation) throws DataException {
 		try {
+			StudentService.clearCacheStudent(violation.getStudentid());
 			new ViolationDAO().update(violation);
 		} catch (SQLException e) {
 			e.printStackTrace();

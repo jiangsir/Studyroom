@@ -89,6 +89,12 @@
 	text-decoration: none;
 	color: inherit;
 }
+
+#debug {
+	text-align: left;
+	background-color: maroon;
+	color: #AAAAAA;
+}
 </style>
 
 <script type="text/javascript"

@@ -24,9 +24,9 @@ public class Student implements Comparable<Student> {
 		this.date = date;
 		ViolationService violationService = new ViolationService();
 		this.setStudentid(studentid);
-		setViolations(violationService.getEnableViolationsByStudentid(studentid,
-				date));
-		setViolationQueue();
+		this.setViolations(violationService
+				.getEnableViolationsByStudentid(studentid, date));
+		this.setViolationQueue();
 		this.setAttendances(new AttendanceService()
 				.getAttendancesByStudentidDate(studentid, date, ORDER.ASC));
 
@@ -234,6 +234,11 @@ public class Student implements Comparable<Student> {
 				return -1;
 			}
 		}
-
 	}
+
+	@Override
+	public String toString() {
+		return this.getStudentid() + ":" + this.getDate();
+	}
+
 }

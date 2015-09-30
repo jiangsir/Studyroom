@@ -25,4 +25,8 @@ public class StudentService {
 		CacheStudents.clear();
 	}
 
+	public static void clearCacheStudent(String studentid) {
+		CacheStudents.remove(studentid);
+	}
+
 }

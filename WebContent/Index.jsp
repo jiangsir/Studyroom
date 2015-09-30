@@ -95,7 +95,12 @@
 			</div>
 		</c:otherwise>
 	</c:choose>
-
+	<c:if test="${sessionScope.currentUser.isAdmin}">
+		<fieldset id="debug">
+			<legend>Debug: </legend>
+			<div>共 ${fn:length(cacheStudents)}個 student:${cacheStudents }</div>
+		</fieldset>
+	</c:if>
 	<jsp:include page="Footer.jsp" />
 </body>
 </html>

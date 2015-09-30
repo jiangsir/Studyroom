@@ -130,7 +130,7 @@ public class BookingApi extends HttpServlet implements IAccessFilter {
 					throw new DataException("您(" + currentUser.getAccount()
 							+ ")可能不是這個位置(" + seatid + ")的主人，無法讓您取消訂位。");
 				}
-				new BookingService().delete(booking.getId());
+				new BookingService().delete(booking);
 
 				break;
 			case booked:
@@ -197,7 +197,7 @@ public class BookingApi extends HttpServlet implements IAccessFilter {
 					throw new DataException("您(" + studentid + ")可能不是這個位置("
 							+ seatid + ")的主人，無法讓您取消訂位。");
 				}
-				new BookingService().delete(booking.getId());
+				new BookingService().delete(booking);
 				return;
 			default:
 				break;
