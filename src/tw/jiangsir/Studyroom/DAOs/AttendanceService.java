@@ -78,13 +78,13 @@ public class AttendanceService {
 	 */
 	public Attendance getLastAttendanceByStudentidDate(String studentid,
 			Date date) {
-		if (StudentService.getTodayStudents().containsKey(studentid)) {
-			int lastindex = StudentService.getTodayStudents().get(studentid)
+		if (StudentService.getCacheStudents().containsKey(studentid)) {
+			int lastindex = StudentService.getCacheStudents().get(studentid)
 					.getAttendances().size();
 			if (lastindex == 0) {
 				return null;
 			}
-			return StudentService.getTodayStudents().get(studentid)
+			return StudentService.getCacheStudents().get(studentid)
 					.getAttendances().get(lastindex - 1);
 		}
 
@@ -100,8 +100,8 @@ public class AttendanceService {
 
 	public ArrayList<Attendance> getAttendancesByStudentidDate(String studentid,
 			Date date, ORDER order) {
-		if (StudentService.getTodayStudents().containsKey(studentid)) {
-			return StudentService.getTodayStudents().get(studentid)
+		if (StudentService.getCacheStudents().containsKey(studentid)) {
+			return StudentService.getCacheStudents().get(studentid)
 					.getAttendances();
 		}
 		TreeMap<String, Object> fields = new TreeMap<String, Object>();

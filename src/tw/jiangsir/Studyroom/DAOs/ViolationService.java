@@ -286,8 +286,8 @@ public class ViolationService {
 		// fields.put("status", Violation.STATUS.enable.name());
 		// return new ViolationDAO().getViolationsByFields(fields, "date ASC",
 		// 0);
-		if (StudentService.getTodayStudents().containsKey(studentid)) {
-			return StudentService.getTodayStudents().get(studentid)
+		if (StudentService.getCacheStudents().containsKey(studentid)) {
+			return StudentService.getCacheStudents().get(studentid)
 					.getViolations();
 		}
 

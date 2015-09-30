@@ -30,9 +30,13 @@ public class Student implements Comparable<Student> {
 		this.setAttendances(new AttendanceService()
 				.getAttendancesByStudentidDate(studentid, date, ORDER.ASC));
 
-		StudentService.getTodayStudents().put(studentid, this);
-		System.out.println(
-				"todayStudents=" + StudentService.getTodayStudents().size());
+		if (date.toString()
+				.equals(new Date(System.currentTimeMillis()).toString())) {
+			StudentService.putCacheStudent(this);
+			System.out.println(
+					"todayStudents=" + StudentService.getCacheStudents().size()
+							+ ", studentid=" + studentid + ", date=" + date);
+		}
 	}
 
 	public String getStudentid() {
