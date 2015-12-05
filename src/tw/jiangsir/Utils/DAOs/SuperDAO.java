@@ -34,7 +34,7 @@ abstract public class SuperDAO<T> {
 
 	Logger logger = Logger.getLogger(this.getClass().getName());
 	HashMap<String, Field> fields = new HashMap<String, Field>();
-	int PAGESIZE = 30;
+	int PAGESIZE = 20;
 
 	public static enum ORDER {
 		ASC, //

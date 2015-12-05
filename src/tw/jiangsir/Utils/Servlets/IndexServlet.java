@@ -22,11 +22,10 @@ import tw.jiangsir.Utils.Tools.DateTool;
 /**
  * Servlet implementation class Index
  */
-@WebServlet(urlPatterns = { "/Index" }, name = "Index")
+@WebServlet(urlPatterns = {"/Index"}, name = "Index")
 public class IndexServlet extends HttpServlet implements IAccessFilter {
 	private static final long serialVersionUID = 1L;
-	public static String[] urlPatterns = IndexServlet.class
-			.getAnnotation(WebServlet.class).urlPatterns();
+	public static String[] urlPatterns = IndexServlet.class.getAnnotation(WebServlet.class).urlPatterns();
 	public static ServletConfig config;
 
 	/**
@@ -37,11 +36,9 @@ public class IndexServlet extends HttpServlet implements IAccessFilter {
 	}
 
 	@Override
-	public void AccessFilter(HttpServletRequest request)
-			throws AccessException {
+	public void AccessFilter(HttpServletRequest request) throws AccessException {
 		SessionScope sessionScope = new SessionScope(request);
-		if (request.getQueryString() != null
-				&& !sessionScope.getCurrentUser().getIsAdmin()) {
+		if (request.getQueryString() != null && !sessionScope.getCurrentUser().getIsAdmin()) {
 			throw new AccessException("未被允許的參數。");
 		}
 	}
@@ -50,10 +47,9 @@ public class IndexServlet extends HttpServlet implements IAccessFilter {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		CurrentUser currentUser = new SessionScope(request.getSession(false))
-				.getCurrentUser();
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		CurrentUser currentUser = new SessionScope(request.getSession(false)).getCurrentUser();
 		AppConfig appConfig = ApplicationScope.getAppConfig();
 		// System.out.println("appConfig.getSigninip()=" +
 		// appConfig.getSigninip()
@@ -61,8 +57,8 @@ public class IndexServlet extends HttpServlet implements IAccessFilter {
 		// + ", currentUser=" + currentUser);
 		if (request.getRemoteAddr().equals(appConfig.getSigninip())
 				&& (currentUser == null || !currentUser.getIsAdmin())) {
-			response.sendRedirect(request.getContextPath() + SignInServlet.class
-					.getAnnotation(WebServlet.class).urlPatterns()[0]);
+			response.sendRedirect(
+					request.getContextPath() + SignInServlet.class.getAnnotation(WebServlet.class).urlPatterns()[0]);
 			return;
 		}
 		java.sql.Date date;
@@ -82,13 +78,11 @@ public class IndexServlet extends HttpServlet implements IAccessFilter {
 		request.setAttribute("prevdate", DateTool.getPrevDate(date));
 		// request.setAttribute("bookupMap",
 		// new BookingService().getBookupMapByDate(date));
-		request.setAttribute("hashBookings",
-				new BookingService().getHashBookings(date));
+		request.setAttribute("hashBookings", new BookingService().getHashBookings(date));
 
-		request.setAttribute("attendCount",
-				new AttendanceDAO().getAttendCount(date));
-		request.setAttribute("cacheStudents",
-				StudentService.getCacheStudents());
+		request.setAttribute("attendCount", new AttendanceDAO().getAttendCount(date));
+		// request.setAttribute("cacheStudents",
+		// StudentService.getCacheStudents());
 
 		// TODO 還有幾個實驗要做：
 		// TODO_DONE 1. 因為被停權而“可以訂位”的座位，換了一個別人可以訂位嗎？
@@ -108,8 +102,8 @@ public class IndexServlet extends HttpServlet implements IAccessFilter {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 	}
 
 }

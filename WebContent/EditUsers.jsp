@@ -7,16 +7,16 @@
 <jsp:include page="CommonHead.jsp" />
 
 <link rel="stylesheet" type="text/css" media="screen"
-	href="${pageContext.request.contextPath}/jscripts/jquery-ui-1.10.4.custom/css/ui-lightness/jquery-ui-1.10.4.custom.min.css" />
+	href="./jscripts/jquery-ui-1.10.4.custom/css/ui-lightness/jquery-ui-1.10.4.custom.min.css" />
 <link rel="stylesheet" type="text/css" media="screen"
-	href="${pageContext.request.contextPath}/jscripts/jquery.jqGrid-4.5.4/css/ui.jqgrid.css" />
+	href="./jscripts/jquery.jqGrid-4.5.4/css/ui.jqgrid.css" />
 
 <script type="text/javascript"
-	src="${pageContext.request.contextPath}/jscripts/jquery.jqGrid-4.5.4/js/jquery-1.9.0.min.js"></script>
+	src="./jscripts/jquery.jqGrid-4.5.4/js/jquery-1.9.0.min.js"></script>
 <script type="text/javascript"
-	src="${pageContext.request.contextPath}/jscripts/jquery-ui-1.10.4.custom/js/jquery-ui-1.10.4.custom.min.js"></script>
+	src="./jscripts/jquery-ui-1.10.4.custom/js/jquery-ui-1.10.4.custom.min.js"></script>
 <script type="text/javascript"
-	src="${pageContext.request.contextPath}/jscripts/jquery.jqGrid-4.5.4/js/jquery.jqGrid.min.js"></script>
+	src="./jscripts/jquery.jqGrid-4.5.4/js/jquery.jqGrid.min.js"></script>
 
 <script type="text/javascript">
 	jQuery(document).ready(function() {

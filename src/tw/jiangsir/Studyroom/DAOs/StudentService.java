@@ -18,6 +18,8 @@ public class StudentService {
 	}
 
 	public static void putCacheStudent(Student student) {
+		System.out.println("cacheStudents="
+				+ StudentService.getCacheStudents().size() + ", " + student);
 		CacheStudents.put(student.getStudentid(), student);
 	}
 

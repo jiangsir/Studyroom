@@ -18,7 +18,7 @@ import tw.jiangsir.Utils.Scopes.SessionScope;
 /**
  * Servlet implementation class BookUp
  */
-@WebServlet(urlPatterns = { "/Violation.api" })
+@WebServlet(urlPatterns = {"/Violation.api"})
 public class ViolationApi extends HttpServlet implements IAccessFilter {
 	private static final long serialVersionUID = 1L;
 
@@ -32,8 +32,7 @@ public class ViolationApi extends HttpServlet implements IAccessFilter {
 	@Override
 	public void AccessFilter(HttpServletRequest request) throws AccessException {
 		if ("POST".equals(request.getMethod())) {
-			CurrentUser currentUser = new SessionScope(request)
-					.getCurrentUser();
+			CurrentUser currentUser = new SessionScope(request).getCurrentUser();
 			if (currentUser == null || !currentUser.getIsAdmin()) {
 				throw new AccessException("您的權限不足。");
 			}
@@ -48,21 +47,19 @@ public class ViolationApi extends HttpServlet implements IAccessFilter {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		String action = request.getParameter("action");
 		switch (GETACTION.valueOf(action)) {
-		case getViolationsByStudentid:
-			String studentid = request.getParameter("studentid");
+			case getViolationsByStudentid :
+				String studentid = request.getParameter("studentid");
 
-			request.setAttribute("student", new Student(studentid, new Date(
-					System.currentTimeMillis())));
+				request.setAttribute("student", new Student(studentid, new Date(System.currentTimeMillis())));
 
-			request.getRequestDispatcher("includes/div/ViolationQueue.jsp")
-					.forward(request, response);
-			return;
-		default:
-			break;
+				request.getRequestDispatcher("includes/div/ViolationQueue.jsp").forward(request, response);
+				return;
+			default :
+				break;
 		}
 	}
 
@@ -72,68 +69,68 @@ public class ViolationApi extends HttpServlet implements IAccessFilter {
 		doPunished, // 針對某個日期將已經 punishing 14 天的人恢復權限。
 		cancelViolation, // 取消某一個 violation.
 		// disableAllViolations, // 刪除全部違規，每學期做一次。
-		disableViolationsByDate, // 清除某個日期之前的違規記錄，更彈性。
+		disableViolationsByDates, // 清除某個日期之前的違規記錄，更彈性。
+		disableViolationsByDate, // 清除某個日期的違規紀錄
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		CurrentUser currentUser = new SessionScope(request).getCurrentUser();
 		String action = request.getParameter("action");
 		switch (POSTACTION.valueOf(action)) {
-		case rebuiltViolationsByDate:
-			System.out.println("rebuiltViolationsByDate");
-			if (currentUser != null && currentUser.getIsAdmin()) {
-				Date date = Date.valueOf(request.getParameter("date"));
-				new ViolationService().builtViolationsByDate(date);
-			}
-			response.sendRedirect("."
-					+ new SessionScope(request).getCurrentPage());
-			break;
-		case doPunishingByDeleteBooking:
-			// if (currentUser != null && currentUser.getIsAdmin()) {
-			// Date date = Date.valueOf(request.getParameter("date"));
-			// new ViolationService().doPunishingByDeleteBooking(date);
-			// }
-			response.sendRedirect("."
-					+ new SessionScope(request).getCurrentPage());
-			break;
-		case doPunished:
-			// if (currentUser != null && currentUser.getIsAdmin()) {
-			// Date date = Date.valueOf(request.getParameter("date"));
-			// new ViolationService().doFinishPunishByDate(date);
-			// }
+			case rebuiltViolationsByDate :
+				System.out.println("rebuiltViolationsByDates");
+				if (currentUser != null && currentUser.getIsAdmin()) {
+					Date date = Date.valueOf(request.getParameter("date"));
+					new ViolationService().builtViolationsByDate(date);
+				}
+				response.sendRedirect("." + new SessionScope(request).getCurrentPage());
+				break;
+			case doPunishingByDeleteBooking :
+				// if (currentUser != null && currentUser.getIsAdmin()) {
+				// Date date = Date.valueOf(request.getParameter("date"));
+				// new ViolationService().doPunishingByDeleteBooking(date);
+				// }
+				response.sendRedirect("." + new SessionScope(request).getCurrentPage());
+				break;
+			case doPunished :
+				// if (currentUser != null && currentUser.getIsAdmin()) {
+				// Date date = Date.valueOf(request.getParameter("date"));
+				// new ViolationService().doFinishPunishByDate(date);
+				// }
+				// response.sendRedirect("."
+				// + new SessionScope(request).getCurrentPage());
+				break;
+			case cancelViolation :
+				int violationid = Integer.parseInt(request.getParameter("violationid"));
+				String comment = request.getParameter("comment");
+				Violation violation = new ViolationService().getViolationById(violationid);
+				violation.setComment(comment);
+				violation.setStatus(Violation.STATUS.cancel);
+				new ViolationService().update(violation);
+				response.sendRedirect("." + new SessionScope(request).getCurrentPage());
+				break;
+			// case disableAllViolations:
+			// new ViolationService().doDisableAllViolations();
 			// response.sendRedirect("."
 			// + new SessionScope(request).getCurrentPage());
-			break;
-		case cancelViolation:
-			int violationid = Integer.parseInt(request
-					.getParameter("violationid"));
-			String comment = request.getParameter("comment");
-			Violation violation = new ViolationService()
-					.getViolationById(violationid);
-			violation.setComment(comment);
-			violation.setStatus(Violation.STATUS.cancel);
-			new ViolationService().update(violation);
-			response.sendRedirect("."
-					+ new SessionScope(request).getCurrentPage());
-			break;
-		// case disableAllViolations:
-		// new ViolationService().doDisableAllViolations();
-		// response.sendRedirect("."
-		// + new SessionScope(request).getCurrentPage());
-		// break;
-		case disableViolationsByDate:
-			Date date = Date.valueOf(request.getParameter("date"));
-			new ViolationService().doDisableViolationsBeforeDate(date);
-			response.sendRedirect("."
-					+ new SessionScope(request).getCurrentPage());
-			break;
-		default:
-			break;
+			// break;
+			case disableViolationsByDates :
+				Date date = Date.valueOf(request.getParameter("date"));
+				new ViolationService().doDisableViolationsBeforeDate(date);
+				response.sendRedirect("." + new SessionScope(request).getCurrentPage());
+				break;
+			case disableViolationsByDate :
+				date = Date.valueOf(request.getParameter("date"));
+				new ViolationService().doDisableViolationsByDate(date);
+				response.sendRedirect("." + new SessionScope(request).getCurrentPage());
+				break;
+			default :
+				break;
 
 		}
 	}

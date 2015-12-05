@@ -25,8 +25,7 @@ public class BookingDAO extends SuperDAO<Booking> {
 	@Override
 	protected synchronized int insert(Booking booking) throws SQLException {
 		String sql = "INSERT INTO bookings(userid, studentid, seatid, `date`, `status`, `timestamp`) VALUES (?,?,?,?,?,?);";
-		PreparedStatement pstmt = this.getConnection().prepareStatement(sql,
-				Statement.RETURN_GENERATED_KEYS);
+		PreparedStatement pstmt = this.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 		pstmt.setLong(1, booking.getUserid());
 		pstmt.setString(2, booking.getStudentid());
 		pstmt.setInt(3, booking.getSeatid());
@@ -75,8 +74,7 @@ public class BookingDAO extends SuperDAO<Booking> {
 		return null;
 	}
 
-	protected Booking getBookingByStudentidDate(String studentid, Date date)
-			throws SQLException {
+	protected Booking getBookingByStudentidDate(String studentid, Date date) throws SQLException {
 		String sql = "SELECT * FROM bookings WHERE studentid=? AND `date`=?";
 		PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
 		pstmt.setString(1, studentid);
@@ -87,8 +85,7 @@ public class BookingDAO extends SuperDAO<Booking> {
 		return null;
 	}
 
-	protected ArrayList<Booking> getBookingsByStudentid(String studentid)
-			throws SQLException {
+	protected ArrayList<Booking> getBookingsByStudentid(String studentid) throws SQLException {
 		String sql = "SELECT * FROM bookings WHERE studentid=?";
 		PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
 		pstmt.setString(1, studentid);
@@ -102,8 +99,7 @@ public class BookingDAO extends SuperDAO<Booking> {
 	 * @return
 	 * @throws SQLException
 	 */
-	protected ArrayList<Booking> getBookingsByDate(Date date)
-			throws SQLException {
+	protected ArrayList<Booking> getBookingsByDate(Date date) throws SQLException {
 		// 由於允許 overBooking 的存在。因此這裡必須改成取得最後一個 booking 的資料，要用 GROUP BY 處理
 		// SELECT * FROM (SELECT * FROM bookings WHERE date='2015-02-03' ORDER
 		// BY id DESC) as temp
@@ -123,8 +119,7 @@ public class BookingDAO extends SuperDAO<Booking> {
 	 * @return
 	 * @throws SQLException
 	 */
-	protected Booking getBookingsBySeatidDate(int seatid, Date date)
-			throws SQLException {
+	protected Booking getBookingsBySeatidDate(int seatid, Date date) throws SQLException {
 		String sql = "SELECT * FROM (SELECT * FROM bookings WHERE seatid=? AND date=? AND `status`=? "
 				+ "ORDER BY id DESC) as temp GROUP BY seatid,date";
 		PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
@@ -137,8 +132,7 @@ public class BookingDAO extends SuperDAO<Booking> {
 		return null;
 	}
 
-	protected HashMap<Integer, String> getBookupMapByDate(Date date)
-			throws SQLException {
+	protected HashMap<Integer, String> getBookupMapByDate(Date date) throws SQLException {
 		HashMap<Integer, String> bookupmap = new HashMap<Integer, String>();
 		String sql = "SELECT seatid, studentid FROM bookings WHERE date=?";
 		PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
@@ -158,8 +152,12 @@ public class BookingDAO extends SuperDAO<Booking> {
 	}
 
 	protected boolean delete(int seatid, Date date) throws SQLException {
-		String sql = "DELETE FROM bookings WHERE seatid=? AND date=?";
-		PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
+		// DELETE FROM bookings WHERE id=(SELECT id FROM (SELECT * FROM bookings
+		// WHERE seatid=18 AND date='2015-10-19' ORDER BY id DESC) as temp GROUP
+		// BY seatid,date);
+		String sql2 = "DELETE FROM bookings WHERE id=(SELECT id FROM (SELECT * FROM bookings WHERE seatid=? AND date=? ORDER BY id DESC) as temp GROUP BY seatid,date);";
+		// 刪掉 OverBooking! 的第一筆。不應全部刪掉。
+		PreparedStatement pstmt = this.getConnection().prepareStatement(sql2);
 		pstmt.setInt(1, seatid);
 		pstmt.setDate(2, date);
 		return this.executeDelete(pstmt);

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.TreeMap;
 
 import tw.jiangsir.Studyroom.Tables.Attendance;
+import tw.jiangsir.Utils.DAOs.SuperDAO;
 import tw.jiangsir.Utils.DAOs.SuperDAO.ORDER;
 import tw.jiangsir.Utils.Exceptions.DataException;
 
@@ -42,17 +43,32 @@ public class AttendanceService {
 	public Attendance getAttendanceById(long id) {
 		TreeMap<String, Object> fields = new TreeMap<String, Object>();
 		fields.put("id", id);
-		for (Attendance attendance : new AttendanceDAO()
-				.getAttendanceByFields(fields, "", 0)) {
+		for (Attendance attendance : new AttendanceDAO().getAttendanceByFields(fields, "", 0)) {
 			return attendance;
 		}
 		return null;
 	}
 
+	/**
+	 * 
+	 * @param date
+	 * @param page
+	 * @return
+	 */
+	public ArrayList<Attendance> getAttendancesByDate(Date date, int page) {
+		TreeMap<String, Object> fields = new TreeMap<String, Object>();
+		fields.put("date", date);
+		return new AttendanceDAO().getAttendanceByFields(fields, "timestamp DESC", page);
+	}
+
+	/**
+	 * 
+	 * @param page
+	 * @return
+	 */
 	public ArrayList<Attendance> getAttendances(int page) {
 		TreeMap<String, Object> fields = new TreeMap<String, Object>();
-		return new AttendanceDAO().getAttendanceByFields(fields,
-				"timestamp DESC", page);
+		return new AttendanceDAO().getAttendanceByFields(fields, "timestamp DESC", page);
 	}
 
 	/**
@@ -62,21 +78,20 @@ public class AttendanceService {
 	 * @return
 	 */
 	public Attendance getLastAttendanceTodayByStudentid(String studentid) {
-		if (StudentService.getCacheStudents().containsKey(studentid)) {
-			int lastindex = StudentService.getCacheStudents().get(studentid)
-					.getAttendances().size();
-			if (lastindex == 0) {
-				return null;
-			}
-			return StudentService.getCacheStudents().get(studentid)
-					.getAttendances().get(lastindex - 1);
-		}
+		// if (StudentService.getCacheStudents().containsKey(studentid)) {
+		// int lastindex = StudentService.getCacheStudents().get(studentid)
+		// .getAttendances().size();
+		// if (lastindex == 0) {
+		// return null;
+		// }
+		// return StudentService.getCacheStudents().get(studentid)
+		// .getAttendances().get(lastindex - 1);
+		// }
 
 		TreeMap<String, Object> fields = new TreeMap<String, Object>();
 		fields.put("studentid", studentid);
 		fields.put("date", new Date(System.currentTimeMillis()));
-		for (Attendance attendance : new AttendanceDAO()
-				.getAttendanceByFields(fields, "timestamp DESC", 0)) {
+		for (Attendance attendance : new AttendanceDAO().getAttendanceByFields(fields, "timestamp DESC", 0)) {
 			return attendance;
 		}
 		return null;
@@ -88,39 +103,35 @@ public class AttendanceService {
 	 * @param studentid
 	 * @return
 	 */
-	private Attendance getLastAttendanceByStudentidDate(String studentid,
-			Date date) {
-		if (StudentService.getCacheStudents().containsKey(studentid)) {
-			int lastindex = StudentService.getCacheStudents().get(studentid)
-					.getAttendances().size();
-			if (lastindex == 0) {
-				return null;
-			}
-			return StudentService.getCacheStudents().get(studentid)
-					.getAttendances().get(lastindex - 1);
-		}
+	private Attendance getLastAttendanceByStudentidDate(String studentid, Date date) {
+		// if (StudentService.getCacheStudents().containsKey(studentid)) {
+		// int lastindex =
+		// StudentService.getCacheStudents().get(studentid).getAttendances().size();
+		// if (lastindex == 0) {
+		// return null;
+		// }
+		// return
+		// StudentService.getCacheStudents().get(studentid).getAttendances().get(lastindex
+		// - 1);
+		// }
 
 		TreeMap<String, Object> fields = new TreeMap<String, Object>();
 		fields.put("studentid", studentid);
 		fields.put("date", date);
-		for (Attendance attendance : new AttendanceDAO()
-				.getAttendanceByFields(fields, "timestamp " + ORDER.DESC, 0)) {
+		for (Attendance attendance : new AttendanceDAO().getAttendanceByFields(fields, "timestamp " + ORDER.DESC, 0)) {
 			return attendance;
 		}
 		return null;
 	}
 
-	public ArrayList<Attendance> getAttendancesByStudentidDate(String studentid,
-			Date date, ORDER order) {
-		if (StudentService.getCacheStudents().containsKey(studentid)) {
-			return StudentService.getCacheStudents().get(studentid)
-					.getAttendances();
-		}
+	public ArrayList<Attendance> getAttendancesByStudentidDate(String studentid, Date date, ORDER order) {
+//		if (StudentService.getCacheStudents().containsKey(studentid)) {
+//			return StudentService.getCacheStudents().get(studentid).getAttendances();
+//		}
 		TreeMap<String, Object> fields = new TreeMap<String, Object>();
 		fields.put("studentid", studentid);
 		fields.put("date", date);
-		return new AttendanceDAO().getAttendanceByFields(fields,
-				"timestamp " + order, 0);
+		return new AttendanceDAO().getAttendanceByFields(fields, "timestamp " + order, 0);
 	}
 
 	public void doSignIn(String studentid) {
@@ -140,7 +151,6 @@ public class AttendanceService {
 	public ArrayList<Attendance> getAttendancesByDate(Date date) {
 		TreeMap<String, Object> fields = new TreeMap<String, Object>();
 		fields.put("date", date);
-		return new AttendanceDAO().getAttendanceByFields(fields,
-				"timestamp DESC", 0);
+		return new AttendanceDAO().getAttendanceByFields(fields, "timestamp DESC", 0);
 	}
 }

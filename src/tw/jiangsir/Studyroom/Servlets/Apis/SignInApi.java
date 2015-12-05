@@ -34,7 +34,8 @@ public class SignInApi extends HttpServlet implements IAccessFilter {
 	}
 
 	@Override
-	public void AccessFilter(HttpServletRequest request) throws AccessException {
+	public void AccessFilter(HttpServletRequest request)
+			throws AccessException {
 	}
 
 	/**
@@ -55,10 +56,11 @@ public class SignInApi extends HttpServlet implements IAccessFilter {
 		Time now = Time.valueOf(new SimpleDateFormat("HH:mm:ss")
 				.format(new Time(System.currentTimeMillis())));
 		AppConfig appConfig = ApplicationScope.getAppConfig();
-		if (!(now.after(appConfig.getSigninbegin()) && now.before(appConfig
-				.getSigninend()))) {
+		if (!(now.after(appConfig.getSigninbegin())
+				&& now.before(appConfig.getSigninend()))) {
 			throw new ApiException("簽到／退時間為 " + appConfig.getSigninbegin()
-					+ " 到 " + appConfig.getSigninend() + "，請在時間內進行簽到／退。");
+					+ " 到 " + appConfig.getSigninend() + "，請在時間內進行簽到／退。now="
+					+ now);
 		}
 		Booking booking = new BookingService()
 				.getBookingTodayByStudentid(studentid);

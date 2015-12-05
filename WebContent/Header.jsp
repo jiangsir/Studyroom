@@ -13,26 +13,20 @@
 	</div>
 
 	<ul id="menu">
-		<li style="float: left; text-align: left;"><a
-			href="${pageContext.request.contextPath}/">回首頁</a></li>
+		<li style="float: left; text-align: left;"><a href="./">回首頁</a></li>
 		<li style="float: left; text-align: left;"><a href="#">${pageContext.request.remoteAddr}</a></li>
 		<li><c:if test="${sessionScope.currentUser!=null}">
 				<c:if test="${sessionScope.currentUser.isAdmin}">
 					<li><a href="#">管理</a>
 						<ul>
-							<li><a
-								href="${pageContext.request.contextPath}/ManageBooking">管理每日訂位</a></li>
-							<li><a
-								href="${pageContext.request.contextPath}/BatchBooking">進行預約(固定)劃位</a></li>
-							<li><a
-								href="${pageContext.request.contextPath}/ManageRoomstatus">管理開館、閉館日期</a></li>
-							<li><a
-								href="${pageContext.request.contextPath}/ManageViolations">統計違規紀錄</a></li>
-							<li><a
-								href="${pageContext.request.contextPath}/EditAppConfig">管理系統參數</a></li>
+							<li><a href="./ManageBooking">管理每日訂位</a></li>
+							<li><a href="./BatchBooking">進行預約(固定)劃位</a></li>
+							<li><a href="./ManageRoomstatus">管理開館、閉館日期</a></li>
+							<li><a href="./ManageViolations">統計違規紀錄</a></li>
+							<li><a href="./EditAppConfig">管理系統參數</a></li>
 						</ul></li>
 				</c:if>
-				<li><a href="${pageContext.request.contextPath}/Logout">登出</a></li>
+				<li><a href="./Logout">登出</a></li>
 				<li><img src="${sessionScope.currentUser.picture}"
 					height="30px" style="vertical-align: middle;" />
 					${sessionScope.currentUser.account}(${sessionScope.currentUser.name})
@@ -42,11 +36,11 @@
 						<li><a href="${pageContext.request.contextPath}/Logout">登出</a></li>
 					</ul> --%></li>
 			</c:if> <c:if test="${sessionScope.currentUser==null}">
-				<li><a href="${pageContext.request.contextPath}/GoogleLogin">登入學生信箱</a></li>
+				<li><a href="./GoogleLogin">登入學生信箱</a></li>
 			</c:if></li>
 		<c:if
 			test="${pageContext.request.remoteAddr == applicationScope.appConfig.signinip || sessionScope.currentUser.isAdmin}">
-			<li><a href="${pageContext.request.contextPath}/SignIn">簽到／退</a></li>
+			<li><a href="./SignIn">簽到／退</a></li>
 		</c:if>
 		<%-- 		<c:if
 			test="${pageContext.request.remoteAddr != applicationScope.appConfig.signinip || sessionScope.currentUser.isAdmin}">

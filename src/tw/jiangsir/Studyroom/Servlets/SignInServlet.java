@@ -1,6 +1,8 @@
 package tw.jiangsir.Studyroom.Servlets;
 
 import java.io.IOException;
+import java.sql.Date;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -32,7 +34,8 @@ public class SignInServlet extends HttpServlet {
 		if (request.getRemoteAddr().equals(appConfig.getSigninip())
 				|| (currentUser != null && currentUser.getIsAdmin())) {
 			request.setAttribute("attendances",
-					new AttendanceService().getAttendances(1));
+					new AttendanceService().getAttendancesByDate(
+							new Date(System.currentTimeMillis()), 1));
 			request.getRequestDispatcher("SignIn.jsp").forward(request,
 					response);
 			return;

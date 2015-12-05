@@ -30,8 +30,7 @@ public class ViolationDAO extends SuperDAO<Violation> {
 	protected synchronized int insert(Violation violation) throws SQLException {
 		String sql = "INSERT INTO violations(`date`, `studentid`, `reason`, `comment`, `status`, "
 				+ "`timestamp`) VALUES (?,?,?,?,?,?);";
-		PreparedStatement pstmt = this.getConnection().prepareStatement(sql,
-				Statement.RETURN_GENERATED_KEYS);
+		PreparedStatement pstmt = this.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 		pstmt.setDate(1, violation.getDate());
 		pstmt.setString(2, violation.getStudentid());
 		pstmt.setString(3, violation.getReason().name());
@@ -113,11 +112,25 @@ public class ViolationDAO extends SuperDAO<Violation> {
 	 * @return
 	 * @throws SQLException
 	 */
-	protected synchronized int setDisableBeforeDate(Date date)
-			throws SQLException {
-		String sql = "UPDATE violations SET `status`='"
-				+ Violation.STATUS.disable.name() + "' WHERE `status`='"
+	protected synchronized int setDisableBeforeDate(Date date) throws SQLException {
+		String sql = "UPDATE violations SET `status`='" + Violation.STATUS.disable.name() + "' WHERE `status`='"
 				+ Violation.STATUS.enable.name() + "' && date<=?";
+		int result = -1;
+		PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
+		pstmt.setDate(1, date);
+		result = this.executeUpdate(pstmt);
+		pstmt.close();
+		return result;
+	}
+	/**
+	 * 將某一天的違規設定為 disable
+	 * 
+	 * @return
+	 * @throws SQLException
+	 */
+	protected synchronized int setDisableByDate(Date date) throws SQLException {
+		String sql = "UPDATE violations SET `status`='" + Violation.STATUS.disable.name() + "' WHERE `status`='"
+				+ Violation.STATUS.enable.name() + "' && date=?";
 		int result = -1;
 		PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
 		pstmt.setDate(1, date);
@@ -140,14 +153,11 @@ public class ViolationDAO extends SuperDAO<Violation> {
 		return this.executeDelete(pstmt);
 	}
 
-	protected ArrayList<Violation> getViolationsByFields(
-			TreeMap<String, Object> fields, String orderby, int page) {
-		String sql = "SELECT * FROM violations "
-				+ this.makeFields(fields, orderby, page);
+	protected ArrayList<Violation> getViolationsByFields(TreeMap<String, Object> fields, String orderby, int page) {
+		String sql = "SELECT * FROM violations " + this.makeFields(fields, orderby, page);
 
 		try {
-			PreparedStatement pstmt = this.getConnection()
-					.prepareStatement(sql);
+			PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
 			int i = 1;
 			for (String field : fields.keySet()) {
 				pstmt.setObject(i++, fields.get(field));
@@ -169,11 +179,9 @@ public class ViolationDAO extends SuperDAO<Violation> {
 		// status="enable" GROUP BY studentid ORDER BY count DESC;
 		LinkedHashMap<String, Integer> studentids = new LinkedHashMap<String, Integer>();
 		String sql = "SELECT COUNT(studentid) AS count,studentid FROM `violations` WHERE status='"
-				+ Violation.STATUS.enable.name()
-				+ "' GROUP BY studentid ORDER BY count DESC;";
+				+ Violation.STATUS.enable.name() + "' GROUP BY studentid ORDER BY count DESC;";
 		try {
-			PreparedStatement pstmt = this.getConnection()
-					.prepareStatement(sql);
+			PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				studentids.put(rs.getString("studentid"), rs.getInt("count"));
@@ -199,11 +207,9 @@ public class ViolationDAO extends SuperDAO<Violation> {
 	 * @throws SQLException
 	 * @deprecated
 	 */
-	private ArrayList<String> getStudentidsWithEnableViolation(Date date)
-			throws SQLException {
+	private ArrayList<String> getStudentidsWithEnableViolation(Date date) throws SQLException {
 		String sql = "SELECT COUNT(studentid) AS count,studentid FROM violations WHERE `status`='"
-				+ Violation.STATUS.enable.name()
-				+ "' AND date<=? GROUP BY studentid ORDER BY count DESC";
+				+ Violation.STATUS.enable.name() + "' AND date<? GROUP BY studentid ORDER BY count DESC";
 		PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
 		pstmt.setDate(1, date);
 		ArrayList<String> studentids = new ArrayList<String>();
@@ -214,18 +220,17 @@ public class ViolationDAO extends SuperDAO<Violation> {
 	}
 
 	/**
-	 * 取得目前有 1 個以上的 violation 的 student
+	 * 取得目前有 1 個以上的 violation 的 student<br>
+	 * 20151205 改成統計到前一天為止。 date<=? 改成 date<?
 	 * 
 	 * @param date
 	 *            在這個時間點以前的 enable Violations
 	 * @return
 	 * @throws SQLException
 	 */
-	protected ArrayList<Student> getStudentsWithEnableViolation(Date date)
-			throws SQLException {
+	protected ArrayList<Student> getStudentsWithEnableViolation(Date date) throws SQLException {
 		String sql = "SELECT COUNT(studentid) AS count,studentid FROM violations WHERE `status`='"
-				+ Violation.STATUS.enable.name()
-				+ "' AND date<=? GROUP BY studentid ORDER BY count DESC";
+				+ Violation.STATUS.enable.name() + "' AND date<? GROUP BY studentid ORDER BY count DESC";
 		PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
 		pstmt.setDate(1, date);
 		ArrayList<Student> students = new ArrayList<Student>();
@@ -237,18 +242,17 @@ public class ViolationDAO extends SuperDAO<Violation> {
 	}
 
 	/**
-	 * 取得某個 studentid 的所有 enable Violations
+	 * 取得某個 studentid 的所有 enable Violations<br>
+	 * 20151205 改成統計到前一天為止。 date<=? 改成 date<?
 	 * 
 	 * @param studentid
 	 * @param date
 	 * @return
 	 * @throws SQLException
 	 */
-	protected ArrayList<Violation> getEnabledViolations(String studentid,
-			Date date) throws SQLException {
-		String sql = "SELECT * FROM violations WHERE studentid=? AND `status`='"
-				+ Violation.STATUS.enable.name()
-				+ "' AND date<=? ORDER BY date ASC";
+	protected ArrayList<Violation> getEnabledViolations(String studentid, Date date) throws SQLException {
+		String sql = "SELECT * FROM violations WHERE studentid=? AND `status`='" + Violation.STATUS.enable.name()
+				+ "' AND date<? ORDER BY date ASC";
 		PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
 		pstmt.setString(1, studentid);
 		pstmt.setDate(2, date);

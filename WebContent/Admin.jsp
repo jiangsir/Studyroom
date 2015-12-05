@@ -34,7 +34,7 @@
 	</p>
 	<ul>
 		<li>RoleFilter: 處理所有要求要登入的頁面，以及登入後的身份是否能夠瀏覽該頁面。如：<a
-			href="${pageContext.request.contextPath}/Booking.do">劃位</a>。
+			href="./Booking.do">劃位</a>。
 		</li>
 		<li>EncodingFilter: 對所有的 request parameter 進行編碼，可處理中文參數。</li>
 		<li>EscapeFilter: 對所有的 request parameter 過濾特殊符號，可避免 XSS 攻擊。</li>
@@ -71,27 +71,26 @@
 	<p>錯誤頁面的處理: 為了避免將系統錯誤畫面顯示出來，而捕捉所有錯誤，改用自定畫面。</p>
 	<ul>
 		<li>ErrorPageHandlerServlet: 頁面錯誤，常見的如 404 找不到頁面。<a
-			href="${pageContext.request.contextPath}/sdfadf">不存在的頁面</a></li>
+			href="$./sdfadf">不存在的頁面</a></li>
 		<li>ExceptionHandlerServlet: 捕捉由 servlet 拋出的 Exception
-			並顯示在自定畫面裡。比如：讀取不符權限的頁面<a
-			href="${pageContext.request.contextPath}/DeleteUser.do?userid=888">刪除user</a>
+			並顯示在自定畫面裡。比如：讀取不符權限的頁面<a href="./DeleteUser.do?userid=888">刪除user</a>
 		</li>
 	</ul>
 
 	<p>資料庫處理</p>
 	<ul>
 		<li>使用 PreparedStatement ，可避免 SQL Injection</li>
-		<li><a href="${pageContext.request.contextPath}/Admin.do">增刪改查</a></li>
+		<li><a href="./Admin.do">增刪改查</a></li>
 	</ul>
 	<p>上傳檔案，並存入資料庫</p>
 	<ul>
-		<li><a href="${pageContext.request.contextPath}/ShowUpfiles">檔案列表</a></li>
-		<li><a href="${pageContext.request.contextPath}/InsertUpfile.do">上傳檔案</a></li>
+		<li><a href="./ShowUpfiles">檔案列表</a></li>
+		<li><a href="./InsertUpfile.do">上傳檔案</a></li>
 	</ul>
 
 	<p>非同步資料處理：實作伺服器推播</p>
 	<ul>
-		<li><a href="${pageContext.request.contextPath}/AsyncNum.html">非同步即時資料</a></li>
+		<li><a href="./AsyncNum.html">非同步即時資料</a></li>
 	</ul>
 	<p>自定 JSTL：可以自定 tag 或 function 備用。</p>
 	<ul>
@@ -103,9 +102,10 @@
 	<p>前端技術：jquery</p>
 	<div id="dialog-confirm" title="Empty the recycle bin?">
 		<p>
-			<span class="ui-icon ui-icon-alert"
-				style="float: left; margin: 0 7px 20px 0;"></span>These items will
-			be permanently deleted and cannot be recovered. Are you sure?
+			<!-- <span class="ui-icon ui-icon-alert"
+				style="float: left; margin: 0 7px 20px 0;".> -->
+			These items will be permanently deleted and cannot be recovered. Are
+			you sure?
 		</p>
 	</div>
 	<ul>
@@ -125,17 +125,17 @@
 		</li>
 
 		<li>用 jquery 來控制 select options.<a
-			href="${pageContext.request.contextPath}/UpdateUser.do?userid=${sessionScope.user.id}">修改使用者時自動選好原始的
+			href="./UpdateUser.do?userid=${sessionScope.user.id}">修改使用者時自動選好原始的
 				ROLE</a></li>
 		<li>用 jQuery 處理行動版網頁。</li>
 		<li>用 jQuery 處理 grid 表格 使用 jqGrid <a
-			href="${pageContext.request.contextPath}/EditUsers">管理使用者</a></li>
+			href="./EditUsers">管理使用者</a></li>
 	</ul>
 	<p>進行 google apps 郵件認證！</p>
 	<ul>
-		<li><a href="${pageContext.request.contextPath}/GooglePopLogin">用
+		<li><a href="./GooglePopLogin">用
 				pop3</a></li>
-		<li><a href="${pageContext.request.contextPath}/GoogleLogin">用
+		<li><a href="./GoogleLogin">用
 				OAuth2</a></li>
 	</ul>
 	<p>防止重複 submit</p>

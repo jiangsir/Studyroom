@@ -23,41 +23,33 @@ public class BookingService {
 		// 已經對資料庫的 studentid, date 兩個欄位設定為 UNIQUE 因此不需要在這邊作判斷。
 
 		if (booking.getUser().getRole() != User.ROLE.ADMIN) {
-			new ViolationService().checkBookingRight(booking.getStudentid(),
-					booking.getDate());
+			new ViolationService().checkBookingRight(booking.getStudentid(), booking.getDate());
 		}
 
 		if (booking.getStudent().getIsStopBooking()) {
-			throw new DataException("您(" + booking.getStudentid() + ") 目前("
-					+ booking.getDate() + ")仍在停權中，還不能訂位哦！");
+			throw new DataException("您(" + booking.getStudentid() + ") 目前(" + booking.getDate() + ")仍在停權中，還不能訂位哦！");
 		}
 
 		try {
-			Booking otherbooking = bookingDao.getBookingByStudentidDate(
-					booking.getStudentid(), booking.getDate());
+			Booking otherbooking = bookingDao.getBookingByStudentidDate(booking.getStudentid(), booking.getDate());
 			if (otherbooking != null) {
 				throw new DataException("您(" + booking.getStudentid() + ")在 "
-						+ (DateTool.isSameday(otherbooking.getDate(),
-								new java.util.Date()) ? "今天"
-										: otherbooking.getDate())
+						+ (DateTool.isSameday(otherbooking.getDate(), new java.util.Date())
+								? "今天"
+								: otherbooking.getDate())
 						+ " 已經訂過 " + otherbooking.getSeatid() + "號位置了，不能重複訂位。");
 			}
 
-			if (!this.getCanOverBooking(booking.getSeatid(),
-					booking.getDate())) {
-				throw new DataException(""
-						+ (DateTool.isSameday(booking.getDate(),
-								new java.util.Date()) ? "今天"
-										: booking.getDate())
-						+ " " + booking.getSeatid() + "號位置已經被預定了，您("
-						+ booking.getStudentid() + ") 無法再訂這個位置了。");
+			if (!this.getCanOverBooking(booking.getSeatid(), booking.getDate())) {
+				throw new DataException(
+						"" + (DateTool.isSameday(booking.getDate(), new java.util.Date()) ? "今天" : booking.getDate())
+								+ " " + booking.getSeatid() + "號位置已經被預定了，您(" + booking.getStudentid() + ") 無法再訂這個位置了。");
 			}
 			return bookingDao.insert(booking);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			if (e instanceof com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException) {
-				throw new DataException(
-						"您在 " + booking.getDate() + " 已經訂過位置了，不能重複訂位。");
+				throw new DataException("您在 " + booking.getDate() + " 已經訂過位置了，不能重複訂位。");
 			}
 			throw new DataException(e);
 		}
@@ -113,8 +105,7 @@ public class BookingService {
 	 */
 	private ArrayList<Booking> getBookingsToday() {
 		try {
-			return new BookingDAO()
-					.getBookingsByDate(new Date(System.currentTimeMillis()));
+			return new BookingDAO().getBookingsByDate(new Date(System.currentTimeMillis()));
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new DataException(e);
@@ -141,11 +132,9 @@ public class BookingService {
 		HashMap<String, Booking> hashBookings = new HashMap<String, Booking>();
 		try {
 			for (Booking booking : new BookingDAO().getBookingsByDate(date)) {
-				System.out.println("booking=" + booking + ", "
-						+ booking.getStudent().getIsStopBooking());
+				System.out.println("booking=" + booking + ", " + booking.getStudent().getIsStopBooking());
 				if (!booking.getStudent().getIsStopBooking()) {
-					hashBookings.put(String.valueOf(booking.getSeatid()),
-							booking);
+					hashBookings.put(String.valueOf(booking.getSeatid()), booking);
 				}
 			}
 		} catch (SQLException e) {
@@ -156,8 +145,7 @@ public class BookingService {
 
 	public HashMap<Integer, String> getBookupMapToday() {
 		try {
-			return new BookingDAO().getBookupMapByDate(
-					new Date(new java.util.Date().getTime()));
+			return new BookingDAO().getBookupMapByDate(new Date(new java.util.Date().getTime()));
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new DataException(e);
@@ -181,8 +169,7 @@ public class BookingService {
 	 */
 	public Booking getBookingTodayByStudentid(String studentid) {
 		try {
-			return new BookingDAO().getBookingByStudentidDate(studentid,
-					new Date(System.currentTimeMillis()));
+			return new BookingDAO().getBookingByStudentidDate(studentid, new Date(System.currentTimeMillis()));
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new DataException(e);
@@ -217,10 +204,8 @@ public class BookingService {
 	 */
 	public boolean getCanOverBooking(int seatid, Date date) {
 		try {
-			Booking booking = new BookingDAO().getBookingsBySeatidDate(seatid,
-					date);
-			if (booking == null || (booking != null
-					&& booking.getStudent().getIsStopBooking())) {
+			Booking booking = new BookingDAO().getBookingsBySeatidDate(seatid, date);
+			if (booking == null || (booking != null && booking.getStudent().getIsStopBooking())) {
 				return true;
 			}
 		} catch (SQLException e) {
@@ -263,8 +248,7 @@ public class BookingService {
 	 * @param begindate
 	 * @param enddate
 	 */
-	public void insertBooking(long userid, String studentid, int seatid,
-			Date date) {
+	public void insertBooking(long userid, String studentid, int seatid, Date date) {
 		Booking booking = new Booking();
 		booking.setUserid(userid);
 		booking.setStudentid(studentid);

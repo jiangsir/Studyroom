@@ -2,9 +2,7 @@ package tw.jiangsir.Studyroom.Objects;
 
 import java.sql.Date;
 import java.util.ArrayList;
-
 import tw.jiangsir.Studyroom.DAOs.AttendanceService;
-import tw.jiangsir.Studyroom.DAOs.StudentService;
 import tw.jiangsir.Studyroom.DAOs.ViolationService;
 import tw.jiangsir.Studyroom.Tables.Attendance;
 import tw.jiangsir.Studyroom.Tables.Violation;
@@ -24,19 +22,14 @@ public class Student implements Comparable<Student> {
 		this.date = date;
 		ViolationService violationService = new ViolationService();
 		this.setStudentid(studentid);
-		this.setViolations(violationService
-				.getEnableViolationsByStudentid(studentid, date));
+		this.setViolations(violationService.getEnableViolationsByStudentid(studentid, date));
 		this.setViolationQueue();
-		this.setAttendances(new AttendanceService()
-				.getAttendancesByStudentidDate(studentid, date, ORDER.ASC));
+		this.setAttendances(new AttendanceService().getAttendancesByStudentidDate(studentid, date, ORDER.ASC));
 
-		if (date.toString()
-				.equals(new Date(System.currentTimeMillis()).toString())) {
-			StudentService.putCacheStudent(this);
-			System.out.println(
-					"todayStudents=" + StudentService.getCacheStudents().size()
-							+ ", studentid=" + studentid + ", date=" + date);
-		}
+		// if (date.toString()
+		// .equals(new Date(System.currentTimeMillis()).toString())) {
+		// StudentService.putCacheStudent(this);
+		// }
 	}
 
 	public String getStudentid() {
@@ -56,12 +49,9 @@ public class Student implements Comparable<Student> {
 	}
 
 	public ViolationQueue getViolationQueue() {
-		if (violationQueue.isFull() && (DateTool.getDayCountBetween(
-				violationQueue.getLast().getDate(), date) < 0
-				|| DateTool.getDayCountBetween(
-						violationQueue.getLast().getDate(),
-						date) > ApplicationScope.getAppConfig()
-								.getPunishingdays())) {
+		if (violationQueue.isFull() && (DateTool.getDayCountBetween(violationQueue.getLast().getDate(), date) < 0
+				|| DateTool.getDayCountBetween(violationQueue.getLast().getDate(), date) > ApplicationScope
+						.getAppConfig().getPunishingdays())) {
 			violationQueue.clear();
 		}
 		return violationQueue;
@@ -69,14 +59,11 @@ public class Student implements Comparable<Student> {
 
 	public void setViolationQueue() {
 		ArrayList<Violation> enableViolations = this.getViolations();
-		ViolationQueue violationQueue = new ViolationQueue(
-				ApplicationScope.getAppConfig().getPunishingthreshold());
+		ViolationQueue violationQueue = new ViolationQueue(ApplicationScope.getAppConfig().getPunishingthreshold());
 		for (Violation violation : enableViolations) {
 			if (violationQueue.isFull()) {
-				if (DateTool.getDayCountBetween(
-						violationQueue.getLast().getDate(),
-						violation.getDate()) > ApplicationScope.getAppConfig()
-								.getPunishingdays()) {
+				if (DateTool.getDayCountBetween(violationQueue.getLast().getDate(),
+						violation.getDate()) > ApplicationScope.getAppConfig().getPunishingdays()) {
 					// 已經超過 14 天，就清除舊的違規。
 					violationQueue.clear();
 					violationQueue.add(violation);
@@ -120,8 +107,7 @@ public class Student implements Comparable<Student> {
 			return attendances.get(0);
 		} else {
 			int lastindex = attendances.size() - 1;
-			if (attendances.get(0).getTimestamp()
-					.after(attendances.get(lastindex).getTimestamp())) {
+			if (attendances.get(0).getTimestamp().after(attendances.get(lastindex).getTimestamp())) {
 				return attendances.get(0);
 			} else {
 				return attendances.get(lastindex);
@@ -145,8 +131,7 @@ public class Student implements Comparable<Student> {
 		for (Attendance attendance : attendances) {
 			if (attendance.getStatus() == STATUS.SignOut) {
 				prev_SignOut = attendance.getTimestamp().getTime();
-			} else if (attendance.getStatus() == STATUS.SignIn
-					&& prev_SignOut > 0) {
+			} else if (attendance.getStatus() == STATUS.SignIn && prev_SignOut > 0) {
 				ms += prev_SignOut - attendance.getTimestamp().getTime();
 			}
 		}
@@ -170,8 +155,7 @@ public class Student implements Comparable<Student> {
 				closestSignin = attendance.getTimestamp().getTime();
 			}
 			if (attendance.getIsSignOut()) {
-				staytime += (attendance.getTimestamp().getTime()
-						- closestSignin);
+				staytime += (attendance.getTimestamp().getTime() - closestSignin);
 				closestSignin = 0;
 			}
 		}
@@ -200,18 +184,29 @@ public class Student implements Comparable<Student> {
 	public boolean getIsStopBooking() {
 		// System.out.println("last date=" + violationQueue.getLast().getDate()
 		// + ", thisdate=" + date);
-		if (violationQueue.isEmpty()) {
+		System.out.println("studentid=" + this.getStudentid() + ", date=" + this.getDate());
+
+		if (this.getViolationQueue().isEmpty()) {
 			return false;
 		}
-		if (violationQueue.isFull()
-				&& DateTool.getDayCountBetween(
-						violationQueue.getLast().getDate(), date) > 0
-				&& DateTool.getDayCountBetween(
-						violationQueue.getLast().getDate(),
-						date) <= ApplicationScope.getAppConfig()
-								.getPunishingdays()) {
+		boolean full = this.getViolationQueue().isFull();
+
+		for (Violation violation : this.getViolationQueue()) {
+			System.out.println("violation date=" + violation.getDate());
+		}
+		Date lastdate = this.getViolationQueue().getLast().getDate();
+		boolean between = DateTool.getDayCountBetween(this.getViolationQueue().getLast().getDate(), date) > 0;
+		boolean count = DateTool.getDayCountBetween(this.getViolationQueue().getLast().getDate(),
+				date) <= ApplicationScope.getAppConfig().getPunishingdays();
+		if (this.getViolationQueue().isFull()
+				&& DateTool.getDayCountBetween(this.getViolationQueue().getLast().getDate(), date) > 0
+				&& DateTool.getDayCountBetween(this.getViolationQueue().getLast().getDate(), date) <= ApplicationScope
+						.getAppConfig().getPunishingdays()) {
+			// System.out.println("studentid=" + this.getStudentid() + ", date="
+			// + this.getDate() + ", 停權中！！");
 			return true;
 		}
+		System.out.println("studentid=" + this.getStudentid() + ", date=" + this.getDate());
 		return false;
 	}
 
@@ -222,13 +217,11 @@ public class Student implements Comparable<Student> {
 	public int compareTo(Student o) {
 		if (this.getViolationQueue().size() < o.getViolationQueue().size()) {
 			return 1;
-		} else if (this.getViolationQueue().size() > o.getViolationQueue()
-				.size()) {
+		} else if (this.getViolationQueue().size() > o.getViolationQueue().size()) {
 			return -1;
 		} else {
 			if (!this.getViolationQueue().isEmpty()
-					&& this.getViolationQueue().getLast().getDate().before(
-							o.getViolationQueue().getLast().getDate())) {
+					&& this.getViolationQueue().getLast().getDate().before(o.getViolationQueue().getLast().getDate())) {
 				return 1;
 			} else {
 				return -1;

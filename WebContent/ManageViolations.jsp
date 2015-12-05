@@ -17,7 +17,15 @@
 <body>
 	<jsp:include page="Header.jsp" />
 	<jsp:include page="includes/dialog/CancelViolationDialog.jsp" />
-	<h1>目前有違規記錄的使用者</h1>
+	<div style="margin: 1em; text-align: center;">
+		<a href="?date=${prevdate }" type="button">前一日</a> <a href="?"
+			type="button">今天</a> <a href="?date=${nextdate}" type="button">後一日</a>
+	</div>
+	<h1>
+		統計到
+		<fmt:formatDate value="${date}" pattern="yyyy-MM-dd E" />
+		之前 有違規記錄的使用者
+	</h1>
 	<%-- 	<jsp:include page="includes/dialog/Confirm.jsp">
 		<jsp:param name="content" value="確定要刪除所有人的違規記錄？本動作只應每學期進行一次。" />
 		<jsp:param name="type" value="POST" />
@@ -26,12 +34,19 @@
 	</jsp:include>
 	<button type="confirm" id="disableAllViolations">取消所有違規記錄(每學期僅做一次)</button>
  --%>
-	<form action="Violation.api?action=disableViolationsByDate"
+	<form action="Violation.api?action=disableViolationsByDates"
 		method="post">
 		取消 <input name="date"
 			value="<fmt:formatDate value="${now}" pattern="yyyy-MM-dd" />">日(含)
 		以前的違規記錄
-		<button type="confirm" id="disableViolationsByDate" title="確定要取消違規記錄？">確定</button>
+		<button type="confirm" id="disableViolationsByDates"
+			title="確定要取消違規記錄？">取消多日違規紀錄</button>
+	</form>
+	<form action="Violation.api?action=disableViolationsByDate"
+		method="post">
+		取消 <input name="date"
+			value="<fmt:formatDate value="${now}" pattern="yyyy-MM-dd" />">日的違規記錄
+		<button type="confirm" id="disableViolationsByDate" title="確定要取消違規記錄？">取消單日違規紀錄</button>
 	</form>
 	<hr>
 	<c:forEach var="student" items="${students}">
@@ -44,8 +59,11 @@
 				<c:forEach var="violation" items="${student.violationQueue}">
 					<li style="display: inline-block;">
 						<button type="button" id="cancelViolation"
-							violationid="${violation.id }">取消 ${violation.date}
-							${violation.reason.value }</button>
+							violationid="${violation.id }">
+							取消 [
+							<fmt:formatDate value="${violation.date}" pattern="yyyy-MM-dd E" />
+							] ${violation.reason.value }
+						</button>
 					</li>
 				</c:forEach>
 			</ul>
@@ -54,9 +72,14 @@
 			</c:if>
 		</div>
 		<br>歷史違規列表( ${fn:length(student.violations)}次)
-			<c:forEach var="violation" items="${student.violations}">
-			| ${violation.date}
+		<select style="font-size: 1em;">
+			<c:forEach var="violation" items="${student.violations}"
+				varStatus="varStatus">
+				<option>${varStatus.count}.
+					<fmt:formatDate value="${violation.date}" pattern="yyyy-MM-dd E" />
+				</option>
 			</c:forEach>
+		</select>
 
 		<hr>
 	</c:forEach>
