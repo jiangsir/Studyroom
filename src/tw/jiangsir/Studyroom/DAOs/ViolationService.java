@@ -112,8 +112,9 @@ public class ViolationService {
 		}
 
 		for (Booking booking : new BookingService().getAvailableBookingsByDate(date)) {
-			System.out.println("appConfig.getWorkingstudentids()=" + appConfig.getWorkingstudentids() + " seatid="
-					+ booking.getSeatid());
+			// System.out.println("appConfig.getWorkingstudentids()=" +
+			// appConfig.getWorkingstudentids() + " seatid="
+			// + booking.getSeatid());
 			if (booking.getStudent().getLastAttendance() == null
 					&& !appConfig.getWorkingstudentids().contains(booking.getStudentid())) {
 				// 沒有出席記錄， 且不是工讀生。

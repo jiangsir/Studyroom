@@ -6,8 +6,10 @@
 <%@ page isELIgnored="false"%>
 
 <div id="footer" style="text-align: right; margin-top: 3em;">
+<jsp:useBean id="now" class="java.util.Date" scope="request" />
+
 	<div style="text-align: right;">
-		${now} | <a href="./ShowSessions">顯示session</a> |
+		<fmt:formatDate value="${now}" pattern="yyyy-MM-dd" /> | <a href="./ShowSessions">顯示session</a> |
 		spend=${now.time-ms}ms | 共有 ${fn:length(applicationScope.onlineUsers) }
 		人登入
 	</div>
