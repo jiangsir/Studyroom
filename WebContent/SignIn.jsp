@@ -69,7 +69,7 @@ td {
 
 			code = (e.keyCode ? e.keyCode : e.which);
 			if (code == 13) {
-				if (time > 1000) {
+				if (time > 1000 && $("span#isLoopbackAddress").html() == 'false') {
 					$("#errorjson").html("請勿使用鍵盤輸入！");
 					$("input#SignIn").val("");
 					setTimeout(function() {
@@ -118,6 +118,7 @@ td {
 	</div>
 
 	<div id="css_table">
+		<span id="isLoopbackAddress" style="display: none;">${sessionScope.session_ip.loopbackAddress}</span>
 		<div class="box">
 			<input type="text" id="SignIn" />
 		</div>

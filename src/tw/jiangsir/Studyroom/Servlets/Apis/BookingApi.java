@@ -1,6 +1,8 @@
 package tw.jiangsir.Studyroom.Servlets.Apis;
 
 import java.io.IOException;
+import java.sql.Date;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -117,7 +119,9 @@ public class BookingApi extends HttpServlet implements IAccessFilter {
 					// studentid.trim() + "@" + appConfig.getCheckhost(),
 					// passwd);
 
-					Booking booking = new BookingService().getBookingTodayByStudentid(currentUser.getAccount());
+					Booking booking = new BookingService().getAvailableBookingByStudentidDate(currentUser.getAccount(),
+							new Date(System.currentTimeMillis()));
+					// google login 只能取消當天訂位。
 					if (booking == null) {
 						throw new DataException("您(" + currentUser.getAccount() + ")今天並沒有訂位，因此不能取消訂位！");
 					} else if (booking.getSeatid() != seatid) {

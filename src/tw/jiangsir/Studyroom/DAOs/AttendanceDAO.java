@@ -23,11 +23,9 @@ import tw.jiangsir.Utils.Exceptions.DataException;
 public class AttendanceDAO extends SuperDAO<Attendance> {
 
 	@Override
-	protected synchronized int insert(Attendance attendance)
-			throws SQLException {
+	protected synchronized int insert(Attendance attendance) throws SQLException {
 		String sql = "INSERT INTO attendances(`studentid`, `date`, `status`, `timestamp`) VALUES (?,?,?,?);";
-		PreparedStatement pstmt = this.getConnection().prepareStatement(sql,
-				Statement.RETURN_GENERATED_KEYS);
+		PreparedStatement pstmt = this.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 		pstmt.setString(1, attendance.getStudentid());
 		pstmt.setDate(2, attendance.getDate());
 		pstmt.setInt(3, attendance.getStatus().ordinal());
@@ -35,8 +33,7 @@ public class AttendanceDAO extends SuperDAO<Attendance> {
 		return this.executeInsert(pstmt);
 	}
 
-	protected synchronized int update(Attendance attendance)
-			throws SQLException {
+	protected synchronized int update(Attendance attendance) throws SQLException {
 		String sql = "UPDATE attendances SET `studentid`=?, `status`=? WHERE id=?";
 		int result = -1;
 		PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
@@ -49,8 +46,7 @@ public class AttendanceDAO extends SuperDAO<Attendance> {
 	}
 
 	public int getAttendCount(Date date) {
-		String sql = "SELECT COUNT(*) AS COUNT FROM `attendances` WHERE date='"
-				+ date + "' GROUP BY studentid,date";
+		String sql = "SELECT COUNT(*) AS COUNT FROM `attendances` WHERE date='" + date + "' GROUP BY studentid,date";
 		if (this.executeQueryId(sql).size() == 0) {
 			return 0;
 		}
@@ -65,14 +61,11 @@ public class AttendanceDAO extends SuperDAO<Attendance> {
 		return this.executeDelete(pstmt);
 	}
 
-	protected ArrayList<Attendance> getAttendanceByFields(
-			TreeMap<String, Object> fields, String orderby, int page) {
-		String sql = "SELECT * FROM attendances "
-				+ this.makeFields(fields, orderby, page);
+	protected ArrayList<Attendance> getAttendanceByFields(TreeMap<String, Object> fields, String orderby, int page) {
+		String sql = "SELECT * FROM attendances " + this.makeFields(fields, orderby, page);
 
 		try {
-			PreparedStatement pstmt = this.getConnection()
-					.prepareStatement(sql);
+			PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
 			int i = 1;
 			for (String field : fields.keySet()) {
 				pstmt.setObject(i++, fields.get(field));

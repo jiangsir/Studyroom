@@ -1,6 +1,7 @@
 package tw.jiangsir.Studyroom.Servlets.Apis;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
 import javax.servlet.ServletException;
@@ -22,7 +23,7 @@ import tw.jiangsir.Utils.Scopes.ApplicationScope;
 /**
  * Servlet implementation class BookUp
  */
-@WebServlet(urlPatterns = { "/SignIn.api" })
+@WebServlet(urlPatterns = {"/SignIn.api"})
 public class SignInApi extends HttpServlet implements IAccessFilter {
 	private static final long serialVersionUID = 1L;
 
@@ -34,45 +35,41 @@ public class SignInApi extends HttpServlet implements IAccessFilter {
 	}
 
 	@Override
-	public void AccessFilter(HttpServletRequest request)
-			throws AccessException {
+	public void AccessFilter(HttpServletRequest request) throws AccessException {
 	}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		String studentid = request.getParameter("id");
-		Time now = Time.valueOf(new SimpleDateFormat("HH:mm:ss")
-				.format(new Time(System.currentTimeMillis())));
+		Time now = Time.valueOf(new SimpleDateFormat("HH:mm:ss").format(new Time(System.currentTimeMillis())));
+
 		AppConfig appConfig = ApplicationScope.getAppConfig();
-		if (!(now.after(appConfig.getSigninbegin())
-				&& now.before(appConfig.getSigninend()))) {
-			throw new ApiException("簽到／退時間為 " + appConfig.getSigninbegin()
-					+ " 到 " + appConfig.getSigninend() + "，請在時間內進行簽到／退。now="
-					+ now);
+		if (!(now.after(appConfig.getSigninbegin()) && now.before(appConfig.getSigninend()))) {
+			throw new ApiException("簽到／退時間為 " + appConfig.getSigninbegin() + " 到 " + appConfig.getSigninend()
+					+ "，請在時間內進行簽到／退。now=" + now);
 		}
-		Booking booking = new BookingService()
-				.getBookingTodayByStudentid(studentid);
+		// FIXME 簽到的時候要處理 OverBooking 的問題。要判斷最新的那個 booking.
+		Booking booking = new BookingService().getAvailableBookingByStudentidDate(studentid,
+				new Date(System.currentTimeMillis()));
 		if (booking == null) {
 			throw new ApiException("『" + studentid + "』 今天並未訂位，無法進行簽到／退。");
 		}
 
 		try {
-			Attendance attendance = new AttendanceService()
-					.getLastAttendanceTodayByStudentid(studentid);
-			if (attendance == null
-					|| attendance.getStatus() == Attendance.STATUS.SignOut) {
+			Attendance attendance = new AttendanceService().getLastAttendanceTodayByStudentid(studentid);
+			if (attendance == null || attendance.getStatus() == Attendance.STATUS.SignOut) {
 				new AttendanceService().doSignIn(studentid);
 			} else {
 				new AttendanceService().doSignOut(studentid);

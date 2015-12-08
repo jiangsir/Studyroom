@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import tw.jiangsir.Utils.GoogleChecker.GoogleLoginServlet;
 import tw.jiangsir.Utils.GoogleChecker.OAuth2CallbackServlet;
 import tw.jiangsir.Utils.Objects.CurrentUser;
+import tw.jiangsir.Utils.Objects.IpAddress;
 import tw.jiangsir.Utils.Servlets.LoginServlet;
 import tw.jiangsir.Utils.Servlets.LogoutServlet;
 import tw.jiangsir.Utils.Servlets.ShowSessionsServlet;
@@ -25,7 +26,7 @@ public class SessionScope implements Serializable {
 	private static final long serialVersionUID = -6891646410999335660L;
 	private HttpSession session = null;
 	private String sessionid = "";
-	private String session_ip = "";
+	private IpAddress session_ip = new IpAddress("192.168.0.0");
 	private LinkedHashSet<String> session_privilege = new LinkedHashSet<String>();
 	private Locale session_locale = null;
 	private String session_useragent = "";
@@ -45,8 +46,7 @@ public class SessionScope implements Serializable {
 	};
 
 	public SessionScope(HttpServletRequest request) {
-		this(request.getSession(false) == null ? request.getSession()
-				: request.getSession(false));
+		this(request.getSession(false) == null ? request.getSession() : request.getSession(false));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -56,18 +56,14 @@ public class SessionScope implements Serializable {
 		}
 		this.session = session;
 		this.setSessionid(session.getId());
-		this.setSession_ip((String) session.getAttribute("session_ip"));
-		this.setSession_privilege((LinkedHashSet<String>) session
-				.getAttribute("session_privilege"));
+		this.setSession_ip((IpAddress) session.getAttribute("session_ip"));
+		this.setSession_privilege((LinkedHashSet<String>) session.getAttribute("session_privilege"));
 		this.setSession_locale((Locale) session.getAttribute("session_locale"));
-		this.setSession_useragent(
-				(String) session.getAttribute("session_useragent"));
-		this.setSession_requestheaders((HashMap<String, String>) session
-				.getAttribute("session_requestheaders"));
+		this.setSession_useragent((String) session.getAttribute("session_useragent"));
+		this.setSession_requestheaders((HashMap<String, String>) session.getAttribute("session_requestheaders"));
 		this.setCurrentUser((CurrentUser) session.getAttribute("currentUser"));
 		this.setLastsubmission((Date) session.getAttribute("lastsubmission"));
-		this.setReturnPages(
-				(ArrayList<String>) session.getAttribute("returnPages"));
+		this.setReturnPages((ArrayList<String>) session.getAttribute("returnPages"));
 	}
 
 	public String getSessionid() {
@@ -79,11 +75,18 @@ public class SessionScope implements Serializable {
 		this.sessionid = sessionid;
 	}
 
-	public String getSession_ip() {
+	public IpAddress getSession_ip() {
 		return session_ip;
 	}
 
 	public void setSession_ip(String session_ip) {
+		if (session_ip == null) {
+			return;
+		}
+		this.setSession_ip(new IpAddress(session_ip));
+	}
+
+	public void setSession_ip(IpAddress session_ip) {
 		if (session_ip == null) {
 			return;
 		}
@@ -131,8 +134,7 @@ public class SessionScope implements Serializable {
 		return session_requestheaders;
 	}
 
-	public void setSession_requestheaders(
-			HashMap<String, String> session_requestheaders) {
+	public void setSession_requestheaders(HashMap<String, String> session_requestheaders) {
 		if (session_requestheaders == null) {
 			return;
 		}
@@ -172,8 +174,7 @@ public class SessionScope implements Serializable {
 	@SuppressWarnings("unchecked")
 	public ArrayList<String> getReturnPages() {
 		if (session != null && session.getAttribute("returnPages") != null) {
-			this.returnPages = (ArrayList<String>) session
-					.getAttribute("returnPages");
+			this.returnPages = (ArrayList<String>) session.getAttribute("returnPages");
 		}
 		return this.returnPages;
 	}
@@ -196,33 +197,22 @@ public class SessionScope implements Serializable {
 
 	public void setReturnPage(String servletPath, String querystring) {
 		// oauth2callback
-		if (servletPath
-				.startsWith(LoginServlet.class.getAnnotation(WebServlet.class)
-						.urlPatterns()[0])
-				|| servletPath.startsWith(LogoutServlet.class
-						.getAnnotation(WebServlet.class).urlPatterns()[0])
-				|| servletPath.startsWith(ShowSessionsServlet.class
-						.getAnnotation(WebServlet.class).urlPatterns()[0])
-				|| servletPath.startsWith(GoogleLoginServlet.class
-						.getAnnotation(WebServlet.class).urlPatterns()[0])
-				|| servletPath.startsWith(OAuth2CallbackServlet.class
-						.getAnnotation(WebServlet.class).urlPatterns()[0])
-				|| servletPath.startsWith("/Update")
-				|| servletPath.startsWith("/Insert")
-				|| servletPath.startsWith("/api/")
-				|| servletPath.endsWith(".ajax")
-				|| servletPath.endsWith(".api")) {
+		if (servletPath.startsWith(LoginServlet.class.getAnnotation(WebServlet.class).urlPatterns()[0])
+				|| servletPath.startsWith(LogoutServlet.class.getAnnotation(WebServlet.class).urlPatterns()[0])
+				|| servletPath.startsWith(ShowSessionsServlet.class.getAnnotation(WebServlet.class).urlPatterns()[0])
+				|| servletPath.startsWith(GoogleLoginServlet.class.getAnnotation(WebServlet.class).urlPatterns()[0])
+				|| servletPath.startsWith(OAuth2CallbackServlet.class.getAnnotation(WebServlet.class).urlPatterns()[0])
+				|| servletPath.startsWith("/Update") || servletPath.startsWith("/Insert")
+				|| servletPath.startsWith("/api/") || servletPath.endsWith(".ajax") || servletPath.endsWith(".api")) {
 			return;
 		}
 		ArrayList<String> returnPages = this.getReturnPages();
-		String returnPage = servletPath
-				+ (querystring == null ? "" : "?" + querystring);
+		String returnPage = servletPath + (querystring == null ? "" : "?" + querystring);
 		System.out.println("1returnPages=" + returnPages);
 		if (!returnPages.get(0).equals(returnPage)) {
 			returnPages.remove(returnPages.size() - 1);
 			System.out.println("2returnPages=" + returnPages);
-			returnPages.add(0, servletPath
-					+ (querystring == null ? "" : "?" + querystring));
+			returnPages.add(0, servletPath + (querystring == null ? "" : "?" + querystring));
 			System.out.println("3returnPages=" + returnPages);
 			this.setReturnPages(returnPages);
 		}

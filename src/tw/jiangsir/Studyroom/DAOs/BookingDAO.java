@@ -74,8 +74,41 @@ public class BookingDAO extends SuperDAO<Booking> {
 		return null;
 	}
 
+	/**
+	 * 用 studentid 及 date 獲取劃位紀錄。 但由於 OverBooking 現象，若 studentid AND date
+	 * 當天的座位已經被 OverBooking, 應該取得最後一個 booking
+	 * 
+	 * @return
+	 * @throws SQLException
+	 */
+	protected Booking getAvailableBookingByStudentid_Date(String studentid, Date date) throws SQLException {
+		// SELECT * FROM (SELECT * FROM bookings WHERE seatid=(SELECT seatid
+		// FROM bookings WHERE studentid='410224' AND date='2015-12-02') AND
+		// date='2015-12-02') as temp GROUP BY seatid,date
+		// 找到該生所劃的 seatid 再判斷是否被 overBooking
+		String sql = "SELECT * FROM (SELECT * FROM bookings WHERE seatid=(SELECT seatid FROM bookings WHERE studentid=? AND date=?) AND date=?) as temp GROUP BY seatid,date";
+		PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
+		pstmt.setString(1, studentid);
+		pstmt.setDate(2, date);
+		pstmt.setDate(3, date);
+		for (Booking booking : this.executeQuery(pstmt, Booking.class)) {
+			if (booking.getStudentid().equals(studentid)) {
+				return booking;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * @param studentid
+	 * @param date
+	 * @return
+	 * @throws SQLException
+	 */
 	protected Booking getBookingByStudentidDate(String studentid, Date date) throws SQLException {
-		String sql = "SELECT * FROM bookings WHERE studentid=? AND `date`=?";
+		// FIXME 考慮一種情況：某固定劃位 studentid 由於違規位置被佔。但申訴後解除，要再度劃當天的位置，這種情況這裡就會變成 2
+		// 筆。若位置被佔，回報 null , 但這個 sql 還是會回報這個固定劃位資料。
+		String sql = "SELECT * FROM bookings WHERE studentid=? AND `date`=? ORDER BY id DESC;";
 		PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
 		pstmt.setString(1, studentid);
 		pstmt.setDate(2, date);
@@ -86,7 +119,7 @@ public class BookingDAO extends SuperDAO<Booking> {
 	}
 
 	protected ArrayList<Booking> getBookingsByStudentid(String studentid) throws SQLException {
-		String sql = "SELECT * FROM bookings WHERE studentid=?";
+		String sql = "SELECT * FROM (SELECT * FROM bookings WHERE studentid=? ORDER BY id DESC) as temp GROUP BY seatid,date";
 		PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
 		pstmt.setString(1, studentid);
 		return this.executeQuery(pstmt, Booking.class);

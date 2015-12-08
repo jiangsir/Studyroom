@@ -141,7 +141,7 @@
 						maxlength="50" /></td>
 				</tr>
 				<tr style="padding: 10px;">
-					<th>可以進行簽到／退的 ip</th>
+					<th>可以進行簽到／退的 ip (CIDR表示)</th>
 					<td style="padding: 10px;"><input name="signinip" type="text"
 						id="SigninIp" value="${appConfig.signinip}" size="50"
 						maxlength="50" /></td>

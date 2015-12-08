@@ -184,20 +184,24 @@ public class Student implements Comparable<Student> {
 	public boolean getIsStopBooking() {
 		// System.out.println("last date=" + violationQueue.getLast().getDate()
 		// + ", thisdate=" + date);
-		System.out.println("studentid=" + this.getStudentid() + ", date=" + this.getDate());
+		// System.out.println("studentid=" + this.getStudentid() + ", date=" +
+		// this.getDate());
 
 		if (this.getViolationQueue().isEmpty()) {
 			return false;
 		}
-		boolean full = this.getViolationQueue().isFull();
-
-		for (Violation violation : this.getViolationQueue()) {
-			System.out.println("violation date=" + violation.getDate());
-		}
-		Date lastdate = this.getViolationQueue().getLast().getDate();
-		boolean between = DateTool.getDayCountBetween(this.getViolationQueue().getLast().getDate(), date) > 0;
-		boolean count = DateTool.getDayCountBetween(this.getViolationQueue().getLast().getDate(),
-				date) <= ApplicationScope.getAppConfig().getPunishingdays();
+		// boolean full = this.getViolationQueue().isFull();
+		//
+		// for (Violation violation : this.getViolationQueue()) {
+		// // System.out.println("violation date=" + violation.getDate());
+		// }
+		// Date lastdate = this.getViolationQueue().getLast().getDate();
+		// boolean between =
+		// DateTool.getDayCountBetween(this.getViolationQueue().getLast().getDate(),
+		// date) > 0;
+		// boolean count =
+		// DateTool.getDayCountBetween(this.getViolationQueue().getLast().getDate(),
+		// date) <= ApplicationScope.getAppConfig().getPunishingdays();
 		if (this.getViolationQueue().isFull()
 				&& DateTool.getDayCountBetween(this.getViolationQueue().getLast().getDate(), date) > 0
 				&& DateTool.getDayCountBetween(this.getViolationQueue().getLast().getDate(), date) <= ApplicationScope
@@ -206,7 +210,8 @@ public class Student implements Comparable<Student> {
 			// + this.getDate() + ", 停權中！！");
 			return true;
 		}
-		System.out.println("studentid=" + this.getStudentid() + ", date=" + this.getDate());
+		// System.out.println("studentid=" + this.getStudentid() + ", date=" +
+		// this.getDate());
 		return false;
 	}
 

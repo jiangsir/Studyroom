@@ -14,7 +14,7 @@
 
 	<ul id="menu">
 		<li style="float: left; text-align: left;"><a href="./">回首頁</a></li>
-		<li style="float: left; text-align: left;"><a href="#">${pageContext.request.remoteAddr}</a></li>
+		<li style="float: left; text-align: left;"><a href="#">${sessionScope.session_ip }</a></li>
 		<li><c:if test="${sessionScope.currentUser!=null}">
 				<c:if test="${sessionScope.currentUser.isAdmin}">
 					<li><a href="#">管理</a>

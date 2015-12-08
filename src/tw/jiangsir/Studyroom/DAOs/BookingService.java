@@ -176,6 +176,22 @@ public class BookingService {
 		}
 	}
 
+	/**
+	 * 取得某 studentid 於某 date 中有效的 booking (未被 overBooking)
+	 * 
+	 * @param studentid
+	 * @param date
+	 * @return
+	 */
+	public Booking getAvailableBookingByStudentidDate(String studentid, Date date) {
+		try {
+			return new BookingDAO().getAvailableBookingByStudentid_Date(studentid, date);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DataException(e);
+		}
+	}
+
 	public Booking getBookingByStudentidDate(Date date, String studentid) {
 		try {
 			return new BookingDAO().getBookingByStudentidDate(studentid, date);

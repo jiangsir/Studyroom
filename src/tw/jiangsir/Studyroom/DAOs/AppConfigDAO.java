@@ -27,8 +27,7 @@ public class AppConfigDAO extends SuperDAO<AppConfig> {
 				+ "checktype, checkhost, client_id, client_secret, redirect_uri, bookingbegin, bookingend, "
 				+ "signinbegin, signinend, punishingthreshold, punishingdays, signinip, workingstudentids, "
 				+ "announcement, timestamp) VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?,now());";
-		PreparedStatement pstmt = this.getConnection().prepareStatement(sql,
-				Statement.RETURN_GENERATED_KEYS);
+		PreparedStatement pstmt = this.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 		pstmt.setString(1, appConfig.getTitle());
 		pstmt.setString(2, appConfig.getHeader());
 		pstmt.setString(3, appConfig.getAuthor());
@@ -46,7 +45,7 @@ public class AppConfigDAO extends SuperDAO<AppConfig> {
 		pstmt.setTime(15, appConfig.getSigninend());
 		pstmt.setInt(16, appConfig.getPunishingthreshold());
 		pstmt.setInt(17, appConfig.getPunishingdays());
-		pstmt.setString(18, appConfig.getSigninip());
+		pstmt.setString(18, appConfig.getSigninip().toString());
 		pstmt.setString(19, appConfig.getWorkingstudentids().toString());
 		pstmt.setString(20, appConfig.getAnnouncement());
 		return this.executeInsert(pstmt);
@@ -76,7 +75,7 @@ public class AppConfigDAO extends SuperDAO<AppConfig> {
 		pstmt.setTime(15, appConfig.getSigninend());
 		pstmt.setInt(16, appConfig.getPunishingthreshold());
 		pstmt.setInt(17, appConfig.getPunishingdays());
-		pstmt.setString(18, appConfig.getSigninip());
+		pstmt.setString(18, appConfig.getSigninip().toString());
 		pstmt.setString(19, appConfig.getAnnouncement());
 		pstmt.setLong(20, appConfig.getId());
 		result = this.executeUpdate(pstmt);
@@ -92,13 +91,10 @@ public class AppConfigDAO extends SuperDAO<AppConfig> {
 		return this.executeDelete(pstmt);
 	}
 
-	protected ArrayList<AppConfig> getAppConfigByFields(
-			TreeMap<String, Object> fields, String orderby, int page) {
-		String sql = "SELECT * FROM appconfigs "
-				+ this.makeFields(fields, orderby, page);
+	protected ArrayList<AppConfig> getAppConfigByFields(TreeMap<String, Object> fields, String orderby, int page) {
+		String sql = "SELECT * FROM appconfigs " + this.makeFields(fields, orderby, page);
 		try {
-			PreparedStatement pstmt = this.getConnection()
-					.prepareStatement(sql);
+			PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
 			int i = 1;
 			for (String field : fields.keySet()) {
 				pstmt.setObject(i++, fields.get(field));

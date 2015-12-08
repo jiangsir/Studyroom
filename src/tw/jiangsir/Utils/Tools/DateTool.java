@@ -11,8 +11,8 @@ public class DateTool {
 		Calendar cal2 = Calendar.getInstance();
 		cal1.setTime(date1);
 		cal2.setTime(date2);
-		return (cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR)) && (cal1
-				.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR));
+		return (cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR))
+				&& (cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR));
 	}
 
 	/**
@@ -24,8 +24,8 @@ public class DateTool {
 		Calendar now = Calendar.getInstance();
 		// sql.Time 的 before after 判斷背後仍有一個日期，如果只有讀入時間，就以 1970-01-01 作為日期進行比較。
 		// 因此不能拿目前的完整日期時間去取得 Time 會同時取得目前的日期，而造成比較錯誤。
-		return java.sql.Time.valueOf(now.get(Calendar.HOUR_OF_DAY) + ":"
-				+ now.get(Calendar.MINUTE) + ":" + now.get(Calendar.SECOND));
+		return java.sql.Time.valueOf(
+				now.get(Calendar.HOUR_OF_DAY) + ":" + now.get(Calendar.MINUTE) + ":" + now.get(Calendar.SECOND));
 	}
 
 	public static java.sql.Date getNextDate(java.sql.Date date) {
@@ -115,8 +115,7 @@ public class DateTool {
 			d1 = d2;
 			d2 = swap;
 		}
-		int days = d2.get(java.util.Calendar.DAY_OF_YEAR)
-				- d1.get(java.util.Calendar.DAY_OF_YEAR);
+		int days = d2.get(java.util.Calendar.DAY_OF_YEAR) - d1.get(java.util.Calendar.DAY_OF_YEAR);
 		int y2 = d2.get(java.util.Calendar.YEAR);
 		if (d1.get(java.util.Calendar.YEAR) != y2) {
 			d1 = (java.util.Calendar) d1.clone();
@@ -154,10 +153,8 @@ public class DateTool {
 	 * @param enddate
 	 * @return
 	 */
-	public static Long getDayCountBetween(java.sql.Date begindate,
-			java.sql.Date enddate) {
-		return (enddate.getTime() - begindate.getTime())
-				/ (1000 * 60 * 60 * 24);
+	public static Long getDayCountBetween(java.sql.Date begindate, java.sql.Date enddate) {
+		return (enddate.getTime() - begindate.getTime()) / (1000 * 60 * 60 * 24);
 	}
 
 	/**
@@ -167,8 +164,7 @@ public class DateTool {
 	 * @param enddate
 	 * @return
 	 */
-	public static ArrayList<java.sql.Date> getDaysBetween(
-			java.sql.Date begindate, java.sql.Date enddate) {
+	public static ArrayList<java.sql.Date> getDaysBetween(java.sql.Date begindate, java.sql.Date enddate) {
 		Calendar fromCalendar = Calendar.getInstance();
 		fromCalendar.setTime(begindate);
 		fromCalendar.set(Calendar.HOUR_OF_DAY, 0);
@@ -184,8 +180,7 @@ public class DateTool {
 		// toCalendar.set(Calendar.MILLISECOND, 0);
 
 		ArrayList<java.sql.Date> days = new ArrayList<java.sql.Date>();
-		for (int day = 0; day <= DateTool.getDayCountBetween(begindate,
-				enddate); day++) {
+		for (int day = 0; day <= DateTool.getDayCountBetween(begindate, enddate); day++) {
 			days.add(new java.sql.Date(fromCalendar.getTime().getTime()));
 			fromCalendar.add(Calendar.DATE, 1);
 		}
@@ -196,8 +191,7 @@ public class DateTool {
 		java.sql.Date date = java.sql.Date.valueOf("2014-01-30");
 		java.sql.Time time = java.sql.Time.valueOf("23:59:00");
 
-		java.sql.Timestamp timestamp = java.sql.Timestamp
-				.valueOf(date.toString() + " " + time.toString());
+		java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf(date.toString() + " " + time.toString());
 		System.out.println("timestamp=" + timestamp);
 
 		java.sql.Time nowtime = new java.sql.Time(System.currentTimeMillis());
@@ -214,8 +208,7 @@ public class DateTool {
 			System.out.println(nowtime + " is not after " + time);
 		}
 
-		System.out.println("date=" + new java.util.Date(
-				java.sql.Date.valueOf("2014-01-30").getTime()));
+		System.out.println("date=" + new java.util.Date(java.sql.Date.valueOf("2014-01-30").getTime()));
 		System.out.println(java.sql.Time.valueOf("10:00:00"));
 		System.out.println(date.toString() + time.toString());
 

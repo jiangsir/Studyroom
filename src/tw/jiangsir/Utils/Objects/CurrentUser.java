@@ -7,9 +7,9 @@ import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionBindingListener;
 
 import tw.jiangsir.Utils.Scopes.ApplicationScope;
+import tw.jiangsir.Utils.Scopes.SessionScope;
 
-public class CurrentUser extends User
-		implements HttpSessionBindingListener, Serializable {
+public class CurrentUser extends User implements HttpSessionBindingListener, Serializable {
 
 	/**
 	 * 
@@ -56,8 +56,7 @@ public class CurrentUser extends User
 
 	@Override
 	public String toString() {
-		return "account=" + this.getAccount() + "(" + this.getName()
-				+ "), role=" + this.getRole();
+		return "account=" + this.getAccount() + "(" + this.getName() + "), role=" + this.getRole();
 	}
 
 }

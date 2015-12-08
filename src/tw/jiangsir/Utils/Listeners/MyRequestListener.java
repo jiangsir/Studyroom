@@ -6,6 +6,9 @@ import javax.servlet.ServletRequestEvent;
 import javax.servlet.ServletRequestListener;
 import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import tw.jiangsir.Utils.Scopes.SessionScope;
 
 /**
  * Application Lifecycle Listener implementation class MyRequestListener
@@ -25,14 +28,13 @@ public class MyRequestListener implements ServletRequestListener {
 	 * @see ServletRequestListener#requestInitialized(ServletRequestEvent)
 	 */
 	public void requestInitialized(ServletRequestEvent event) {
-		HttpServletRequest request = (HttpServletRequest) event
-				.getServletRequest();
+		HttpServletRequest request = (HttpServletRequest) event.getServletRequest();
 		// HttpServlet httpServlet = ApplicationScope.getUrlpatterns().get(
 		// request.getServletPath());
 		// if (httpServlet != null) {
-		// HttpSession session = request.getSession(); // 獲取對應的session
-		// SessionScope sessionScope = new SessionScope(session);
-		// sessionScope.setSession_ip(request.getRemoteAddr());
+		HttpSession session = request.getSession(); // 獲取對應的session
+		SessionScope sessionScope = new SessionScope(session);
+		sessionScope.setSession_ip(request.getRemoteAddr());
 		// // sessionScope.setReturnPage(request.getServletPath(),
 		// // request.getQueryString());
 		// RequestScope requestScope = new RequestScope(request);
