@@ -140,14 +140,14 @@ public class ViolationDAO extends SuperDAO<Violation> {
 	}
 
 	/**
-	 * 清除某一天的所有違規記錄。
+	 * 清除某一天的所有違規記錄。只保留曾經手動取消違規的記錄。
 	 * 
 	 * @param date
 	 * @return
 	 * @throws SQLException
 	 */
 	protected boolean deleteByDate(Date date) throws SQLException {
-		String sql = "DELETE FROM violations WHERE date=?";
+		String sql = "DELETE FROM violations WHERE date=? AND status!='" + Violation.STATUS.cancel + "'";
 		PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
 		pstmt.setDate(1, date);
 		return this.executeDelete(pstmt);

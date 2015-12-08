@@ -228,6 +228,10 @@ public class Student implements Comparable<Student> {
 			if (!this.getViolationQueue().isEmpty()
 					&& this.getViolationQueue().getLast().getDate().before(o.getViolationQueue().getLast().getDate())) {
 				return 1;
+			} else
+				if (!this.getViolationQueue().isEmpty() && this.getViolationQueue().getLast().getDate()
+						.equals(o.getViolationQueue().getLast().getDate())) {
+				return 0;
 			} else {
 				return -1;
 			}

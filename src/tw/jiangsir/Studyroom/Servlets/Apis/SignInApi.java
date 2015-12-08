@@ -3,7 +3,6 @@ package tw.jiangsir.Studyroom.Servlets.Apis;
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.Time;
-import java.text.SimpleDateFormat;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -20,6 +19,7 @@ import tw.jiangsir.Utils.Exceptions.ApiException;
 import tw.jiangsir.Utils.Interfaces.IAccessFilter;
 import tw.jiangsir.Utils.Objects.AppConfig;
 import tw.jiangsir.Utils.Scopes.ApplicationScope;
+import tw.jiangsir.Utils.Tools.DateTool;
 
 /**
  * Servlet implementation class BookUp
@@ -54,12 +54,12 @@ public class SignInApi extends HttpServlet implements IAccessFilter {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String studentid = request.getParameter("id");
-		Time now = Time.valueOf(new SimpleDateFormat("HH:mm:ss").format(new Time(System.currentTimeMillis())));
+		Time now = DateTool.getNowtime();
 
 		AppConfig appConfig = ApplicationScope.getAppConfig();
 		if (!(now.after(appConfig.getSigninbegin()) && now.before(appConfig.getSigninend()))) {
 			throw new ApiException("簽到／退時間為 " + appConfig.getSigninbegin() + " 到 " + appConfig.getSigninend()
-					+ "，請在時間內進行簽到／退。now=" + now);
+					+ "，請在時間內進行簽到／退。目前時間=" + now);
 		}
 		if (new Student(studentid, new Date(System.currentTimeMillis())).getIsStopBooking()) {
 			throw new ApiException("『" + studentid + "』 您已被停權，無法進行簽到／退。");
