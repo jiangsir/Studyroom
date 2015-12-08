@@ -20,10 +20,9 @@ import tw.jiangsir.Utils.Tools.DateTool;
 /**
  * Servlet implementation class ManageStudyroom
  */
-@WebServlet(urlPatterns = { "/StudentBookings" })
+@WebServlet(urlPatterns = {"/StudentBookings"})
 @RoleSetting(allowHigherThen = ROLE.ADMIN)
-public class StudentBookingsServlet extends HttpServlet implements
-		IAccessFilter {
+public class StudentBookingsServlet extends HttpServlet implements IAccessFilter {
 	private static final long serialVersionUID = 1L;
 
 	public enum PARAM {
@@ -70,8 +69,8 @@ public class StudentBookingsServlet extends HttpServlet implements
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		String studentid = request.getParameter(PARAM.studentid.name());
 		Date thedate;
 		try {
@@ -92,9 +91,12 @@ public class StudentBookingsServlet extends HttpServlet implements
 				studentBookings.add(null);
 			} else {
 				StudentBooking studentBooking = new StudentBooking();
-				studentBooking.setBooking(bookingService
-						.getBookingByStudentidDate(new Date(date.getTime()),
-								studentid));
+				// studentBooking.setBooking(bookingService
+				// .getBookingByStudentidDate(new Date(date.getTime()),
+				// studentid));
+				studentBooking.setBooking(
+						bookingService.getAvailableBookingByStudentidDate(studentid, new Date(date.getTime())));
+
 				studentBooking.setDate(date);
 				studentBookings.add(studentBooking);
 				// dateBookings.put(date, bookingService
@@ -107,21 +109,18 @@ public class StudentBookingsServlet extends HttpServlet implements
 		request.setAttribute("thedate", thedate);
 		request.setAttribute("prevmonth", DateTool.getPrevMonth(thedate));
 		request.setAttribute("nextmonth", DateTool.getNextMonth(thedate));
-		request.setAttribute("firstweekdayofmonth",
-				DateTool.getFirstdayOfMonth(thedate));
-		request.setAttribute("lastdayofmonth",
-				DateTool.getLastDayOfMonth(thedate));
+		request.setAttribute("firstweekdayofmonth", DateTool.getFirstdayOfMonth(thedate));
+		request.setAttribute("lastdayofmonth", DateTool.getLastDayOfMonth(thedate));
 		request.setAttribute("daysOfMonth", studentBookings);
-		request.getRequestDispatcher("StudentBookings.jsp").forward(request,
-				response);
+		request.getRequestDispatcher("StudentBookings.jsp").forward(request, response);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 	}
 
 }

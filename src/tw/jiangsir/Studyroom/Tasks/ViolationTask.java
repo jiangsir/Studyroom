@@ -13,7 +13,7 @@ public class ViolationTask extends TimerTask {
 	public void run() {
 		logger.info("Violation Task Running...."
 				+ new Timestamp(System.currentTimeMillis()));
-		new ViolationService().builtViolationsByDate(new Date(System
+		new ViolationService().rebuiltViolationsByDate(new Date(System
 				.currentTimeMillis()));
 		// new ViolationService().doPunishingByDeleteBooking(new Date(System
 		// .currentTimeMillis()));

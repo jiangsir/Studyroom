@@ -81,20 +81,22 @@ public class BookingDAO extends SuperDAO<Booking> {
 	 * @return
 	 * @throws SQLException
 	 */
-	protected Booking getAvailableBookingByStudentid_Date(String studentid, Date date) throws SQLException {
+	protected Booking getLastBookingByStudentid_Date(String studentid, Date date) throws SQLException {
 		// SELECT * FROM (SELECT * FROM bookings WHERE seatid=(SELECT seatid
 		// FROM bookings WHERE studentid='410224' AND date='2015-12-02') AND
 		// date='2015-12-02') as temp GROUP BY seatid,date
 		// 找到該生所劃的 seatid 再判斷是否被 overBooking
+		// # Last booking 並不一定是 Available Booking, 如果這位置沒有被劃位覆蓋，它仍然是 Last
+		// 但主人已經被停權，所以並非 available
 		String sql = "SELECT * FROM (SELECT * FROM bookings WHERE seatid=(SELECT seatid FROM bookings WHERE studentid=? AND date=?) AND date=?) as temp GROUP BY seatid,date";
 		PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
 		pstmt.setString(1, studentid);
 		pstmt.setDate(2, date);
 		pstmt.setDate(3, date);
 		for (Booking booking : this.executeQuery(pstmt, Booking.class)) {
-			if (booking.getStudentid().equals(studentid)) {
-				return booking;
-			}
+			// if (booking.getStudentid().equals(studentid)) {
+			return booking;
+			// }
 		}
 		return null;
 	}
@@ -132,7 +134,7 @@ public class BookingDAO extends SuperDAO<Booking> {
 	 * @return
 	 * @throws SQLException
 	 */
-	protected ArrayList<Booking> getBookingsByDate(Date date) throws SQLException {
+	protected ArrayList<Booking> getLastBookingsByDate(Date date) throws SQLException {
 		// 由於允許 overBooking 的存在。因此這裡必須改成取得最後一個 booking 的資料，要用 GROUP BY 處理
 		// SELECT * FROM (SELECT * FROM bookings WHERE date='2015-02-03' ORDER
 		// BY id DESC) as temp

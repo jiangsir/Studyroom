@@ -4,6 +4,9 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+
+import tw.jiangsir.Studyroom.Objects.Student;
 import tw.jiangsir.Studyroom.Tables.Booking;
 import tw.jiangsir.Utils.Exceptions.DataException;
 import tw.jiangsir.Utils.Objects.User;
@@ -105,20 +108,41 @@ public class BookingService {
 	 */
 	private ArrayList<Booking> getBookingsToday() {
 		try {
-			return new BookingDAO().getBookingsByDate(new Date(System.currentTimeMillis()));
+			return new BookingDAO().getLastBookingsByDate(new Date(System.currentTimeMillis()));
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new DataException(e);
 		}
 	}
 
-	public ArrayList<Booking> getBookingsByDate(Date date) {
+	public ArrayList<Booking> getAvailableBookingsByDate(Date date) {
+		ArrayList<Booking> bookings = new ArrayList<Booking>();
 		try {
-			return new BookingDAO().getBookingsByDate(date);
+			bookings = new BookingDAO().getLastBookingsByDate(date);
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return new ArrayList<Booking>();
 		}
+
+		for (Iterator<Booking> it = bookings.iterator(); it.hasNext();) { // reparations为Collection
+			Booking booking = (Booking) it.next();
+			if (booking.getStudent().getIsStopBooking()) {
+				it.remove();
+			}
+		}
+		//  不能用下方的寫法。會造成 ConcurrentModificationException 同步問題。不能在迭代過程中更動原始集合。
+		// 改用 Iterator 就可以。
+		// for (Booking booking : bookings) {
+		// if (booking.getStudent().getIsStopBooking()) {
+		// bookings.remove(booking);
+		// }
+		// }
+		return bookings;
+		// try {
+		// return new BookingDAO().getLastBookingsByDate(date);
+		// } catch (SQLException e) {
+		// e.printStackTrace();
+		// return new ArrayList<Booking>();
+		// }
 	}
 
 	/**
@@ -131,7 +155,7 @@ public class BookingService {
 	public HashMap<String, Booking> getHashBookings(Date date) {
 		HashMap<String, Booking> hashBookings = new HashMap<String, Booking>();
 		try {
-			for (Booking booking : new BookingDAO().getBookingsByDate(date)) {
+			for (Booking booking : new BookingDAO().getLastBookingsByDate(date)) {
 				System.out.println("booking=" + booking + ", " + booking.getStudent().getIsStopBooking());
 				if (!booking.getStudent().getIsStopBooking()) {
 					hashBookings.put(String.valueOf(booking.getSeatid()), booking);
@@ -184,15 +208,19 @@ public class BookingService {
 	 * @return
 	 */
 	public Booking getAvailableBookingByStudentidDate(String studentid, Date date) {
+		Student student = new Student(studentid, date);
+		if (student.getIsStopBooking()) {
+			return null;
+		}
 		try {
-			return new BookingDAO().getAvailableBookingByStudentid_Date(studentid, date);
+			return new BookingDAO().getLastBookingByStudentid_Date(studentid, date);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new DataException(e);
 		}
 	}
 
-	public Booking getBookingByStudentidDate(Date date, String studentid) {
+	private Booking getBookingByStudentidDate(Date date, String studentid) {
 		try {
 			return new BookingDAO().getBookingByStudentidDate(studentid, date);
 		} catch (SQLException e) {

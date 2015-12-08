@@ -86,9 +86,10 @@ public class Attendance {
 	}
 
 	public int getSeatid() {
-		return new BookingService()
-				.getBookingByStudentidDate(this.getDate(), this.getStudentid())
-				.getSeatid();
+		// return new BookingService()
+		// .getBookingByStudentidDate(this.getDate(), this.getStudentid())
+		// .getSeatid();
+		return new BookingService().getAvailableBookingByStudentidDate(studentid, date).getSeatid();
 	}
 
 	public Student getStudent() {

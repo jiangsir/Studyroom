@@ -82,7 +82,7 @@ public class ViolationService {
 	 * 
 	 * @param date
 	 */
-	public void builtViolationsByDate(Date date) {
+	public void rebuiltViolationsByDate(Date date) {
 		// DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		// Date today = Date
 		// .valueOf(df.format(new Date(System.currentTimeMillis())));
@@ -96,8 +96,8 @@ public class ViolationService {
 		Time signinend = appConfig.getSigninend();
 		Time now = new Time(System.currentTimeMillis());
 		// Timestamp now = new Timestamp(System.currentTimeMillis());
-		System.out.println("signinend=" + signinend);
-		System.out.println("now=" + now);
+		// System.out.println("signinend=" + signinend);
+		// System.out.println("now=" + now);
 		if (now.before(signinend)) {
 			throw new DataException("簽到截止時間還沒有到，因此不進行「違規統計」");
 		}
@@ -111,7 +111,7 @@ public class ViolationService {
 			e.printStackTrace();
 		}
 
-		for (Booking booking : new BookingService().getBookingsByDate(date)) {
+		for (Booking booking : new BookingService().getAvailableBookingsByDate(date)) {
 			System.out.println("appConfig.getWorkingstudentids()=" + appConfig.getWorkingstudentids() + " seatid="
 					+ booking.getSeatid());
 			if (booking.getStudent().getLastAttendance() == null
@@ -285,9 +285,10 @@ public class ViolationService {
 	 */
 	public ArrayList<Violation> getEnableViolationsByStudentid(String studentid, Date date) {
 
-//		if (StudentService.getCacheStudents().containsKey(studentid)) {
-//			return StudentService.getCacheStudents().get(studentid).getViolations();
-//		}
+		// if (StudentService.getCacheStudents().containsKey(studentid)) {
+		// return
+		// StudentService.getCacheStudents().get(studentid).getViolations();
+		// }
 
 		try {
 			return new ViolationDAO().getEnabledViolations(studentid, date);

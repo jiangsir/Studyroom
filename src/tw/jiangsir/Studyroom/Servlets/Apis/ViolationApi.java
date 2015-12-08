@@ -83,10 +83,10 @@ public class ViolationApi extends HttpServlet implements IAccessFilter {
 		String action = request.getParameter("action");
 		switch (POSTACTION.valueOf(action)) {
 			case rebuiltViolationsByDate :
-				System.out.println("rebuiltViolationsByDates");
+				// System.out.println("rebuiltViolationsByDates");
 				if (currentUser != null && currentUser.getIsAdmin()) {
 					Date date = Date.valueOf(request.getParameter("date"));
-					new ViolationService().builtViolationsByDate(date);
+					new ViolationService().rebuiltViolationsByDate(date);
 				}
 				response.sendRedirect("." + new SessionScope(request).getCurrentPage());
 				break;
