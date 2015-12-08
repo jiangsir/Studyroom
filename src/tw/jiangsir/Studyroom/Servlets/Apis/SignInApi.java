@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import tw.jiangsir.Studyroom.DAOs.AttendanceService;
 import tw.jiangsir.Studyroom.DAOs.BookingService;
+import tw.jiangsir.Studyroom.Objects.Student;
 import tw.jiangsir.Studyroom.Tables.Attendance;
 import tw.jiangsir.Studyroom.Tables.Booking;
 import tw.jiangsir.Utils.Exceptions.AccessException;
@@ -59,6 +60,9 @@ public class SignInApi extends HttpServlet implements IAccessFilter {
 		if (!(now.after(appConfig.getSigninbegin()) && now.before(appConfig.getSigninend()))) {
 			throw new ApiException("簽到／退時間為 " + appConfig.getSigninbegin() + " 到 " + appConfig.getSigninend()
 					+ "，請在時間內進行簽到／退。now=" + now);
+		}
+		if (new Student(studentid, new Date(System.currentTimeMillis())).getIsStopBooking()) {
+			throw new ApiException("『" + studentid + "』 您已被停權，無法進行簽到／退。");
 		}
 		// FIXME 簽到的時候要處理 OverBooking 的問題。要判斷最新的那個 booking.
 		Booking booking = new BookingService().getAvailableBookingByStudentidDate(studentid,
