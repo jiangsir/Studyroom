@@ -48,6 +48,15 @@
 			value="<fmt:formatDate value="${now}" pattern="yyyy-MM-dd" />">日的違規記錄
 		<button type="confirm" id="disableViolationsByDate" title="確定要取消違規記錄？">取消單日違規紀錄</button>
 	</form>
+	<form action="Violation.api?action=rebuiltViolationsByDates"
+		method="post">
+		重建 <input name="begin"
+			value="<fmt:formatDate value="${now}" pattern="yyyy-MM-dd" />">
+		到 <input name="end"
+			value="<fmt:formatDate value="${now}" pattern="yyyy-MM-dd" />">日的違規記錄
+		<button type="confirm" id="rebuiltViolationsByDates"
+			title="確定要重建違規記錄？">重建違規紀錄</button>
+	</form>
 	<hr>
 	<c:forEach var="student" items="${students}">
 		<div style="display: inline-block;">

@@ -154,16 +154,17 @@ public class BookingService {
 	 */
 	public HashMap<String, Booking> getHashBookings(Date date) {
 		HashMap<String, Booking> hashBookings = new HashMap<String, Booking>();
-		try {
-			for (Booking booking : new BookingDAO().getLastBookingsByDate(date)) {
-				System.out.println("booking=" + booking + ", " + booking.getStudent().getIsStopBooking());
-				if (!booking.getStudent().getIsStopBooking()) {
-					hashBookings.put(String.valueOf(booking.getSeatid()), booking);
-				}
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
+		// try {
+		for (Booking booking : new BookingService().getAvailableBookingsByDate(date)) {
+			// System.out.println("booking=" + booking + ", " +
+			// booking.getStudent().getIsStopBooking());
+			// if (!booking.getStudent().getIsStopBooking()) {
+			hashBookings.put(String.valueOf(booking.getSeatid()), booking);
+			// }
 		}
+		// } catch (SQLException e) {
+		// e.printStackTrace();
+		// }
 		return hashBookings;
 	}
 

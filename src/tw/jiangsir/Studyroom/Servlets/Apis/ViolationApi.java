@@ -14,6 +14,7 @@ import tw.jiangsir.Utils.Exceptions.AccessException;
 import tw.jiangsir.Utils.Interfaces.IAccessFilter;
 import tw.jiangsir.Utils.Objects.CurrentUser;
 import tw.jiangsir.Utils.Scopes.SessionScope;
+import tw.jiangsir.Utils.Tools.DateTool;
 
 /**
  * Servlet implementation class BookUp
@@ -64,6 +65,7 @@ public class ViolationApi extends HttpServlet implements IAccessFilter {
 	}
 
 	public enum POSTACTION {
+		rebuiltViolationsByDates, // 依據「日期」範圍進行違規事件計算
 		rebuiltViolationsByDate, // 依據「日期」進行違規事件計算
 		doPunishingByDeleteBooking, // 刪除未來 14 天的訂位資料。
 		doPunished, // 針對某個日期將已經 punishing 14 天的人恢復權限。
@@ -82,6 +84,18 @@ public class ViolationApi extends HttpServlet implements IAccessFilter {
 		CurrentUser currentUser = new SessionScope(request).getCurrentUser();
 		String action = request.getParameter("action");
 		switch (POSTACTION.valueOf(action)) {
+			case rebuiltViolationsByDates :
+				Date begin = Date.valueOf(request.getParameter("begin"));
+				Date end = Date.valueOf(request.getParameter("end"));
+				for (Date date : DateTool.getDaysBetween(begin, end)) {
+					try {
+						new ViolationService().rebuiltViolationsByDate(date);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+				response.sendRedirect("." + new SessionScope(request).getCurrentPage());
+				break;
 			case rebuiltViolationsByDate :
 				// System.out.println("rebuiltViolationsByDates");
 				if (currentUser != null && currentUser.getIsAdmin()) {
