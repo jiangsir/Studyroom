@@ -95,7 +95,15 @@ public class AppConfig {
 
 	@Property(key = "signinip")
 	@Persistent(name = "signinip")
-	private IpAddress signinip = new IpAddress("127.0.0.1");
+	private TreeSet<IpAddress> signinip = new TreeSet<IpAddress>() {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		{
+			add(new IpAddress("127.0.0.1"));
+		}
+	};
 	@Property(key = "announcement")
 	@Persistent(name = "announcement")
 	private String announcement = "";
@@ -236,22 +244,26 @@ public class AppConfig {
 	// }
 	//
 	//
-	public IpAddress getSigninip() {
+	public TreeSet<IpAddress> getSigninip() {
 		return signinip;
 	}
 
-	public void setSigninip(IpAddress signinip) {
-		if (signinip == null) {
+	public void setSigninip(TreeSet<IpAddress> ips) {
+		if (ips == null) {
 			return;
 		}
-		this.signinip = signinip;
+		this.signinip = ips;
 	}
 
 	public void setSigninip(String signinip) {
 		if (signinip == null) {
 			return;
 		}
-		this.setSigninip(new IpAddress(signinip));
+		TreeSet<IpAddress> ips = new TreeSet<IpAddress>();
+		for (String ip : StringTool.String2TreeSet(signinip)) {
+			ips.add(new IpAddress(ip));
+		}
+		this.setSigninip(ips);
 	}
 
 	public String getAnnouncement() {
