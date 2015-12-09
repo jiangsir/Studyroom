@@ -14,7 +14,7 @@
 
 	<ul id="menu">
 		<li style="float: left; text-align: left;"><a href="./">回首頁</a></li>
-		<li style="float: left; text-align: left;"><a href="#">${sessionScope.session_ip }</a></li>
+		<li style="float: left; text-align: left;"><a href="#">${sessionScope.session_remoteAddr }</a></li>
 		<li><c:if test="${sessionScope.currentUser!=null}">
 				<c:if test="${sessionScope.currentUser.isAdmin}">
 					<li><a href="#">管理</a>
@@ -38,8 +38,11 @@
 			</c:if> <c:if test="${sessionScope.currentUser==null}">
 				<li><a href="./GoogleLogin">登入學生信箱</a></li>
 			</c:if></li>
-		<c:if
+		<%-- 		<c:if
 			test="${pageContext.request.remoteAddr == applicationScope.appConfig.signinip || sessionScope.currentUser.isAdmin}">
+ --%>
+		<c:if
+			test="${sessionScope.isSigninip || sessionScope.currentUser.isAdmin}">
 			<li><a href="./SignIn">簽到／退</a></li>
 		</c:if>
 		<%-- 		<c:if

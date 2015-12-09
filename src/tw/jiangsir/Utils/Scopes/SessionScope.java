@@ -26,7 +26,7 @@ public class SessionScope implements Serializable {
 	private static final long serialVersionUID = -6891646410999335660L;
 	private HttpSession session = null;
 	private String sessionid = "";
-	private IpAddress session_ip = new IpAddress("192.168.0.0");
+	private IpAddress session_remoteAddr = new IpAddress("192.168.0.0");
 	private LinkedHashSet<String> session_privilege = new LinkedHashSet<String>();
 	private Locale session_locale = null;
 	private String session_useragent = "";
@@ -56,7 +56,7 @@ public class SessionScope implements Serializable {
 		}
 		this.session = session;
 		this.setSessionid(session.getId());
-		this.setSession_ip((IpAddress) session.getAttribute("session_ip"));
+		this.setSession_remoteAddr((IpAddress) session.getAttribute("session_remoteAddr"));
 		this.setSession_privilege((LinkedHashSet<String>) session.getAttribute("session_privilege"));
 		this.setSession_locale((Locale) session.getAttribute("session_locale"));
 		this.setSession_useragent((String) session.getAttribute("session_useragent"));
@@ -75,23 +75,27 @@ public class SessionScope implements Serializable {
 		this.sessionid = sessionid;
 	}
 
-	public IpAddress getSession_ip() {
-		return session_ip;
+	public IpAddress getSession_remoteAddr() {
+		return session_remoteAddr;
 	}
 
-	public void setSession_ip(String session_ip) {
-		if (session_ip == null) {
+	public void setSession_remoteAddr(String session_remoteAddr) {
+		if (session_remoteAddr == null) {
 			return;
 		}
-		this.setSession_ip(new IpAddress(session_ip));
+		this.setSession_remoteAddr(new IpAddress(session_remoteAddr));
 	}
 
-	public void setSession_ip(IpAddress session_ip) {
-		if (session_ip == null) {
+	public void setSession_remoteAddr(IpAddress session_remoteAddr) {
+		if (session_remoteAddr == null) {
 			return;
 		}
-		session.setAttribute("session_ip", session_ip);
-		this.session_ip = session_ip;
+		session.setAttribute("session_remoteAddr", session_remoteAddr);
+		this.session_remoteAddr = session_remoteAddr;
+	}
+
+	public boolean getIsSigninip() {
+		return this.getSession_remoteAddr().getIsSubnetOf(ApplicationScope.getAppConfig().getSigninip());
 	}
 
 	public LinkedHashSet<String> getSession_privilege() {

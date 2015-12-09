@@ -34,7 +34,7 @@ public class MyRequestListener implements ServletRequestListener {
 		// if (httpServlet != null) {
 		HttpSession session = request.getSession(); // 獲取對應的session
 		SessionScope sessionScope = new SessionScope(session);
-		sessionScope.setSession_ip(request.getRemoteAddr());
+		sessionScope.setSession_remoteAddr(request.getRemoteAddr());
 		// // sessionScope.setReturnPage(request.getServletPath(),
 		// // request.getQueryString());
 		// RequestScope requestScope = new RequestScope(request);

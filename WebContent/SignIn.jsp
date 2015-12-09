@@ -119,7 +119,7 @@ td {
 	</div>
 
 	<div id="css_table">
-		<span id="isLoopbackAddress" style="display: none;">${sessionScope.session_ip.loopbackAddress}</span>
+		<span id="isLoopbackAddress" style="display: none;">${sessionScope.session_remoteAddr.loopbackAddress}</span>
 		<div class="box">
 			<input type="text" id="SignIn" />
 		</div>
