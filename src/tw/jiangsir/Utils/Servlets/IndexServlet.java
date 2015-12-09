@@ -15,6 +15,7 @@ import tw.jiangsir.Utils.Exceptions.AccessException;
 import tw.jiangsir.Utils.Interfaces.IAccessFilter;
 import tw.jiangsir.Utils.Objects.AppConfig;
 import tw.jiangsir.Utils.Objects.CurrentUser;
+import tw.jiangsir.Utils.Objects.IpAddress;
 import tw.jiangsir.Utils.Scopes.ApplicationScope;
 import tw.jiangsir.Utils.Scopes.SessionScope;
 import tw.jiangsir.Utils.Tools.DateTool;
@@ -55,8 +56,8 @@ public class IndexServlet extends HttpServlet implements IAccessFilter {
 		// appConfig.getSigninip()
 		// + ", request.getRemoteAddr()=" + request.getRemoteAddr()
 		// + ", currentUser=" + currentUser);
-		if (request.getRemoteAddr().equals(appConfig.getSigninip())
-				&& (currentUser == null || !currentUser.getIsAdmin())) {
+		IpAddress remoteAddr = new IpAddress(request.getRemoteAddr());
+		if (remoteAddr.getIsSubnetOf(appConfig.getSigninip()) && (currentUser == null || !currentUser.getIsAdmin())) {
 			response.sendRedirect(
 					request.getContextPath() + SignInServlet.class.getAnnotation(WebServlet.class).urlPatterns()[0]);
 			return;
