@@ -86,6 +86,7 @@ td {
 						async : false,
 						timeout : 5000,
 						success : function(result) {
+							$("input#SignIn").val("");
 							location.reload();
 						},
 						error : function(jqXHR, textStatus, errorThrown) {
@@ -135,7 +136,7 @@ td {
 		</tr>
 		<c:forEach var="attendance" items="${attendances }">
 			<tr id="attendance">
-				<td>${attendance.studentid}</td>
+				<td>${attendance.studentid}(違規次數:${fn:length(attendance.student.violationQueue)})</td>
 				<td>${attendance.seatid}</td>
 				<td><c:if test="${attendance.isSignIn}">
 						<span style="color: green;">${attendance.status.value }</span>

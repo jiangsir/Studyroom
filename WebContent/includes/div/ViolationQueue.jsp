@@ -14,8 +14,8 @@
 		${fn:length(student.violationQueue)} 次違規記錄</div>
 	<ul>
 		<c:forEach var="violation" items="${student.violationQueue}">
-			<li>${violation.date}: ${violation.studentid} :
-				${violation.reason.value}</li>
+			<li><fmt:formatDate value="${violation.date}"
+					pattern="yyyy-MM-dd E" />: ${violation.reason.value}</li>
 		</c:forEach>
 	</ul>
 	<div>請注意，違規 ${applicationScope.appConfig.punishingthreshold}
