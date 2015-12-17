@@ -178,7 +178,7 @@ public class Student implements Comparable<Student> {
 	 * 20150123 改成 enable violation 都不清除(只在學期初清除)，用 ViolationQueue(由
 	 * PriorityQueue 實作) 來判斷是否有違規。<br>
 	 * 
-	 * @param studentid
+	 * @param id
 	 * @return
 	 */
 	public boolean getIsStopBooking() {

@@ -29,12 +29,14 @@
 	<jsp:include page="Header.jsp" />
 
 	<jsp:useBean id="now" class="java.util.Date"></jsp:useBean>
-	<c:if test="${sessionScope.currentUser.isAdmin}">
-		<div style="margin: 1em; text-align: center;">
-			<a href="?date=${prevdate }" type="button">前一日</a> <a href="?"
-				type="button">今天</a> <a href="?date=${nextdate}" type="button">後一日</a>
-		</div>
-	</c:if>
+	<%-- 	<c:if test="${sessionScope.currentUser.isAdmin}">
+ --%>
+	<div style="margin: 1em; text-align: center;">
+		<a href="?date=${prevdate }" type="button">前一日</a> <a href="?"
+			type="button">今天</a> <a href="?date=${nextdate}" type="button">後一日</a>
+	</div>
+	<%-- 	</c:if>
+ --%>
 	<c:choose>
 		<c:when test="${room:isOpen(date) }">
 			<div style="text-align: center;">

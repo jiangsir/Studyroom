@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import tw.jiangsir.Studyroom.DAOs.AttendanceDAO;
 import tw.jiangsir.Studyroom.DAOs.BookingService;
-import tw.jiangsir.Studyroom.DAOs.StudentService;
 import tw.jiangsir.Studyroom.Servlets.SignInServlet;
 import tw.jiangsir.Utils.Exceptions.AccessException;
 import tw.jiangsir.Utils.Interfaces.IAccessFilter;
@@ -52,10 +51,6 @@ public class IndexServlet extends HttpServlet implements IAccessFilter {
 			throws ServletException, IOException {
 		CurrentUser currentUser = new SessionScope(request.getSession(false)).getCurrentUser();
 		AppConfig appConfig = ApplicationScope.getAppConfig();
-		// System.out.println("appConfig.getSigninip()=" +
-		// appConfig.getSigninip()
-		// + ", request.getRemoteAddr()=" + request.getRemoteAddr()
-		// + ", currentUser=" + currentUser);
 		IpAddress remoteAddr = new IpAddress(request.getRemoteAddr());
 		if (remoteAddr.getIsSubnetOf(appConfig.getSigninip()) && (currentUser == null || !currentUser.getIsAdmin())) {
 			response.sendRedirect(
@@ -70,8 +65,8 @@ public class IndexServlet extends HttpServlet implements IAccessFilter {
 				date = new java.sql.Date(System.currentTimeMillis());
 			}
 		} else {
-			date = new java.sql.Date(System.currentTimeMillis());
-			// date = java.sql.Date.valueOf(request.getParameter("date"));
+			// date = new java.sql.Date(System.currentTimeMillis());
+			date = java.sql.Date.valueOf(request.getParameter("date"));
 		}
 
 		request.setAttribute("date", date);

@@ -147,7 +147,7 @@ public class IpAddress implements Comparable<IpAddress>, Serializable {
 	 * @return
 	 */
 	public boolean getIsSubnetOf(TreeSet<IpAddress> iprules) {
-		if (iprules == null || iprules.size() == 0 || this.isLoopbackAddress()) {
+		if (iprules == null || iprules.size() == 0) {
 			return true;
 		}
 		for (IpAddress ip : iprules) {
