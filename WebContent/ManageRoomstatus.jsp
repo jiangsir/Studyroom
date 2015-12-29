@@ -13,6 +13,25 @@
 
 <script>
 	$(function() {
+		var doRoomClose_DialogForm = $(this).find("div#doRoomClose_DialogForm")
+
+		doRoomClose_DialogForm.dialog({
+			autoOpen : false,
+			width : 600,
+			modal : false,
+			buttons : {
+				"送出" : function() {
+					var date = $(this).attr("date");
+					var reason = $(this).find("input[name='reason']").val();
+					doRoomClose(date, reason);
+					$(this).dialog("close");
+				},
+				"取消" : function() {
+					$(this).dialog("close");
+				}
+			}
+		});
+
 		$('div.css_day').hover(function() {
 			$(this).addClass('highlight');
 		}, function() {
@@ -21,21 +40,61 @@
 
 		$("div.css_day").click(function() {
 			var date = $(this).attr("date");
-			jQuery.ajax({
-				type : "POST",
-				url : "Roomstatus.api",
-				data : "action=doChangeStatus&date=" + date,
-				async : false,
-				timeout : 5000,
-				success : function(result) {
-					location.reload();
-				},
-				error : function(jqXHR, textStatus, errorThrown) {
-					showErrorDialog(jqXHR, textStatus, errorThrown);
-				}
-			});
-		});
+			var isOpen = $(this).attr("isOpen");
+			if (isOpen == "true") {
+				doRoomClose_DialogForm.attr("date", date);
+				doRoomClose_DialogForm.dialog("open");
+			} else if (isOpen == "false") {
+				doRoomOpen(date);
+			}
+			/* 			jQuery.ajax({
+			 type : "POST",
+			 url : "Roomstatus.api",
+			 data : "action=doChangeStatus&date=" + date,
+			 async : false,
+			 timeout : 5000,
+			 success : function(result) {
+			 location.reload();
+			 },
+			 error : function(jqXHR, textStatus, errorThrown) {
+			 showErrorDialog(jqXHR, textStatus, errorThrown);
+			 }
+			 });
+			 */});
+
 	});
+
+	function doRoomOpen(date) {
+		jQuery.ajax({
+			type : "POST",
+			url : "Roomstatus.api",
+			data : "action=doOpen&date=" + date,
+			async : false,
+			timeout : 5000,
+			success : function(result) {
+				location.reload();
+			},
+			error : function(jqXHR, textStatus, errorThrown) {
+				showErrorDialog(jqXHR, textStatus, errorThrown);
+			}
+		});
+	}
+
+	function doRoomClose(date, reason) {
+		jQuery.ajax({
+			type : "POST",
+			url : "Roomstatus.api",
+			data : "action=doClose&date=" + date + "&reason=" + reason,
+			async : false,
+			timeout : 5000,
+			success : function(result) {
+				location.reload();
+			},
+			error : function(jqXHR, textStatus, errorThrown) {
+				showErrorDialog(jqXHR, textStatus, errorThrown);
+			}
+		});
+	}
 </script>
 <style type="text/css">
 #css_table {
@@ -82,6 +141,8 @@
 </head>
 <body>
 	<jsp:include page="Header.jsp" />
+	<jsp:include page="includes/DialogForm/DoRoomClose.jsp" />
+
 	<jsp:useBean id="now" class="java.util.Date"></jsp:useBean>
 	<div style="text-align: center;">
 		<h1>設定開館、閉館日期</h1>
@@ -118,13 +179,13 @@
 							<c:choose>
 								<c:when test="${col==null }"></c:when>
 								<c:when test="${room:isOpen(col)}">
-									<div class="css_day"
+									<div class="css_day" isOpen="true"
 										date="<fmt:formatDate value="${col}" pattern="yyyy-MM-dd" />">
 										<fmt:formatDate value="${col}" pattern="dd" />
 									</div>
 								</c:when>
 								<c:when test="${!room:isOpen(col)}">
-									<div class="css_day" style="color: red;"
+									<div class="css_day" isOpen="false" style="color: red;"
 										date="<fmt:formatDate value="${col}" pattern="yyyy-MM-dd" />">
 										<fmt:formatDate value="${col}" pattern="dd" />
 									</div>

@@ -13,6 +13,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import tw.jiangsir.Studyroom.Objects.Student;
 import tw.jiangsir.Studyroom.Tables.Booking;
 import tw.jiangsir.Utils.DAOs.SuperDAO;
 
@@ -76,7 +77,9 @@ public class BookingDAO extends SuperDAO<Booking> {
 
 	/**
 	 * 用 studentid 及 date 獲取劃位紀錄。 但由於 OverBooking 現象，若 studentid AND date
-	 * 當天的座位已經被 OverBooking, 應該取得最後一個 booking
+	 * 當天的座位已經被 OverBooking, 應該取得最後一個 booking<br>
+	 * 如果最後一個 booking 不是 studentid 所訂。代表這個位置已經被 overBooking 了。<br>
+	 * 此時回傳 null
 	 * 
 	 * @return
 	 * @throws SQLException
@@ -88,7 +91,13 @@ public class BookingDAO extends SuperDAO<Booking> {
 		// 找到該生所劃的 seatid 再判斷是否被 overBooking
 		// # Last booking 並不一定是 Available Booking, 如果這位置沒有被劃位覆蓋，它仍然是 Last
 		// 但主人已經被停權，所以並非 available
-		String sql = "SELECT * FROM (SELECT * FROM bookings WHERE seatid=(SELECT seatid FROM bookings WHERE studentid=? AND date=?) AND date=?) as temp GROUP BY seatid,date";
+		// SELECT * FROM (SELECT * FROM bookings WHERE seatid=(SELECT seatid
+		// FROM bookings WHERE studentid='210182' AND date='2015-12-21') AND
+		// date='2015-12-21' ORDER BY timestamp DESC) as temp GROUP BY
+		// seatid,date;
+
+		修改這裡！
+		String sql = "SELECT * FROM (SELECT * FROM bookings WHERE seatid=(SELECT seatid FROM bookings WHERE studentid=? AND date=?) AND date=? ORDER BY timestamp DESC) as temp GROUP BY seatid,date";
 		PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
 		pstmt.setString(1, studentid);
 		pstmt.setDate(2, date);

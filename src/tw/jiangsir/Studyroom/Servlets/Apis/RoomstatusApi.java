@@ -17,7 +17,7 @@ import tw.jiangsir.Utils.Interfaces.IAccessFilter;
 /**
  * Servlet implementation class BookUp
  */
-@WebServlet(urlPatterns = { "/Roomstatus.api" })
+@WebServlet(urlPatterns = {"/Roomstatus.api"})
 public class RoomstatusApi extends HttpServlet implements IAccessFilter {
 	private static final long serialVersionUID = 1L;
 
@@ -42,8 +42,8 @@ public class RoomstatusApi extends HttpServlet implements IAccessFilter {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
 	}
 
@@ -51,25 +51,26 @@ public class RoomstatusApi extends HttpServlet implements IAccessFilter {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		try {
 			ACTION action = ACTION.valueOf(request.getParameter("action"));
 			switch (action) {
-			case doChangeStatus:
-				Date date = Date.valueOf(request.getParameter("date"));
-				new RoomstatusService().doChangeStatus(date);
-				return;
-			case doClose:
-				date = Date.valueOf(request.getParameter("date"));
-				new RoomstatusService().doOpen(date);
-				break;
-			case doOpen:
-				date = Date.valueOf(request.getParameter("date"));
-				new RoomstatusService().doClose(date);
-				break;
-			default:
-				break;
+				// case doChangeStatus :
+				// Date date = Date.valueOf(request.getParameter("date"));
+				// new RoomstatusService().doChangeStatus(date);
+				// return;
+				case doClose :
+					Date date = Date.valueOf(request.getParameter("date"));
+					String reason = request.getParameter("reason");
+					new RoomstatusService().doClose(date, reason);
+					break;
+				case doOpen :
+					date = Date.valueOf(request.getParameter("date"));
+					new RoomstatusService().doOpen(date);
+					break;
+				default :
+					break;
 
 			}
 		} catch (Exception e) {

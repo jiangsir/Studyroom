@@ -39,8 +39,7 @@ public class RoomstatusService {
 	public Roomstatus getRoomstatusById(long id) {
 		TreeMap<String, Object> fields = new TreeMap<String, Object>();
 		fields.put("id", id);
-		for (Roomstatus roomstatus : new RoomstatusDAO().getRoomstatusByFields(
-				fields, "", 0)) {
+		for (Roomstatus roomstatus : new RoomstatusDAO().getRoomstatusByFields(fields, "", 0)) {
 			return roomstatus;
 		}
 		return null;
@@ -49,16 +48,15 @@ public class RoomstatusService {
 	public Roomstatus getRoomstatusByDate(Date date) {
 		TreeMap<String, Object> fields = new TreeMap<String, Object>();
 		fields.put("date", date);
-		for (Roomstatus roomstatus : new RoomstatusDAO().getRoomstatusByFields(
-				fields, "", 0)) {
+		for (Roomstatus roomstatus : new RoomstatusDAO().getRoomstatusByFields(fields, "", 0)) {
 			return roomstatus;
 		}
 		return null;
 	}
 
-	public void doChangeStatus(Date date) {
+	public void doChangeStatus(Date date, String reason) {
 		if (this.isOpen(date)) {
-			this.doClose(date);
+			this.doClose(date, reason);
 		} else {
 			this.doOpen(date);
 		}
@@ -78,16 +76,24 @@ public class RoomstatusService {
 		}
 	}
 
-	public void doClose(Date date) {
+	/**
+	 * 設定為『關閉』
+	 * 
+	 * @param date
+	 * @param reason
+	 */
+	public void doClose(Date date, String reason) {
 		Roomstatus roomstatus = this.getRoomstatusByDate(date);
 		if (roomstatus == null) {
 			roomstatus = new Roomstatus();
 			roomstatus.setDate(date);
 			roomstatus.setStatus(Roomstatus.STATUS.close);
+			roomstatus.setReason(reason);
 			this.insert(roomstatus);
 			return;
 		} else {
 			roomstatus.setStatus(Roomstatus.STATUS.close);
+			roomstatus.setReason(reason);
 			this.update(roomstatus);
 		}
 	}

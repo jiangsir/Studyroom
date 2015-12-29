@@ -156,3 +156,7 @@ ALTER TABLE  `users` ADD  `picture` TEXT NOT NULL AFTER  `email`;
 
 ALTER TABLE  `studyroom`.`violations` ADD UNIQUE  `studentid_date` (  `studentid` ,  `date` );
 
+========================================
+ALTER TABLE  `roomstatuss` ADD  `reason` VARCHAR( 255 ) NOT NULL AFTER  `status`;
+
+

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import tw.jiangsir.Studyroom.DAOs.AttendanceDAO;
 import tw.jiangsir.Studyroom.DAOs.BookingService;
+import tw.jiangsir.Studyroom.DAOs.RoomstatusService;
 import tw.jiangsir.Studyroom.Servlets.SignInServlet;
 import tw.jiangsir.Utils.Exceptions.AccessException;
 import tw.jiangsir.Utils.Interfaces.IAccessFilter;
@@ -66,10 +67,15 @@ public class IndexServlet extends HttpServlet implements IAccessFilter {
 			}
 		} else {
 			// date = new java.sql.Date(System.currentTimeMillis());
-			date = java.sql.Date.valueOf(request.getParameter("date"));
+			try {
+				date = java.sql.Date.valueOf(request.getParameter("date"));
+			} catch (Exception e) {
+				date = new java.sql.Date(System.currentTimeMillis());
+			}
 		}
 
 		request.setAttribute("date", date);
+		request.setAttribute("roomstatus", new RoomstatusService().getRoomstatusByDate(date));
 		request.setAttribute("nextdate", DateTool.getNextDate(date));
 		request.setAttribute("prevdate", DateTool.getPrevDate(date));
 		// request.setAttribute("bookupMap",

@@ -92,7 +92,10 @@
 				<h1>
 					今日
 					<fmt:formatDate value="${date}" pattern="yyyy-MM-dd (E)" />
-					不開放訂位哦！
+					不開放訂位哦！<br>
+					<c:if test="${roomstatus.reason!=''}">
+					原因： ${roomstatus.reason}
+					</c:if>
 				</h1>
 			</div>
 		</c:otherwise>

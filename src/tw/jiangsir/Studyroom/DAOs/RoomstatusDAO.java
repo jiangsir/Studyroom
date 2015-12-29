@@ -22,25 +22,24 @@ import tw.jiangsir.Utils.Exceptions.DataException;
 public class RoomstatusDAO extends SuperDAO<Roomstatus> {
 
 	@Override
-	protected synchronized int insert(Roomstatus roomstatus)
-			throws SQLException {
-		String sql = "INSERT INTO roomstatuss(`date`, `status`, `timestamp`) VALUES (?,?,?);";
-		PreparedStatement pstmt = this.getConnection().prepareStatement(sql,
-				Statement.RETURN_GENERATED_KEYS);
+	protected synchronized int insert(Roomstatus roomstatus) throws SQLException {
+		String sql = "INSERT INTO roomstatuss(`date`, `status`, `reason`, `timestamp`) VALUES (?,?,?,?);";
+		PreparedStatement pstmt = this.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 		pstmt.setDate(1, roomstatus.getDate());
 		pstmt.setInt(2, roomstatus.getStatus().ordinal());
-		pstmt.setTimestamp(3, roomstatus.getTimestamp());
+		pstmt.setString(3, roomstatus.getReason());
+		pstmt.setTimestamp(4, roomstatus.getTimestamp());
 		return this.executeInsert(pstmt);
 	}
 
-	protected synchronized int update(Roomstatus roomstatus)
-			throws SQLException {
-		String sql = "UPDATE roomstatuss SET `date`=?, `status`=? WHERE id=?";
+	protected synchronized int update(Roomstatus roomstatus) throws SQLException {
+		String sql = "UPDATE roomstatuss SET `date`=?, `status`=?, `reason`=? WHERE id=?";
 		int result = -1;
 		PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
 		pstmt.setDate(1, roomstatus.getDate());
 		pstmt.setInt(2, roomstatus.getStatus().ordinal());
-		pstmt.setLong(3, roomstatus.getId());
+		pstmt.setString(3, roomstatus.getReason());
+		pstmt.setLong(4, roomstatus.getId());
 		result = this.executeUpdate(pstmt);
 		pstmt.close();
 		return result;
@@ -54,14 +53,11 @@ public class RoomstatusDAO extends SuperDAO<Roomstatus> {
 		return this.executeDelete(pstmt);
 	}
 
-	protected ArrayList<Roomstatus> getRoomstatusByFields(
-			TreeMap<String, Object> fields, String orderby, int page) {
-		String sql = "SELECT * FROM roomstatuss "
-				+ this.makeFields(fields, orderby, page);
+	protected ArrayList<Roomstatus> getRoomstatusByFields(TreeMap<String, Object> fields, String orderby, int page) {
+		String sql = "SELECT * FROM roomstatuss " + this.makeFields(fields, orderby, page);
 
 		try {
-			PreparedStatement pstmt = this.getConnection()
-					.prepareStatement(sql);
+			PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
 			int i = 1;
 			for (String field : fields.keySet()) {
 				pstmt.setObject(i++, fields.get(field));

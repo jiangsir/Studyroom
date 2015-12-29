@@ -2,6 +2,8 @@ package tw.jiangsir.Studyroom.Tables;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.Calendar;
+
 import tw.jiangsir.Utils.Annotations.Persistent;
 
 public class Roomstatus {
@@ -17,8 +19,10 @@ public class Roomstatus {
 
 	@Persistent(name = "status")
 	private STATUS status = STATUS.close;
+	@Persistent(name = "reason")
+	private String reason = "";
 	@Persistent(name = "timestamp")
-	private Timestamp timestamp = new Timestamp(new java.util.Date().getTime());
+	private Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
 	public long getId() {
 		return id;
@@ -40,6 +44,17 @@ public class Roomstatus {
 		this.status = STATUS.values()[status];
 	}
 
+	public String getReason() {
+		return reason;
+	}
+
+	public void setReason(String reason) {
+		if (reason == null) {
+			return;
+		}
+		this.reason = reason;
+	}
+
 	public Date getDate() {
 		return date;
 	}
@@ -55,5 +70,5 @@ public class Roomstatus {
 	public void setTimestamp(Timestamp timestamp) {
 		this.timestamp = timestamp;
 	}
-
+	// =========================================================
 }
