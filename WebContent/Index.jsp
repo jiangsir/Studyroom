@@ -33,7 +33,10 @@
  --%>
 	<div style="margin: 1em; text-align: center;">
 		<a href="?date=${prevdate }" type="button">前一日</a> <a href="?"
-			type="button">今天</a> <a href="?date=${nextdate}" type="button">後一日</a>
+			type="button">今天</a>
+		<c:if test="${sessionScope.currentUser.isAdmin }">
+			<a href="?date=${nextdate}" type="button">後一日</a>
+		</c:if>
 	</div>
 	<%-- 	</c:if>
  --%>
