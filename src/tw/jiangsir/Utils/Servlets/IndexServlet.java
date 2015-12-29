@@ -1,6 +1,8 @@
 package tw.jiangsir.Utils.Servlets;
 
 import java.io.IOException;
+import java.sql.Date;
+
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -59,6 +61,7 @@ public class IndexServlet extends HttpServlet implements IAccessFilter {
 			return;
 		}
 		java.sql.Date date;
+		java.sql.Date now = new Date(System.currentTimeMillis());
 		if (currentUser != null && currentUser.getIsAdmin()) {
 			try {
 				date = java.sql.Date.valueOf(request.getParameter("date"));
@@ -69,6 +72,9 @@ public class IndexServlet extends HttpServlet implements IAccessFilter {
 			// date = new java.sql.Date(System.currentTimeMillis());
 			try {
 				date = java.sql.Date.valueOf(request.getParameter("date"));
+				if (date.after(now)) {
+					date = now;
+				}
 			} catch (Exception e) {
 				date = new java.sql.Date(System.currentTimeMillis());
 			}

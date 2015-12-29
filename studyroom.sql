@@ -151,12 +151,14 @@ UPDATE `violations` SET `status`='enable' WHERE `status`='punished';
 ==============================
 
 
-ALTER TABLE  `users` ADD  `email` VARCHAR( 255 ) NOT NULL AFTER  `passwd`;
-ALTER TABLE  `users` ADD  `picture` TEXT NOT NULL AFTER  `email`;
 
 ALTER TABLE  `studyroom`.`violations` ADD UNIQUE  `studentid_date` (  `studentid` ,  `date` );
 
 ========================================
+ALTER TABLE  `users` ADD  `email` VARCHAR( 255 ) NOT NULL AFTER  `passwd`;
+ALTER TABLE  `users` ADD  `picture` TEXT NOT NULL AFTER  `email`;
 ALTER TABLE  `roomstatuss` ADD  `reason` VARCHAR( 255 ) NOT NULL AFTER  `status`;
+
+================================================= 以上 主站資料庫已完成更新
 
 

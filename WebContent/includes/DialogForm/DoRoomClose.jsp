@@ -9,6 +9,6 @@
 <div id="doRoomClose_DialogForm" title="將教室設定為關閉！" date=""
 	style="display: none;">
 	<div id="doRoomClose">
-		不開放原因：<input name="reason" value=""></input>
+		不開放原因：<input name="reason" value=""></input>(可留白)
 	</div>
 </div>
