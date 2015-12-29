@@ -210,7 +210,7 @@ public class BookingService {
 	}
 
 	/**
-	 * 取得某 studentid 於某 date 中有效的 booking (未被 overBooking)<br>
+	 * 取得某 studentid 於某 date 中有效的 booking (未被 overBooking 而且 未被停權)<br>
 	 * 如果已經有劃位，但因為停權被 overBooking，事後又來申訴復權。則此時回傳 null, 代表沒有有效(available)的
 	 * booking<br>
 	 * 因而同意此人今日繼續劃位。

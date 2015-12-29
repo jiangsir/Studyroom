@@ -96,16 +96,15 @@ public class BookingDAO extends SuperDAO<Booking> {
 		// date='2015-12-21' ORDER BY timestamp DESC) as temp GROUP BY
 		// seatid,date;
 
-		修改這裡！
 		String sql = "SELECT * FROM (SELECT * FROM bookings WHERE seatid=(SELECT seatid FROM bookings WHERE studentid=? AND date=?) AND date=? ORDER BY timestamp DESC) as temp GROUP BY seatid,date";
 		PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
 		pstmt.setString(1, studentid);
 		pstmt.setDate(2, date);
 		pstmt.setDate(3, date);
 		for (Booking booking : this.executeQuery(pstmt, Booking.class)) {
-			// if (booking.getStudentid().equals(studentid)) {
-			return booking;
-			// }
+			if (booking.getStudentid().equals(studentid)) {
+				return booking;
+			}
 		}
 		return null;
 	}
