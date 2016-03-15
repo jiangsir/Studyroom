@@ -53,13 +53,15 @@ public class IndexServlet extends HttpServlet implements IAccessFilter {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		CurrentUser currentUser = new SessionScope(request.getSession(false)).getCurrentUser();
-		AppConfig appConfig = ApplicationScope.getAppConfig();
-		IpAddress remoteAddr = new IpAddress(request.getRemoteAddr());
-		if (remoteAddr.getIsSubnetOf(appConfig.getSigninip()) && (currentUser == null || !currentUser.getIsAdmin())) {
-			response.sendRedirect(
-					request.getContextPath() + SignInServlet.class.getAnnotation(WebServlet.class).urlPatterns()[0]);
-			return;
-		}
+		// AppConfig appConfig = ApplicationScope.getAppConfig();
+		// IpAddress remoteAddr = new IpAddress(request.getRemoteAddr());
+		// if (remoteAddr.getIsSubnetOf(appConfig.getSigninip()) && (currentUser
+		// == null || !currentUser.getIsAdmin())) {
+		// response.sendRedirect(
+		// request.getContextPath() +
+		// SignInServlet.class.getAnnotation(WebServlet.class).urlPatterns()[0]);
+		// return;
+		// }
 		java.sql.Date date;
 		java.sql.Date now = new Date(System.currentTimeMillis());
 		if (currentUser != null && currentUser.getIsAdmin()) {

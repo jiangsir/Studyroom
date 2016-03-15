@@ -65,6 +65,8 @@ public class AppConfig {
 	@Property(key = "redirect_uri")
 	@Persistent(name = "redirect_url")
 	private String redirect_uri = "";
+	@Persistent(name = "signinkey")
+	private String SigninKey = "";
 
 	@Persistent(name = "checkhost")
 	private String checkhost = "127.0.0.1";
@@ -229,7 +231,21 @@ public class AppConfig {
 	}
 
 	public void setRedirect_uri(String redirect_uri) {
+		if (redirect_uri == null) {
+			return;
+		}
 		this.redirect_uri = redirect_uri;
+	}
+
+	public String getSigninKey() {
+		return SigninKey;
+	}
+
+	public void setSigninKey(String signinKey) {
+		if (signinKey == null) {
+			return;
+		}
+		SigninKey = signinKey.trim();
 	}
 
 	// public String getSigninip() {

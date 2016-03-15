@@ -33,8 +33,10 @@ public class SignInServlet extends HttpServlet {
 		CurrentUser currentUser = new SessionScope(request).getCurrentUser();
 		AppConfig appConfig = ApplicationScope.getAppConfig();
 		IpAddress remoteAddr = new IpAddress(request.getRemoteAddr());
+		String signinKey = request.getParameter("key");
 		// request.getRemoteAddr().equals(appConfig.getSigninip()
-		if (remoteAddr.isLoopbackAddress() || remoteAddr.getIsSubnetOf(appConfig.getSigninip())
+		if ( appConfig.getSigninKey().equals(signinKey)
+				|| remoteAddr.getIsSubnetOf(appConfig.getSigninip())
 				|| (currentUser != null && currentUser.getIsAdmin())) {
 			request.setAttribute("attendances",
 					new AttendanceService().getAttendancesByDate(new Date(System.currentTimeMillis()), 1));

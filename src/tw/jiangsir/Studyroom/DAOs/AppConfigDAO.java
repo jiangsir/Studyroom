@@ -24,9 +24,9 @@ public class AppConfigDAO extends SuperDAO<AppConfig> {
 	@Override
 	protected synchronized int insert(AppConfig appConfig) throws SQLException {
 		String sql = "INSERT INTO appconfigs(title, header, author, pagesize, defaultlogin, authdomains, "
-				+ "checktype, checkhost, client_id, client_secret, redirect_uri, bookingbegin, bookingend, "
+				+ "checktype, checkhost, client_id, client_secret, redirect_uri, signinkey, bookingbegin, bookingend, "
 				+ "signinbegin, signinend, punishingthreshold, punishingdays, signinip, workingstudentids, "
-				+ "announcement, timestamp) VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?,now());";
+				+ "announcement, timestamp) VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,? ,?,now());";
 		PreparedStatement pstmt = this.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 		pstmt.setString(1, appConfig.getTitle());
 		pstmt.setString(2, appConfig.getHeader());
@@ -39,22 +39,23 @@ public class AppConfigDAO extends SuperDAO<AppConfig> {
 		pstmt.setString(9, appConfig.getClient_id());
 		pstmt.setString(10, appConfig.getClient_secret());
 		pstmt.setString(11, appConfig.getRedirect_uri());
-		pstmt.setTime(12, appConfig.getBookingbegin());
-		pstmt.setTime(13, appConfig.getBookingend());
-		pstmt.setTime(14, appConfig.getSigninbegin());
-		pstmt.setTime(15, appConfig.getSigninend());
-		pstmt.setInt(16, appConfig.getPunishingthreshold());
-		pstmt.setInt(17, appConfig.getPunishingdays());
-		pstmt.setString(18, appConfig.getSigninip().toString());
-		pstmt.setString(19, appConfig.getWorkingstudentids().toString());
-		pstmt.setString(20, appConfig.getAnnouncement());
+		pstmt.setString(12, appConfig.getSigninKey());
+		pstmt.setTime(13, appConfig.getBookingbegin());
+		pstmt.setTime(14, appConfig.getBookingend());
+		pstmt.setTime(15, appConfig.getSigninbegin());
+		pstmt.setTime(16, appConfig.getSigninend());
+		pstmt.setInt(17, appConfig.getPunishingthreshold());
+		pstmt.setInt(18, appConfig.getPunishingdays());
+		pstmt.setString(19, appConfig.getSigninip().toString());
+		pstmt.setString(20, appConfig.getWorkingstudentids().toString());
+		pstmt.setString(21, appConfig.getAnnouncement());
 		return this.executeInsert(pstmt);
 	}
 
 	protected synchronized int update(AppConfig appConfig) throws SQLException {
 		String sql = "UPDATE appconfigs SET title=?, header=?, author=?, pagesize=?, defaultlogin=?, "
 				+ "authdomains=?, checktype=?, checkhost=?, client_id=?, client_secret=?, redirect_uri=?, "
-				+ "bookingbegin=?, bookingend=?, signinbegin=?, signinend=?, punishingthreshold=?, "
+				+ "signinkey=?, bookingbegin=?, bookingend=?, signinbegin=?, signinend=?, punishingthreshold=?, "
 				+ "punishingdays=?, signinip=?, announcement=? WHERE id=?";
 		int result = -1;
 		PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
@@ -69,15 +70,16 @@ public class AppConfigDAO extends SuperDAO<AppConfig> {
 		pstmt.setString(9, appConfig.getClient_id());
 		pstmt.setString(10, appConfig.getClient_secret());
 		pstmt.setString(11, appConfig.getRedirect_uri());
-		pstmt.setTime(12, appConfig.getBookingbegin());
-		pstmt.setTime(13, appConfig.getBookingend());
-		pstmt.setTime(14, appConfig.getSigninbegin());
-		pstmt.setTime(15, appConfig.getSigninend());
-		pstmt.setInt(16, appConfig.getPunishingthreshold());
-		pstmt.setInt(17, appConfig.getPunishingdays());
-		pstmt.setString(18, appConfig.getSigninip().toString());
-		pstmt.setString(19, appConfig.getAnnouncement());
-		pstmt.setLong(20, appConfig.getId());
+		pstmt.setString(12, appConfig.getSigninKey());
+		pstmt.setTime(13, appConfig.getBookingbegin());
+		pstmt.setTime(14, appConfig.getBookingend());
+		pstmt.setTime(15, appConfig.getSigninbegin());
+		pstmt.setTime(16, appConfig.getSigninend());
+		pstmt.setInt(17, appConfig.getPunishingthreshold());
+		pstmt.setInt(18, appConfig.getPunishingdays());
+		pstmt.setString(19, appConfig.getSigninip().toString());
+		pstmt.setString(20, appConfig.getAnnouncement());
+		pstmt.setLong(21, appConfig.getId());
 		result = this.executeUpdate(pstmt);
 		pstmt.close();
 		return result;

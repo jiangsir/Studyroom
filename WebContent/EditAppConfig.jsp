@@ -95,14 +95,19 @@
 				<tr style="padding: 10px;">
 					<th>client_secret</th>
 					<td style="padding: 10px;"><input name="client_secret"
-						type="text" id="Title" value="${appConfig.client_secret}"
-						size="100" maxlength="255" /></td>
+						type="text" value="${appConfig.client_secret}" size="100"
+						maxlength="255" /></td>
 				</tr>
 				<tr style="padding: 10px;">
 					<th>redirect_uri</th>
 					<td style="padding: 10px;"><input name="redirect_uri"
-						type="text" id="Title" value="${appConfig.redirect_uri}"
-						size="100" maxlength="255" /></td>
+						type="text" value="${appConfig.redirect_uri}" size="100"
+						maxlength="255" /></td>
+				</tr>
+				<tr style="padding: 10px;">
+					<th>SigninKey</th>
+					<td style="padding: 10px;"><input name="signinKey" type="text"
+						value="${appConfig.signinKey}" size="100" maxlength="255" /></td>
 				</tr>
 				<tr style="padding: 10px;">
 					<th>訂位開始時間</th>
