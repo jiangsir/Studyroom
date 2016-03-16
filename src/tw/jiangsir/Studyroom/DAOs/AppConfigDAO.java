@@ -39,7 +39,7 @@ public class AppConfigDAO extends SuperDAO<AppConfig> {
 		pstmt.setString(9, appConfig.getClient_id());
 		pstmt.setString(10, appConfig.getClient_secret());
 		pstmt.setString(11, appConfig.getRedirect_uri());
-		pstmt.setString(12, appConfig.getSigninKey());
+		pstmt.setString(12, appConfig.getSigninkey());
 		pstmt.setTime(13, appConfig.getBookingbegin());
 		pstmt.setTime(14, appConfig.getBookingend());
 		pstmt.setTime(15, appConfig.getSigninbegin());
@@ -70,7 +70,7 @@ public class AppConfigDAO extends SuperDAO<AppConfig> {
 		pstmt.setString(9, appConfig.getClient_id());
 		pstmt.setString(10, appConfig.getClient_secret());
 		pstmt.setString(11, appConfig.getRedirect_uri());
-		pstmt.setString(12, appConfig.getSigninKey());
+		pstmt.setString(12, appConfig.getSigninkey());
 		pstmt.setTime(13, appConfig.getBookingbegin());
 		pstmt.setTime(14, appConfig.getBookingend());
 		pstmt.setTime(15, appConfig.getSigninbegin());

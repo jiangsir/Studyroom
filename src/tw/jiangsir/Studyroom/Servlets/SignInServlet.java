@@ -35,7 +35,7 @@ public class SignInServlet extends HttpServlet {
 		IpAddress remoteAddr = new IpAddress(request.getRemoteAddr());
 		String signinKey = request.getParameter("key");
 		// request.getRemoteAddr().equals(appConfig.getSigninip()
-		if ( appConfig.getSigninKey().equals(signinKey)
+		if ( appConfig.getSigninkey().equals(signinKey)
 				|| remoteAddr.getIsSubnetOf(appConfig.getSigninip())
 				|| (currentUser != null && currentUser.getIsAdmin())) {
 			request.setAttribute("attendances",
