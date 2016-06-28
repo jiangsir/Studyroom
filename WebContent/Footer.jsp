@@ -14,7 +14,7 @@
 		人登入
 	</div>
 	<div>
-		Studyroom Built${applicationScope.built } | Designed &amp; <a
+		Studyroom ${applicationScope.version} Built${applicationScope.built } | Designed &amp; <a
 			href="./Admin">管理 </a> by <a
 			href="mailto:jiangsir@tea.nknush.kh.edu.tw">jiangsir@高師大附中</a>.
 	</div>

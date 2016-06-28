@@ -29,6 +29,7 @@ public class ApplicationScope {
 		ApplicationScope.servletContext = servletContext;
 
 		ApplicationScope.setAppRoot();
+		ApplicationScope.setVersion();
 		ApplicationScope.setBuilt();
 		ApplicationScope.setOnlineSessions(onlineSessions);
 		ApplicationScope.setOnlineUsers(onlineUsers);
