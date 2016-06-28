@@ -91,6 +91,7 @@ public class IndexServlet extends HttpServlet implements IAccessFilter {
 		request.setAttribute("hashBookings", new BookingService().getHashBookings(date));
 
 		request.setAttribute("attendCount", new AttendanceDAO().getAttendCount(date));
+		request.setAttribute("stayinCount", new AttendanceDAO().getStayinCount(date));
 		// request.setAttribute("cacheStudents",
 		// StudentService.getCacheStudents());
 

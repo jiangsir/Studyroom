@@ -45,11 +45,29 @@ public class AttendanceDAO extends SuperDAO<Attendance> {
 		return result;
 	}
 
+	/**
+	 * 取得已簽到的人數。
+	 * 
+	 * @param date
+	 * @return
+	 */
 	public int getAttendCount(Date date) {
 		String sql = "SELECT COUNT(*) AS COUNT FROM `attendances` WHERE date='" + date + "' GROUP BY studentid,date";
 		if (this.executeQueryId(sql).size() == 0) {
 			return 0;
 		}
+		return this.executeQueryId(sql).size();
+	}
+
+	/**
+	 * 取得已簽到，但尚未簽退的數量。
+	 * 
+	 * @param date
+	 * @return
+	 */
+	public int getStayinCount(Date date) {
+		String sql = "SELECT COUNT FROM (SELECT COUNT(*) AS COUNT FROM `attendances` WHERE date='" + date
+				+ "' GROUP BY studentid,date) as tmp WHERE COUNT%2=1";
 		return this.executeQueryId(sql).size();
 	}
 
