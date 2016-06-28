@@ -24,12 +24,11 @@ public class ApplicationScope {
 	private static HashMap<String, HttpServlet> urlpatterns = new HashMap<String, HttpServlet>();
 	private static File appRoot = null;
 	private static AppConfig appConfig = null;
-	private static boolean canBookup = false;
 
 	public static void setAllAttributes(ServletContext servletContext) {
 		ApplicationScope.servletContext = servletContext;
 
-		ApplicationScope.setAppRoot(new File(servletContext.getRealPath("/")));
+		ApplicationScope.setAppRoot();
 		ApplicationScope.setBuilt();
 		ApplicationScope.setOnlineSessions(onlineSessions);
 		ApplicationScope.setOnlineUsers(onlineUsers);
@@ -70,9 +69,19 @@ public class ApplicationScope {
 		return appRoot;
 	}
 
+	/**
+	 * 直接指定 AppRoot，在單機直接執行的時候使用。因此不具備 serveltContext
+	 * 
+	 * @param appRoot
+	 */
 	public static void setAppRoot(File appRoot) {
 		ApplicationScope.appRoot = appRoot;
-		servletContext.setAttribute("appRoot", appRoot);
+		// servletContext.setAttribute("appRoot", appRoot);
+	}
+
+	public static void setAppRoot() {
+		ApplicationScope.appRoot = new File(servletContext.getRealPath("/"));
+		ApplicationScope.servletContext.setAttribute("appRoot", appRoot);
 	}
 
 	public static AppConfig getAppConfig() {
