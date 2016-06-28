@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.catalina.tribes.util.Arrays;
+//import org.apache.catalina.tribes.util.Arrays;
 
 import tw.jiangsir.Studyroom.DAOs.BookingService;
 import tw.jiangsir.Studyroom.Tables.Booking;
@@ -27,7 +27,7 @@ import tw.jiangsir.Utils.Tools.DateTool;
 /**
  * Servlet implementation class BookUp
  */
-@WebServlet(urlPatterns = { "/BatchBooking.api" })
+@WebServlet(urlPatterns = {"/BatchBooking.api"})
 @RoleSetting
 public class BatchBookingApi extends HttpServlet implements IAccessFilter {
 	private static final long serialVersionUID = 1L;
@@ -47,8 +47,8 @@ public class BatchBookingApi extends HttpServlet implements IAccessFilter {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 	}
 
 	public enum ACTION {
@@ -60,19 +60,19 @@ public class BatchBookingApi extends HttpServlet implements IAccessFilter {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		try {
 
 			switch (ACTION.valueOf(request.getParameter("action"))) {
-			case add:
-				add(request);
-				return;
-			case delete:
-				delete(request);
-				return;
-			default:
-				break;
+				case add :
+					add(request);
+					return;
+				case delete :
+					delete(request);
+					return;
+				default :
+					break;
 
 			}
 		} catch (Exception e) {
@@ -95,7 +95,7 @@ public class BatchBookingApi extends HttpServlet implements IAccessFilter {
 		String[] enddates = request.getParameterValues("enddate");
 		String[] weekdays = request.getParameterValues("weekdays");
 
-		System.out.println("weekdays=" + Arrays.toString(weekdays));
+		// System.out.println("weekdays=" + Arrays.toString(weekdays));
 
 		for (int i = 0; i < studentids.length; i++) {
 			if (studentids[i] == null || "".equals(studentids[i])) {
@@ -108,8 +108,7 @@ public class BatchBookingApi extends HttpServlet implements IAccessFilter {
 				Calendar calendar = Calendar.getInstance();
 				calendar.setTime(date);
 				try {
-					if (weekdays[i].contains(String.valueOf(calendar
-							.get(Calendar.DAY_OF_WEEK)))) {
+					if (weekdays[i].contains(String.valueOf(calendar.get(Calendar.DAY_OF_WEEK)))) {
 						Booking booking = new Booking();
 						booking.setUserid(currentUser.getId());
 						booking.setStudentid(studentids[i]);
@@ -117,8 +116,7 @@ public class BatchBookingApi extends HttpServlet implements IAccessFilter {
 						booking.setDate(date);
 						new BookingService().insert(booking);
 					} else {
-						new BookingService().deleteByStudentidDate(
-								studentids[i], date);
+						new BookingService().deleteByStudentidDate(studentids[i], date);
 					}
 				} catch (NumberFormatException e) {
 					e.printStackTrace();
