@@ -28,7 +28,13 @@ public class IpAddress implements Comparable<IpAddress>, Serializable {
 	 * 預設取得 loopback address
 	 */
 	public IpAddress() {
-		this.ip = InetAddress.getLoopbackAddress();
+		// this.ip = InetAddress.getLoopbackAddress(); // java7
+		// this.ip = InetAddress.getLocalHost();
+		try {
+			this.ip = InetAddress.getByAddress(new byte[]{127, 0, 0, 1});
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**

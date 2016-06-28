@@ -1,6 +1,7 @@
 package tw.jiangsir.Utils.Scopes;
 
 import java.io.File;
+import java.io.IOException;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -8,7 +9,7 @@ import java.util.HashMap;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpSession;
-
+import org.apache.commons.io.FileUtils;
 import tw.jiangsir.Studyroom.DAOs.AppConfigService;
 import tw.jiangsir.Studyroom.Servlets.BookUpServlet;
 import tw.jiangsir.Utils.Objects.AppConfig;
@@ -16,8 +17,8 @@ import tw.jiangsir.Utils.Objects.User;
 
 public class ApplicationScope {
 	public static ServletContext servletContext = null;
-
-	private static String built = null;
+	private static String version = "Undefined Version";
+	private static String built = "Undefined BuiltNumber";
 	private static HashMap<String, HttpSession> onlineSessions = new HashMap<String, HttpSession>();
 	private static HashMap<String, User> onlineUsers = new HashMap<String, User>();
 	private static HashMap<String, HttpServlet> urlpatterns = new HashMap<String, HttpServlet>();
@@ -42,8 +43,7 @@ public class ApplicationScope {
 		return onlineSessions;
 	}
 
-	public static void setOnlineSessions(
-			HashMap<String, HttpSession> onlineSessions) {
+	public static void setOnlineSessions(HashMap<String, HttpSession> onlineSessions) {
 		ApplicationScope.onlineSessions = onlineSessions;
 		servletContext.setAttribute("onlineSessions", onlineSessions);
 	}
@@ -86,8 +86,7 @@ public class ApplicationScope {
 
 	public static boolean getCanBookup() {
 		try {
-			new BookUpServlet().AccessFilter(new Date(System
-					.currentTimeMillis()));
+			new BookUpServlet().AccessFilter(new Date(System.currentTimeMillis()));
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -96,8 +95,32 @@ public class ApplicationScope {
 	}
 
 	public static void setCanBookup() {
-		servletContext.setAttribute("canBookup",
-				ApplicationScope.getCanBookup());
+		servletContext.setAttribute("canBookup", ApplicationScope.getCanBookup());
+	}
+
+	/**
+	 * 取得目前系統的版本。
+	 */
+	public static String getVersion() {
+		if (ApplicationScope.version == null) {
+			setVersion();
+		}
+		return ApplicationScope.version;
+	}
+
+	/**
+	 * 取得目前系統的版本。
+	 */
+	public static void setVersion() {
+		try {
+			ApplicationScope.version = FileUtils
+					.readFileToString(new File(ApplicationScope.appRoot + File.separator + "META-INF", "Version.txt"))
+					.trim();
+		} catch (IOException e) {
+			e.printStackTrace();
+			// ApplicationScope.version = "";
+		}
+		servletContext.setAttribute("version", ApplicationScope.version);
 	}
 
 	public static String getBuilt() {
@@ -106,7 +129,6 @@ public class ApplicationScope {
 		}
 		return ApplicationScope.built;
 	}
-
 	public static void setBuilt() {
 		ApplicationScope.built = new SimpleDateFormat("yyMMdd")
 				.format(new Date(ApplicationScope.getAppRoot().lastModified()));
