@@ -44,6 +44,12 @@
 			<fileset dir="${basedir}" />
 		</war>
 -->
+		<copy includeemptydirs="false" todir="${basedir}/WebContent/WEB-INF/classes">
+			<fileset dir="${basedir}/src">
+				<include name="**/*.properties" />
+			</fileset>
+		</copy>
+
 		<war destfile="${basedir}/${appname}.war" webxml="${basedir}/WebContent/WEB-INF/web.xml">
 			<fileset dir="${basedir}/WebContent">
 				<include name="**/*.*" />
