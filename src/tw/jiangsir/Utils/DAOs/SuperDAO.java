@@ -21,6 +21,7 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import tw.jiangsir.Utils.Annotations.Persistent;
+import tw.jiangsir.Utils.Exceptions.DataException;
 
 abstract public class SuperDAO<T> {
 	private static Connection conn = null;
@@ -55,8 +56,10 @@ abstract public class SuperDAO<T> {
 			}
 		} catch (NamingException e) {
 			e.printStackTrace();
+			throw new DataException("資料庫連結有誤，請聯繫管理員。");
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw new DataException("資料庫連結有誤，請聯繫管理員。");
 		}
 		return conn;
 	}
