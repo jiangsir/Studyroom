@@ -49,7 +49,7 @@ abstract public class SuperDAO<T> {
 					InitialContext icontext = new InitialContext();
 					source = (DataSource) icontext.lookup("java:comp/env/mysql");
 				}
-				logger.info("資料庫連結不存在或關閉了。嘗試重新取得連線");
+				logger.warning("資料庫連結不存在或關閉了。嘗試重新取得連線");
 				conn = source.getConnection();
 			} else {
 				return conn;
@@ -161,7 +161,7 @@ abstract public class SuperDAO<T> {
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		} finally {
-			logger.info("PSTMT_SQL=" + pstmt.toString() + " 共耗時 " + (System.currentTimeMillis() - starttime) + " ms");
+			logger.fine("PSTMT_SQL=" + pstmt.toString() + " 共耗時 " + (System.currentTimeMillis() - starttime) + " ms");
 			try {
 				if (rs != null) {
 					rs.close();
@@ -216,7 +216,7 @@ abstract public class SuperDAO<T> {
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		} finally {
-			logger.info("PSTMT_SQL=" + pstmt.toString() + " 共耗時 " + (System.currentTimeMillis() - starttime) + " ms");
+			logger.fine("PSTMT_SQL=" + pstmt.toString() + " 共耗時 " + (System.currentTimeMillis() - starttime) + " ms");
 			try {
 				rs.close();
 				pstmt.close();
@@ -234,7 +234,7 @@ abstract public class SuperDAO<T> {
 	 * @return
 	 */
 	public ArrayList<Long> executeQueryId(String sql) {
-		// long starttime = System.currentTimeMillis();
+		long starttime = System.currentTimeMillis();
 		ResultSet rs = null;
 		PreparedStatement pstmt;
 		ArrayList<Long> list = new ArrayList<Long>();
@@ -247,8 +247,8 @@ abstract public class SuperDAO<T> {
 				Long id = rs.getLong(idname);
 				list.add(id);
 			}
-			// logger.info("PSTMT_SQL=" + pstmt.toString() + " 共耗時 "
-			// + (System.currentTimeMillis() - starttime) + " ms");
+			logger.warning(
+					"PSTMT_SQL=" + pstmt.toString() + " 共耗時 " + (System.currentTimeMillis() - starttime) + " ms");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -320,7 +320,7 @@ abstract public class SuperDAO<T> {
 			if (!sql.toUpperCase().startsWith("SELECT COUNT(*) AS COUNT FROM")) {
 				return -1;
 			}
-			System.out.println(pstmt.toString());
+			logger.warning(pstmt.toString());
 			ResultSet rs = pstmt.executeQuery(sql);
 			rs.next();
 			result = rs.getInt("COUNT");
@@ -386,8 +386,7 @@ abstract public class SuperDAO<T> {
 				pstmt.setObject(i++, fields.get(key));
 			}
 			ResultSet rs = pstmt.executeQuery();
-			System.out.println(
-					"PSTMT_SQL=" + pstmt.toString() + " 共耗時 " + (System.currentTimeMillis() - starttime) + " ms");
+			logger.fine("PSTMT_SQL=" + pstmt.toString() + " 共耗時 " + (System.currentTimeMillis() - starttime) + " ms");
 			rs.next();
 			count = rs.getInt("COUNT");
 			rs.close();
@@ -414,8 +413,7 @@ abstract public class SuperDAO<T> {
 		try {
 			stmt = conn.createStatement();
 			result = stmt.execute(sql);
-			System.out.println(
-					"PSTMT_SQL=" + stmt.toString() + " 共耗時 " + (System.currentTimeMillis() - starttime) + " ms");
+			logger.warning("PSTMT_SQL=" + stmt.toString() + " 共耗時 " + (System.currentTimeMillis() - starttime) + " ms");
 			// logger.info("PSTMT_SQL=" + stmt.toString() + " 共耗時 "
 			// + (System.currentTimeMillis() - starttime) + " ms");
 			stmt.close();
