@@ -1,10 +1,14 @@
 package tw.jiangsir.Utils.Filters;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Logger;
+
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -26,10 +30,9 @@ import tw.jiangsir.Utils.Scopes.SessionScope;
 /**
  * Servlet Filter implementation class EncodingFilter
  */
-@WebFilter(filterName = "ExceptionHandlerFilter", urlPatterns = {
-		"/*" }, asyncSupported = true)
+@WebFilter(filterName = "ExceptionHandlerFilter", urlPatterns = {"/*"}, asyncSupported = true)
 public class ExceptionHandlerFilter implements Filter {
-
+	Logger logger = Logger.getAnonymousLogger();
 	/**
 	 * Default constructor.
 	 */
@@ -45,12 +48,15 @@ public class ExceptionHandlerFilter implements Filter {
 	/**
 	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
 	 */
-	public void doFilter(ServletRequest req, ServletResponse resp,
-			FilterChain chain) throws IOException, ServletException {
+	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain)
+			throws IOException, ServletException {
 		try {
 			chain.doFilter(req, resp);
 		} catch (Exception e) {
-			e.printStackTrace();
+			StringWriter sw = new StringWriter();
+			e.printStackTrace(new PrintWriter(sw));
+			logger.severe(sw.toString());
+
 			HttpServletRequest request = (HttpServletRequest) req;
 			HttpServletResponse response = (HttpServletResponse) resp;
 			HttpSession session = request.getSession(false);
@@ -60,8 +66,7 @@ public class ExceptionHandlerFilter implements Filter {
 			ArrayList<String> contentlist = cause.getContentlist();
 			contentlist.add("BY: " + this.getClass().getSimpleName());
 			while (rootCause.getCause() != null) {
-				contentlist.add(rootCause.getClass().getSimpleName() + ": "
-						+ rootCause.getLocalizedMessage());
+				contentlist.add(rootCause.getClass().getSimpleName() + ": " + rootCause.getLocalizedMessage());
 				rootCause = rootCause.getCause();
 			}
 			if (rootCause instanceof Cause) {
@@ -73,8 +78,7 @@ public class ExceptionHandlerFilter implements Filter {
 			HashMap<String, URI> uris = cause.getUris();
 
 			try {
-				uris.put("回前頁", new URI(request.getContextPath()
-						+ new SessionScope(request).getPreviousPage()));
+				uris.put("回前頁", new URI(request.getContextPath() + new SessionScope(request).getPreviousPage()));
 			} catch (URISyntaxException e1) {
 				e1.printStackTrace();
 			}
@@ -84,15 +88,13 @@ public class ExceptionHandlerFilter implements Filter {
 
 			if (e instanceof ApiException) {
 				ObjectMapper mapper = new ObjectMapper();
-				response.setStatus(
-						HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 				response.getWriter().write(mapper.writeValueAsString(alert));
 				response.flushBuffer();
 				return;
 			} else {
 				request.setAttribute("alert", alert);
-				request.getRequestDispatcher("/Alert.jsp").forward(request,
-						response);
+				request.getRequestDispatcher("/Alert.jsp").forward(request, response);
 				return;
 
 			}

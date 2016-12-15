@@ -1,14 +1,19 @@
 package tw.jiangsir.Studyroom.Servlets.Apis;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.sql.Date;
 import java.sql.Time;
+import java.util.logging.Logger;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import sun.util.logging.resources.logging;
 import tw.jiangsir.Studyroom.DAOs.AttendanceService;
 import tw.jiangsir.Studyroom.DAOs.BookingService;
 import tw.jiangsir.Studyroom.Objects.Student;
@@ -27,6 +32,7 @@ import tw.jiangsir.Utils.Tools.DateTool;
 @WebServlet(urlPatterns = {"/SignIn.api"})
 public class SignInApi extends HttpServlet implements IAccessFilter {
 	private static final long serialVersionUID = 1L;
+	Logger logger = Logger.getAnonymousLogger();
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -79,7 +85,9 @@ public class SignInApi extends HttpServlet implements IAccessFilter {
 				new AttendanceService().doSignOut(studentid);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			StringWriter sw = new StringWriter();
+			e.printStackTrace(new PrintWriter(sw));
+			logger.severe(sw.toString());
 			throw new ApiException("簽到錯誤，請通知管理員。(" + e.getLocalizedMessage() + ")");
 		}
 	}
