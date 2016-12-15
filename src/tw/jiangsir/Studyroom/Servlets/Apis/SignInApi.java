@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import sun.util.logging.resources.logging;
 import tw.jiangsir.Studyroom.DAOs.AttendanceService;
 import tw.jiangsir.Studyroom.DAOs.BookingService;
 import tw.jiangsir.Studyroom.Objects.Student;
@@ -35,6 +34,8 @@ public class SignInApi extends HttpServlet implements IAccessFilter {
 	Logger logger = Logger.getAnonymousLogger();
 
 	/**
+	 * ƒ
+	 * 
 	 * @see HttpServlet#HttpServlet()
 	 */
 	public SignInApi() {
