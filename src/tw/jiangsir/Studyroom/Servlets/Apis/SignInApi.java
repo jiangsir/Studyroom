@@ -80,7 +80,7 @@ public class SignInApi extends HttpServlet implements IAccessFilter {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new ApiException(e);
+			throw new ApiException("簽到錯誤，請通知管理員。(" + e.getLocalizedMessage() + ")");
 		}
 	}
 }

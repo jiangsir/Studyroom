@@ -30,13 +30,14 @@ public class SignInServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		// http://localhost:8080/Studyroom/SignIn?key=ashsashs
+
 		CurrentUser currentUser = new SessionScope(request).getCurrentUser();
 		AppConfig appConfig = ApplicationScope.getAppConfig();
 		IpAddress remoteAddr = new IpAddress(request.getRemoteAddr());
 		String signinKey = request.getParameter("key");
 		// request.getRemoteAddr().equals(appConfig.getSigninip()
-		if ( appConfig.getSigninkey().equals(signinKey)
-				|| remoteAddr.getIsSubnetOf(appConfig.getSigninip())
+		if (appConfig.getSigninkey().equals(signinKey) || remoteAddr.getIsSubnetOf(appConfig.getSigninip())
 				|| (currentUser != null && currentUser.getIsAdmin())) {
 			request.setAttribute("attendances",
 					new AttendanceService().getAttendancesByDate(new Date(System.currentTimeMillis()), 1));
