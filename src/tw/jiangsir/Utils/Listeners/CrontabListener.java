@@ -40,20 +40,20 @@ public class CrontabListener implements ServletContextListener {
 	public void contextInitialized(ServletContextEvent event) {
 		this.doViolationTask();
 		this.doClearCacheStudents();
-		// this.doTestTask();
+		this.doTestTask();
 	}
 	private void doTestTask() {
-		long period = 60 * 1000;
+		long period = 10 * 1000;
 
 		/*** 定制每日23:00执行方法 ***/
 		Calendar calendar = Calendar.getInstance();
-		calendar.set(Calendar.HOUR_OF_DAY, 15);
-		calendar.set(Calendar.MINUTE, 26);
-		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.HOUR_OF_DAY, 00);
+		calendar.set(Calendar.MINUTE, 35);
+		calendar.set(Calendar.SECOND, 13);
 		// 第一次执行定时任务的时间
 		Date firstTime = calendar.getTime();
 		timer3 = new java.util.Timer(true); // 启动定时器
-		logger.info("TestTask Run firsttime=" + firstTime);
+		logger.warning("TestTask Run firsttime=" + firstTime);
 		timer3.schedule(new TestTask(), firstTime, period); // 启动和间隔时间 间隔1天
 	}
 
